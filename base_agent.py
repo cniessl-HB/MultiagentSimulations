@@ -21,6 +21,10 @@ class base_agent:
         self.possible_interacts: list = []
         self.history_list: list = []
     
+    def plan_action(self) -> base_action: # TODO: Create base action
+        "Override this function with planning method"
+        raise NotImplemented
+    
     def interact(self, other: base_agent) -> None:
         "Override this function with interaction method"
         raise NotImplemented
