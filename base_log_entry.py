@@ -1,5 +1,5 @@
 """
-Interaction_Log.py - Common log class
+base_log_entry.py - Common log class
 
 Copyright 2026 - Christopher T Niessl
 
@@ -20,6 +20,7 @@ class base_log_entry:
         self.action_msg: str = action_msg
     
     def __str__(self) -> str:
+        """Get output of log entry."""
         log_str = f"{self.initiator_id} -> {self.other_id} "
         log_str = log_str + f"@ {self.step}: "
         return log_str + self.action_msg

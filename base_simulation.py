@@ -1,25 +1,29 @@
 """
-Base_Simulation.py - Common simulation class
+base_simulation.py - Common simulation class
 
 Copyright 2026 - Christopher T Niessl
 
 See LICENSE.txt for usage.
 """
 
+# TODO: Inherit basic sim type signature
 class base_simulation:
     """Base simulation.""" 
     
     def __init__(self) -> None:
+        "Initialize
         self.agents: dict[base_agent] = {}
         self.sim_step: int = 0
     
     def step(self) -> None:
+        "Perform a timestep in the simulation."""
         action_list: list = []
         self.setup_phase()
         for agent in self.agents:
             action_list.append(agent.plan_action())
         for action in action_list:
-            self.apply_action(action)
+            log_entry = self.apply_action(action, self)
+            # TODO: Add log entry to relevant agents
         self.end_phase()
    
     def setup_phase(self) -> None:

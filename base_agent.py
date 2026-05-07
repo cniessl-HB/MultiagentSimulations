@@ -1,5 +1,5 @@
 """
-Agent.py - Common interface class for individual agents
+base_agent.py - Common interface class for individual agents
 
 Copyright 2026 - Christopher T Niessl
 
@@ -14,14 +14,14 @@ class base_agent:
     
     """ 
     
-    def __init__(self) -> None:
+    def __init__(self, ) -> None:
         "Initialize the agent"
         self.agent_id: str = ""
         self.agent_state: any = None
         self.possible_interacts: list = []
         self.history_list: list = []
     
-    def plan_action(self) -> base_action: # TODO: Create base action
+    def plan_action(self) -> base_action:
         "Override this function with planning method"
         raise NotImplemented
     
