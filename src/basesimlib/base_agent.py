@@ -6,6 +6,8 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
+from base_masim_types import some_action, some_action_stub, some_agent, some_log
+
 class base_agent(some_agent):
     """Placeholder for base agent.
     
@@ -17,16 +19,11 @@ class base_agent(some_agent):
     def __init__(self, agent_id: str) -> None:
         "Initialize the agent"
         self.agent_id: str = agent_id
-        self.agent_state: any = None
-        self.possible_interacts: list = []
-        self.history_list: list = []
+        self.possible_actions: dict[str, some_action] = {}
+        self.history_list: list[some_log] = []
     
-    def plan_action(self) -> base_action:
+    def plan_action(self) -> some_action_stub:
         """Override this function with planning method."""
-        raise NotImplemented
-    
-    def interact(self, other: some_agent) -> None:
-        """Override this function with interaction method."""
         raise NotImplemented
     
     def audit_history(self) -> list[some_log]:

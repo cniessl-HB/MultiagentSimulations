@@ -1,25 +1,21 @@
 """
-base_action.py - Common action class
+base_action.py - Common action class that generates stubs
 
 Copyright 2026 - Christopher T Niessl
 
 See LICENSE.txt for usage.
 """
 
-from base_masim_types import some_action, some_log, some_sim
+from base_masim_types import some_action, some_action_stub, some_agent
 
-class base_action(some_action):
+class base_action_stub(some_action):
     """Base log for an interaction.""" 
     
     def __init__(self, 
-                 initiator_id: str, 
-                 target: str) -> None:
-        """Initialize the action."""
-        self.initiator_id: str = initiator_id
-        self.target: str = target
+                 initiator_agent: some_agent) -> None:
+        """Setup the action stub generator."""
+        self.initiator_agent = initiator_agent
     
-    # TODO: Create basic sim type, log type signature
-    def apply_action(self, simulation : some_sim) -> some_log:
-        """Apply the action in a given simulation. Generate a log output."""
-        raise NotImplemented
-        
+    def create_stub(self, target_id: str) -> some_action_stub
+        """Return an action_stub based on agent and target."""
+        raise NotImplemented        
