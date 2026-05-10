@@ -16,6 +16,6 @@ class base_action_stub(some_action):
         """Setup the action stub generator."""
         self.initiator_agent = initiator_agent
     
-    def create_stub(self, target_id: str) -> some_action_stub
+    def create_stub(self, target_id: str) -> some_action_stub:
         """Return an action_stub based on agent and target."""
-        raise NotImplemented        
+        raise NotImplementedError

@@ -19,7 +19,7 @@ class base_action_stub(some_action_stub):
         self.target: str = target
     
     # TODO: Create basic sim type, log type signature
-    def apply_action(self, simulation : some_sim) -> some_log:
+    def apply(self, simulation : some_sim) -> some_log:
         """Apply the action in a given simulation. Generate a log output."""
-        raise NotImplemented
+        raise NotImplementedError
         

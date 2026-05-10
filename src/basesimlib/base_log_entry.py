@@ -6,6 +6,8 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
+from base_masim_types import some_log
+
 class base_log_entry(some_log):
     """Base log for an interaction.""" 
     

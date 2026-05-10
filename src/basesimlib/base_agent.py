@@ -24,7 +24,7 @@ class base_agent(some_agent):
     
     def plan_action(self) -> some_action_stub:
         """Override this function with planning method."""
-        raise NotImplemented
+        raise NotImplementedError
     
     def audit_history(self) -> list[some_log]:
         """Return the history of interactions."""
