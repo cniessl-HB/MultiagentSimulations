@@ -26,6 +26,10 @@ class base_agent(some_agent):
         """Override this function with planning method."""
         raise NotImplementedError
     
+    def add_to_history(self, log_entry: some_log) -> None:
+        """Add to this agent's history."""
+        self.history_list.append[log_entry]
+    
     def audit_history(self) -> list[some_log]:
         """Return the history of interactions."""
         return self.history_list
