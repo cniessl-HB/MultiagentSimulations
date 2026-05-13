@@ -6,6 +6,8 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
+from datetime import datetime
+
 from base_masim_types import some_log
 
 class base_log_entry(some_log):
@@ -14,16 +16,19 @@ class base_log_entry(some_log):
     def __init__(self, 
                  initiator_id: str, 
                  other_id: str, 
-                 step: int, 
+                 step: int,
+                 action_time: datetime
                  action_msg: str) -> None:
         """Initialize the log entry."""
         self.initiator_id: str = initiator_id
         self.other_id: str = other_id
         self.step: int = step
+        self.action_time: datetime = datetime
         self.action_msg: str = action_msg
     
     def __str__(self) -> str:
         """Get output of log entry."""
+        log_str = f"{self.action_time}: "
         log_str = f"{self.initiator_id} -> {self.other_id} "
         log_str = log_str + f"@ {self.step}: "
         return log_str + self.action_msg
