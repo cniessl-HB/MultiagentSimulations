@@ -8,7 +8,7 @@ See LICENSE.txt for usage.
 
 from datetime import datetime, UTC
 
-from base_masim_types import some_action_stub, some_agent, some_sim
+from base_masim_types import some_action_stub, some_agent, some_log, some_sim
 
 # TODO: Inherit basic sim type signature
 class base_simulation(some_sim):
@@ -30,7 +30,7 @@ class base_simulation(some_sim):
         self.end_phase()
         self.sim_step += 1
    
-    def get_step(self) -> int
+    def get_step(self) -> int:
         """Return the current simulation step."""
         return self.sim_step
    

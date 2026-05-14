@@ -17,7 +17,7 @@ class base_log_entry(some_log):
                  initiator_id: str, 
                  other_id: str, 
                  step: int,
-                 action_time: datetime
+                 action_time: datetime,
                  action_msg: str) -> None:
         """Initialize the log entry."""
         self.initiator_id: str = initiator_id
@@ -26,9 +26,12 @@ class base_log_entry(some_log):
         self.action_time: datetime = datetime
         self.action_msg: str = action_msg
     
+    def __json__(self) -> dict:
+        """Dump json formatted version of this entry."""
+        raise NotImplementedError
+    
     def __str__(self) -> str:
-        """Get output of log entry."""
-        log_str = f"{self.action_time}: "
-        log_str = f"{self.initiator_id} -> {self.other_id} "
-        log_str = log_str + f"@ {self.step}: "
+        """Get string output of log entry."""
+        log_str = f"{self.action_time}, @ step {self.step}: "
+        log_str = log_str + f"{self.initiator_id} -> {self.other_id} "
         return log_str + self.action_msg

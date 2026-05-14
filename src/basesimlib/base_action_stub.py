@@ -10,6 +10,8 @@ from datetime import datetime
 
 from base_masim_types import some_action_stub, some_log, some_sim
 
+from base_log_entry import base_log_entry
+
 class base_action_stub(some_action_stub):
     """Base log for an interaction.""" 
     
