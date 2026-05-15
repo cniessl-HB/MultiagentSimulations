@@ -26,9 +26,29 @@ class base_log_entry(some_log):
         self.action_time: datetime = datetime
         self.action_msg: str = action_msg
     
+    def __lt__(self, other: some_log):
+        """Less than comparison for sorting."""
+        if self.step < other.step:
+            return True
+        elif self.step == other.step:
+            return (self.action_time < other.action_time)
+        return False
+    
+    def __eq__(self, other: some_log):
+        """Equality comparison for sorting."""
+        if self.step == other.step:
+            return (self.action_time == other.action_time)
+        return False
+        
     def __json__(self) -> dict:
         """Dump json formatted version of this entry."""
-        raise NotImplementedError
+        ret_dict: dict = {}
+        ret_dict["initiator_id"] = self.initiator_id
+        ret_dict["other_id"] = self.other_id
+        ret_dict["step"] = self.step
+        ret_dict["action_time"] = self.action_time
+        ret_dict["action_msg"] = self.action_msg
+        return ret_dict
     
     def __str__(self) -> str:
         """Get string output of log entry."""
