@@ -16,7 +16,8 @@ class base_simulation(some_sim):
     
     def __init__(self) -> None:
         """Initialize the simulation."""
-        self.agents: dict[some_agent] = {}
+        self.active_agents: dict[some_agent] = {}
+        self.inactive_agaents: dict[some_agent] = {}
         self.sim_step: int = 0
 
     def advance_step(self) -> None:
@@ -28,8 +29,24 @@ class base_simulation(some_sim):
         for action in action_list:
             self.apply_action(action)
         self.end_phase()
+        self.cleanup()
         self.sim_step += 1
-   
+    
+    def add_agent(self, agent_to_add: some_agent) -> None:
+        """Add an agent to the active agents."""
+        raise NotImplementedError
+    
+    def deactivate_agent(self, agent_to_deact: str) -> None:
+        """Move an agent from active agents to inactive."""
+        raise NotImplementedError
+    
+    def cleanup(self) -> None:
+        """Remove deactivated agents from the simulation."""
+        for agent_key in self.agents.keys():
+            target_agent = self.agents[agent_key]
+            if not agent.active:
+                self.deactivate_agent(agent_key)
+
     def get_step(self) -> int:
         """Return the current simulation step."""
         return self.sim_step
