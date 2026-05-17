@@ -14,10 +14,12 @@ from base_masim_types import some_action_stub, some_agent, some_log, some_sim
 class base_simulation(some_sim):
     """Base simulation.""" 
     
-    def __init__(self) -> None:
+    def __init__(self, sim_name: str) -> None:
         """Initialize the simulation."""
         self.active_agents: dict[some_agent] = {}
         self.inactive_agaents: dict[some_agent] = {}
+        self.sim_act_history: list[some_log] = []
+        self.sim_name: str = sim_name
         self.sim_step: int = 0
 
     def advance_step(self) -> None:
@@ -38,7 +40,8 @@ class base_simulation(some_sim):
     
     def deactivate_agent(self, agent_to_deact: str) -> None:
         """Move an agent from active agents to inactive."""
-        raise NotImplementedError
+        target_agent = self.agents.pop(agent_to_deact, None)
+        self.inactive_agents[agent_to_deact] = target_agent
     
     def cleanup(self) -> None:
         """Remove deactivated agents from the simulation."""
