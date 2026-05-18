@@ -38,6 +38,15 @@ class base_simulation(some_sim):
         """Add an agent to the active agents."""
         raise NotImplementedError
     
+    
+    def _gen_deact_history_stub(self, agent_to_deact: some_agent) -> None:
+    	"""Add the move to inactive for an agent in the log."""
+    	raise NotImplementedError
+    
+    def _gen_add_history_stub(self, agent_to_add: some_agent) -> None:
+        """Add the addition of an agent in the log."""
+        raise NotImplementedError
+    
     def deactivate_agent(self, agent_to_deact: str) -> None:
         """Move an agent from active agents to inactive."""
         target_agent = self.agents.pop(agent_to_deact, None)
@@ -71,3 +80,7 @@ class base_simulation(some_sim):
             agent_init.add_to_history(log_stub)
         if agent_other is not None:
             agent_other.add_to_history(log_stub)
+    
+    def dump_full_history_list(self) -> list[some_log_entry]:
+        """Dump the full history of the simulation and its agents."""
+        raise NotImplementedError 
