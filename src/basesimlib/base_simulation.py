@@ -85,4 +85,9 @@ class base_simulation(some_sim):
     
     def dump_full_history_list(self) -> list[some_log_entry]:
         """Dump the full history of the simulation and its agents."""
-        raise NotImplementedError 
+        return_list: list[some_log] = self.sim_act_history
+        active_agent_history: list[some_log] = [log_entry for hist_item in agent.history_list for agent in self.active_agents]
+        inactive_agent_history: list[some_log] = [log_entry for hist_item in agent.history_list for agent in self.inactive_agents]
+        return_list = return_list + active_agent_history + inactive_agent_history
+        
+        return return_list.sort()
