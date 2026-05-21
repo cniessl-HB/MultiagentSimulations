@@ -29,3 +29,13 @@ classifiers = [
 
 [project.urls]
 Repository = "https://github.com/cniessl-HB/MultiagentSimulations"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

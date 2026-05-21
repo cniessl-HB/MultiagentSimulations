@@ -6,7 +6,7 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
-from base_masim_types import some_action, some_action_stub, some_agent, some_log
+from basesimlib.base_masim_types import some_action, some_action_stub, some_agent, some_log
 
 class base_agent(some_agent):
     """Placeholder for base agent.

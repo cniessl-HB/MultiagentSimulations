@@ -8,7 +8,7 @@ See LICENSE.txt for usage.
 
 from datetime import datetime
 
-from base_masim_types import some_action_stub, some_log, some_sim
+from basesimlib.base_masim_types import some_action_stub, some_log, some_sim
 
 from base_log_entry import base_log_entry
 
