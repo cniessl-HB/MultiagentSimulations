@@ -8,7 +8,7 @@ See LICENSE.txt for usage.
 
 from datetime import datetime, UTC
 
-from base_masim_types import some_action_stub, some_agent, some_log, some_sim
+from basesimlib.base_masim_types import some_action_stub, some_agent, some_log, some_sim
 
 # TODO: Inherit basic sim type signature
 class base_simulation(some_sim):
@@ -17,10 +17,13 @@ class base_simulation(some_sim):
     def __init__(self, sim_name: str) -> None:
         """Initialize the simulation."""
         self.active_agents: dict[some_agent] = {}
-        self.inactive_agaents: dict[some_agent] = {}
+        self.inactive_agents: dict[some_agent] = {}
         self.sim_act_history: list[some_log] = []
         self.sim_name: str = sim_name
         self.sim_step: int = 0
+
+    def __len__(self) -> int:
+        return len(self.active_agents) + len(self.inactive_agents)
 
     def advance_step(self) -> None:
         """Perform a timestep in the simulation."""
@@ -36,7 +39,7 @@ class base_simulation(some_sim):
     
     def add_agent(self, agent_to_add: some_agent) -> None:
         """Add an agent to the active agents."""
-        self._sim_act_history.append(self._gen_add_history_stub(agent_to_add))
+        self.sim_act_history.append(self._gen_add_history_stub(agent_to_add))
         # TODO: Add check if the agent already exists with that name
         self.active_agents[agent_to_add.agent_id] = agent_to_add
     
@@ -83,7 +86,7 @@ class base_simulation(some_sim):
         if agent_other is not None:
             agent_other.add_to_history(log_stub)
     
-    def dump_full_history_list(self) -> list[some_log_entry]:
+    def dump_full_history_list(self) -> list[some_log]:
         """Dump the full history of the simulation and its agents."""
         return_list: list[some_log] = self.sim_act_history
         active_agent_history: list[some_log] = [log_entry for hist_item in agent.history_list for agent in self.active_agents]
