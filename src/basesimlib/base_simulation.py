@@ -9,6 +9,7 @@ See LICENSE.txt for usage.
 from datetime import datetime, UTC
 
 from basesimlib.base_masim_types import some_action_stub, some_agent, some_log, some_sim
+from basesimlib.base_log_entry import base_log_entry
 
 # TODO: Inherit basic sim type signature
 class base_simulation(some_sim):
@@ -49,7 +50,15 @@ class base_simulation(some_sim):
     
     def _gen_add_history_stub(self, agent_to_add: some_agent) -> None:
         """Add the addition of an agent in the log."""
-        raise NotImplementedError
+        action_message = "Added {some_agent.agent_id} to Simulation."
+        stub_to_add: some_log = base_log_entry(self.sim_name,
+                                               agent_to_add.agent_id,
+                                               self.sim_step,
+                                               datetime.now(UTC),
+                                               action_message)
+        self.sim_act_history.append(stub_to_add)
+                                               
+                                               
     
     def deactivate_agent(self, agent_to_deact: str) -> None:
         """Move an agent from active agents to inactive."""

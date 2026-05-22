@@ -8,7 +8,7 @@ See LICENSE.txt for usage.
 
 from datetime import datetime
 
-from base_masim_types import some_log
+from basesimlib.base_masim_types import some_log
 
 class base_log_entry(some_log):
     """Base log for an interaction.""" 
