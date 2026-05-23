@@ -1,5 +1,5 @@
 """
-__init__.py - Package and basic type definitions
+base_types.py - Package and basic type definitions
 
 Copyright 2026 - Christopher T Niessl
 
