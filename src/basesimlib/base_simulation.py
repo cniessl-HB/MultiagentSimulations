@@ -8,6 +8,7 @@ See LICENSE.txt for usage.
 
 from datetime import datetime, UTC
 
+from basesimlib.base_exceptions import DuplicateAgentError
 from basesimlib.base_masim_types import some_action_stub, some_agent, some_log, some_sim
 from basesimlib.base_log_entry import base_log_entry
 
@@ -40,8 +41,10 @@ class base_simulation(some_sim):
     
     def add_agent(self, agent_to_add: some_agent) -> None:
         """Add an agent to the active agents."""
-        self.sim_act_history.append(self._gen_add_history_stub(agent_to_add))
-        # TODO: Add check if the agent already exists with that name
+        if agent_to_add.agent_id not in self.active_agents:
+            self.sim_act_history.append(self._gen_add_history_stub(agent_to_add))
+        else:
+            raise DuplicateAgentError
         self.active_agents[agent_to_add.agent_id] = agent_to_add
     
     def _gen_deact_history_stub(self, agent_to_deact: some_agent) -> None:
