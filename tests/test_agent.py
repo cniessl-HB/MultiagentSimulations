@@ -31,3 +31,10 @@ def test_add_agent_same_name() -> None:
     with pytest.raises(DuplicateAgentError):
         test_sim.add_agent(second_agent)
 
+def test_add_agent_diff_name() -> None:
+    first_agent = base_agent("TEST_AGENT")
+    second_agent = base_agent("TEST_AGENT2")
+    test_sim = base_simulation("TEST_SIM")
+    test_sim.add_agent(first_agent)
+    test_sim.add_agent(second_agent)
+    assert len(test_sim) == 2
