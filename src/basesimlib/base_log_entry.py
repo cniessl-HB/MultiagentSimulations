@@ -23,7 +23,7 @@ class base_log_entry(some_log):
         self.initiator_id: str = initiator_id
         self.other_id: str = other_id
         self.step: int = step
-        self.action_time: datetime = datetime
+        self.action_time: datetime = datetime.now()
         self.action_msg: str = action_msg
     
     def __lt__(self, other: some_log):

@@ -35,6 +35,6 @@ class base_agent(some_agent):
         """Add to this agent's history."""
         self.history_list.append[log_entry]
     
-    def audit_history(self) -> list[some_log]:
+    def get_history(self) -> list[some_log]:
         """Return the history of interactions."""
         return self.history_list

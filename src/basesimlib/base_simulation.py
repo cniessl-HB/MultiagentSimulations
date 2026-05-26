@@ -42,7 +42,7 @@ class base_simulation(some_sim):
     def add_agent(self, agent_to_add: some_agent) -> None:
         """Add an agent to the active agents."""
         if agent_to_add.agent_id not in self.active_agents:
-            self.sim_act_history.append(self._gen_add_history_stub(agent_to_add))
+            self._gen_add_history_stub(agent_to_add)
         else:
             raise DuplicateAgentError
         self.active_agents[agent_to_add.agent_id] = agent_to_add
@@ -98,11 +98,10 @@ class base_simulation(some_sim):
         if agent_other is not None:
             agent_other.add_to_history(log_stub)
     
+    def dump_sim_history_list(self) -> list[some_log]:
+        """Dump the history of all currently active agents."""
+        return self.sim_act_history
+
     def dump_full_history_list(self) -> list[some_log]:
-        """Dump the full history of the simulation and its agents."""
-        return_list: list[some_log] = self.sim_act_history
-        active_agent_history: list[some_log] = [log_entry for hist_item in agent.history_list for agent in self.active_agents]
-        inactive_agent_history: list[some_log] = [log_entry for hist_item in agent.history_list for agent in self.inactive_agents]
-        return_list = return_list + active_agent_history + inactive_agent_history
-        
-        return return_list.sort()
+        # TODO: Refactor this based on dump_active and inactive history
+        raise NotImplementedError
