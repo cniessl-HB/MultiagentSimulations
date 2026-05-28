@@ -9,6 +9,7 @@ See LICENSE.txt for usage.
 import pytest
 
 from basesimlib.base_agent import base_agent
+from basesimlib.base_log_entry import base_log_entry
 from basesimlib.base_exceptions import DuplicateAgentError
 from basesimlib.base_simulation import base_simulation
 
@@ -49,7 +50,7 @@ def test_add_agent_diff_name() -> None:
     assert len(test_sim) == 2
 
 def test_get_sim_history() -> None:
-    """Validate history stubs are created when added.
+    """Validate sim history stubs are created when added.
     
     This checks that two history stubs are created, and
     the records are in order.
@@ -64,3 +65,27 @@ def test_get_sim_history() -> None:
     history_list = test_sim.dump_sim_history_list()
     assert len(history_list) == number_to_add
     assert all(history_list[ii] < history_list[ii + 1] for ii in range(0, len(history_list) - 1))
+
+def test_get_agents_histories() -> None:
+    """Validate active agent history stubs are created when added.
+    
+    This checks that a fake history entry for each agent is present
+    and the records are in otder.
+    """
+    number_to_add: int = 100
+    sim_name = "TEST_SIM"
+    test_sim = base_simulation(sim_name)
+    for ii in range(0, number_to_add):
+        agent_name = f"TEST_AGENT_{ii:02d}"
+        new_agent = base_agent(agent_name)
+        fake_log_entry = base_log_entry(sim_name, 
+                                        agent_name,
+                                        test_sim.sim_step,
+                                        f"Added to {sim_name}")
+        new_agent.add_to_history(fake_log_entry)
+        test_sim.add_agent(new_agent)
+    history_list = test_sim.dump_sim_active_agent_history_list()
+    assert len(history_list) == number_to_add
+    assert all(history_list[ii] < history_list[ii + 1] for ii in range(0, len(history_list) - 1))
+
+        

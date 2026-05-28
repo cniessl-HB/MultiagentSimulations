@@ -17,7 +17,6 @@ class base_log_entry(some_log):
                  initiator_id: str, 
                  other_id: str, 
                  step: int,
-                 action_time: datetime,
                  action_msg: str) -> None:
         """Initialize the log entry."""
         self.initiator_id: str = initiator_id

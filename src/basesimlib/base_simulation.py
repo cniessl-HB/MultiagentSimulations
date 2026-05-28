@@ -31,7 +31,7 @@ class base_simulation(some_sim):
         """Perform a timestep in the simulation."""
         action_list: list[some_action_stub] = []
         self.setup_phase()
-        for agent in self.agents:
+        for agent in self.active_agents:
             action_list.append(agent.plan_action())
         for action in action_list:
             self.apply_action(action)
@@ -57,7 +57,6 @@ class base_simulation(some_sim):
         stub_to_add: some_log = base_log_entry(self.sim_name,
                                                agent_to_add.agent_id,
                                                self.sim_step,
-                                               datetime.now(UTC),
                                                action_message)
         self.sim_act_history.append(stub_to_add)
                                                
@@ -65,15 +64,15 @@ class base_simulation(some_sim):
     
     def deactivate_agent(self, agent_to_deact: str) -> None:
         """Move an agent from active agents to inactive."""
-        target_agent = self.agents.pop(agent_to_deact, None)
+        target_agent = self.active_agents.pop(agent_to_deact, None)
         self.sim_act_history.append(self._gen_deact_history_stub(target_agent))
         self.inactive_agents[agent_to_deact] = target_agent
     
     def cleanup(self) -> None:
         """Remove deactivated agents from the simulation."""
-        for agent_key in self.agents.keys():
-            target_agent = self.agents[agent_key]
-            if not agent.active:
+        for agent_key in self.active_agents.keys():
+            target_agent = self.active_agents[agent_key]
+            if not target_agent.active:
                 self.deactivate_agent(agent_key)
 
     def get_step(self) -> int:
@@ -105,8 +104,8 @@ class base_simulation(some_sim):
     def dump_sim_active_agent_history_list(self) -> list[some_log]:
         """Dump the history of all active agents."""
         return_list: list[some_log] = []
-        for agent_name in self.agents:
-            current_agent = self.agents[agent_name]
+        for agent_name in self.active_agents:
+            current_agent = self.active_agents[agent_name]
             return_list.extend(current_agent.get_history())
         return return_list
 
