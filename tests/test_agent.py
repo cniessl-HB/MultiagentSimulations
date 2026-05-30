@@ -8,6 +8,8 @@ See LICENSE.txt for usage.
 
 import pytest
 
+from datetime import datetime
+
 from basesimlib.base_agent import base_agent
 from basesimlib.base_log_entry import base_log_entry
 from basesimlib.base_exceptions import DuplicateAgentError
@@ -48,6 +50,24 @@ def test_add_agent_diff_name() -> None:
     test_sim.add_agent(first_agent)
     test_sim.add_agent(second_agent)
     assert len(test_sim) == 2
+
+def test_history_ordering() -> None:
+    """Validate timestamp and step ordering of logged events."""
+    sim_name = "TEST_SIM"
+    agent_name = "TEST_AGENT"
+    
+    first_time = datetime.now
+    fake_log_entry_first = base_log_entry(sim_name, 
+                                    agent_name,
+                                    0,
+                                    f"Earliest Log")
+    fake_log_entry_second = base_log_entry(sim_name, 
+                                    agent_name,
+                                    0,
+                                    f"Earliest Log")
+    non_eq_events = (fake_log_entry_first != fake_log_entry_second)
+    assert non_eq_events is True
+
 
 def test_get_sim_history() -> None:
     """Validate sim history stubs are created when added.

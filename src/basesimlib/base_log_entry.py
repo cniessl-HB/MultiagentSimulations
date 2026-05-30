@@ -54,3 +54,7 @@ class base_log_entry(some_log):
         log_str = f"{self.action_time}, @ step {self.step}: "
         log_str = log_str + f"{self.initiator_id} -> {self.other_id} "
         return log_str + self.action_msg
+    
+    def adjust_time(self, desired_time: datetime) -> None:
+        """Adjust the timestamp of the log."""
+        self.action_time = desired_time
