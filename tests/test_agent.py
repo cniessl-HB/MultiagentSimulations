@@ -65,8 +65,21 @@ def test_history_ordering() -> None:
                                     agent_name,
                                     0,
                                     f"Earliest Log")
-    non_eq_events = (fake_log_entry_first != fake_log_entry_second)
-    assert non_eq_events is True
+    same_is_equal = (fake_log_entry_first == fake_log_entry_first)
+    two_in_order_not_equal = (fake_log_entry_first != fake_log_entry_second)
+    assert same_is_equal
+    assert two_in_order_not_equal
+    
+    fake_log_entry_first.step = 1
+    first_comes_first = (fake_log_entry_first < fake_log_entry_second)
+    second_comes_first = (fake_log_entry_first > fake_log_entry_second)
+    diff_steps_not_eq = (fake_log_entry_first == fake_log_entry_second)
+    assert first_comes_first is False
+    assert second_comes_first
+    assert diff_steps_not_eq is False
+    
+    
+    
 
 
 def test_get_sim_history() -> None:
