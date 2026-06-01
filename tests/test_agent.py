@@ -51,6 +51,20 @@ def test_add_agent_diff_name() -> None:
     test_sim.add_agent(second_agent)
     assert len(test_sim) == 2
 
+
+def test_deactivate_agent() -> None:
+    """Tests that deactivating an agent moves it to the inactive group."""
+    first_agent = base_agent("TEST_AGENT")
+    second_agent = base_agent("TEST_AGENT2")
+    test_sim = base_simulation("TEST_SIM")
+    test_sim.add_agent(first_agent)
+    test_sim.add_agent(second_agent)
+    test_sim.deactivate_agent("TEST_AGENT")
+    assert len(test_sim) == 2
+    assert len(test_sim.inactive_agents) == 1
+    assert len(test_sim.active_agents) == 1
+
+
 def test_history_ordering() -> None:
     """Validate timestamp and step ordering of logged events."""
     sim_name = "TEST_SIM"
@@ -77,9 +91,6 @@ def test_history_ordering() -> None:
     assert first_comes_first is False
     assert second_comes_first
     assert diff_steps_not_eq is False
-    
-    
-    
 
 
 def test_get_sim_history() -> None:
@@ -98,6 +109,7 @@ def test_get_sim_history() -> None:
     history_list = test_sim.dump_sim_history_list()
     assert len(history_list) == number_to_add
     assert all(history_list[ii] < history_list[ii + 1] for ii in range(0, len(history_list) - 1))
+
 
 def test_get_agents_histories() -> None:
     """Validate active agent history stubs are created when added.
