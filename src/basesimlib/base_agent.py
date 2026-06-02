@@ -29,7 +29,7 @@ class base_agent(some_agent):
     
     def plan_action(self) -> some_action_stub:
         """Override this function with planning method."""
-        raise NotImplementedError
+        pass
     
     def add_to_history(self, log_entry: some_log) -> None:
         """Add to this agent's history."""
