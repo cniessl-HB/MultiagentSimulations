@@ -65,6 +65,10 @@ def test_deactivate_agent() -> None:
     assert len(test_sim.active_agents) == 1
 
 
+def test_deactivate_non_existant_agent() -> None:
+    pass
+
+
 def test_history_ordering() -> None:
     """Validate timestamp and step ordering of logged events."""
     sim_name = "TEST_SIM"
