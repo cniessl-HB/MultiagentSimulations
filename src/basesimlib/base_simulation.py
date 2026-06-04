@@ -8,7 +8,7 @@ See LICENSE.txt for usage.
 
 from datetime import datetime, UTC
 
-from basesimlib.base_exceptions import DuplicateAgentError
+from basesimlib.base_exceptions import AgentNotFoundError, DuplicateAgentError, DeactivateInactiveAgentError
 from basesimlib.base_masim_types import some_action_stub, some_agent, some_log, some_sim
 from basesimlib.base_log_entry import base_log_entry
 
@@ -67,6 +67,12 @@ class base_simulation(some_sim):
 
     def deactivate_agent(self, agent_to_deact: str) -> None:
         """Move an agent from active agents to inactive."""
+        if agent_to_deact in self.inactive_agents:
+            raise DeactivateInactiveAgentError
+        
+        if agent_to_deact not in self.active_agents:
+            raise AgentNotFoundError
+        
         target_agent = self.active_agents.pop(agent_to_deact, None)
         self.sim_act_history.append(self._gen_deact_history_stub(target_agent))
         self.inactive_agents[agent_to_deact] = target_agent
