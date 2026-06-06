@@ -25,18 +25,27 @@ class base_log_entry(some_log):
         self.action_time: datetime = datetime.now()
         self.action_msg: str = action_msg
     
+    def get_step(self) -> int:
+        return self.step
+    
+    def get_action_time(self) -> datetime:
+        return self.action_time
+    
     def __lt__(self, other: some_log):
         """Less than comparison for sorting."""
-        if self.step < other.step:
+        if self.step < other.get_step():
             return True
-        elif self.step == other.step:
-            return (self.action_time < other.action_time)
+        elif self.step == other.get_step():
+            return (self.get_action_time() < other.get_action_time())
         return False
     
-    def __eq__(self, other: some_log):
+    def __eq__(self, other: object):
         """Equality comparison for sorting."""
-        if self.step == other.step:
-            return (self.action_time == other.action_time)
+        if not isinstance(other, some_log):
+            # Type mismatch comparison
+            return False
+        if self.step == other.get_step():
+            return (self.get_action_time() == other.get_action_time())
         return False
         
     def __json__(self) -> dict:

@@ -10,7 +10,7 @@ from datetime import datetime
 
 from basesimlib.base_masim_types import some_action_stub, some_log, some_sim
 
-from base_log_entry import base_log_entry
+from basesimlib.base_log_entry import base_log_entry
 
 class base_action_stub(some_action_stub):
     """Base log for an interaction.""" 
@@ -26,12 +26,11 @@ class base_action_stub(some_action_stub):
         """Modify agents in the simulation and return a string descriptive of the action."""
         raise NotImplementedError
     
-    def apply(self, simulation : some_sim, action_time: datetime) -> some_log:
+    def apply(self, simulation : some_sim) -> some_log:
         """Apply the action in a given simulation. Generate a log output."""
         ret_str = self.do_action(simulation)
         current_step = simulation.get_step()
         return base_log_entry(self.initiator_id, 
                               self.target, 
                               current_step,
-                              action_time,
                               ret_str)

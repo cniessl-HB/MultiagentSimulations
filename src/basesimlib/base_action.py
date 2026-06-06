@@ -6,7 +6,7 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
-from base_masim_types import some_action, some_action_stub, some_agent
+from basesimlib.base_masim_types import some_action, some_action_stub, some_agent
 
 class base_action_stub(some_action):
     """Base log for an interaction.""" 
