@@ -12,7 +12,7 @@ from datetime import datetime
 
 from basesimlib.base_agent import base_agent
 from basesimlib.base_log_entry import base_log_entry
-from basesimlib.base_exceptions import AgentNotFoundError, DuplicateAgentError
+from basesimlib.base_exceptions import AgentNotFoundError, DeactivateInactiveAgentError, DuplicateAgentError
 from basesimlib.base_simulation import base_simulation
 
 def test_create_agent() -> None:
@@ -74,6 +74,15 @@ def test_deactivate_non_existant_agent() -> None:
     with pytest.raises(AgentNotFoundError):
         test_sim.deactivate_agent("TEST_AGENT3")
 
+def test_deactivate_already_deactivated_agent() -> None:
+    first_agent = base_agent("TEST_AGENT")
+    second_agent = base_agent("TEST_AGENT2")
+    test_sim = base_simulation("TEST_SIM")
+    test_sim.add_agent(first_agent)
+    test_sim.add_agent(second_agent)
+    test_sim.deactivate_agent("TEST_AGENT2")
+    with pytest.raises(DeactivateInactiveAgentError):
+        test_sim.deactivate_agent("TEST_AGENT2")
 
 def test_history_ordering() -> None:
     """Validate timestamp and step ordering of logged events."""
