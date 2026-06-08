@@ -27,6 +27,9 @@ class base_agent(some_agent):
         self.possible_actions: dict[str, some_action] = {}
         self.history_list: list[some_log] = []
     
+    def get_id(self) -> str:
+        return self.agent_id
+    
     def plan_action(self) -> some_action_stub:
         """Override this function with planning method."""
         pass
