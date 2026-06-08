@@ -30,9 +30,12 @@ class base_agent(some_agent):
     def get_id(self) -> str:
         return self.agent_id
     
+    def is_active(self) -> bool:
+        return self.active
+    
     def plan_action(self) -> some_action_stub:
         """Override this function with planning method."""
-        pass
+        raise NotImplementedError
     
     def add_to_history(self, log_entry: some_log) -> None:
         """Add to this agent's history."""

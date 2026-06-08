@@ -25,6 +25,12 @@ class base_action_stub(some_action_stub):
     def do_action(self, simulation: some_sim) -> str:
         """Modify agents in the simulation and return a string descriptive of the action."""
         raise NotImplementedError
+
+    def get_initiator_id(self) -> str:
+        return self.initiator_id
+    
+    def get_target_id(self) -> str:
+        return self.target
     
     def apply(self, simulation : some_sim) -> some_log:
         """Apply the action in a given simulation. Generate a log output."""

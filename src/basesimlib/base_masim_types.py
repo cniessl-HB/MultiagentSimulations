@@ -10,22 +10,6 @@ from abc import ABC, abstractmethod
 
 from datetime import datetime
 
-class some_action_stub:
-    pass
-
-class some_action:
-    pass
-
-class some_agent:
-
-    @abstractmethod
-    def get_id(self) -> str:
-        pass
-
-    @abstractmethod
-    def plan_action(self) -> some_action_stub:
-        pass
-
 class some_log(ABC):
 
     @abstractmethod
@@ -42,6 +26,45 @@ class some_log(ABC):
     
     @abstractmethod    
     def __eq__(self, other) -> bool:
+        pass
+
+class some_action_stub:
+    
+    @abstractmethod
+    def apply(self, simulation) -> some_log:
+        pass
+    
+    @abstractmethod
+    def get_initiator_id(self) -> str:
+        pass
+
+    @abstractmethod
+    def get_target_id(self) -> str:
+        pass
+
+class some_action:
+    pass
+
+class some_agent:
+
+    @abstractmethod
+    def get_id(self) -> str:
+        pass
+
+    @abstractmethod
+    def is_active(self) -> bool:
+        pass
+
+    @abstractmethod
+    def plan_action(self) -> some_action_stub:
+        pass
+
+    @abstractmethod
+    def add_to_history(self, log_entry) -> None:
+        pass
+    
+    @abstractmethod
+    def get_history(self) -> list[some_log]:
         pass
 
 class some_sim(ABC):
