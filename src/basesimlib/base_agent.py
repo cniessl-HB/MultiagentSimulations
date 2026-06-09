@@ -8,6 +8,8 @@ See LICENSE.txt for usage.
 
 from basesimlib.base_masim_types import some_action, some_action_stub, some_agent, some_log
 
+from basesimlib.base_action_stub import base_action_stub
+
 class base_agent(some_agent):
     """Placeholder for base agent.
     
@@ -35,7 +37,7 @@ class base_agent(some_agent):
     
     def plan_action(self) -> some_action_stub:
         """Override this function with planning method."""
-        raise NotImplementedError
+        return base_action_stub(self.agent_id, "")
     
     def add_to_history(self, log_entry: some_log) -> None:
         """Add to this agent's history."""

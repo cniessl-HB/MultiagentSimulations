@@ -84,6 +84,15 @@ def test_deactivate_already_deactivated_agent() -> None:
     with pytest.raises(DeactivateInactiveAgentError):
         test_sim.deactivate_agent("TEST_AGENT2")
 
+def test_advance_sim_step() -> None:
+    first_agent = base_agent("TEST_AGENT")
+    second_agent = base_agent("TEST_AGENT2")
+    test_sim = base_simulation("TEST_SIM")
+    test_sim.add_agent(first_agent)
+    test_sim.add_agent(second_agent)
+    test_sim.advance_step()
+    assert test_sim.sim_step == 1
+
 def test_history_ordering() -> None:
     """Validate timestamp and step ordering of logged events."""
     sim_name = "TEST_SIM"

@@ -24,7 +24,8 @@ class base_action_stub(some_action_stub):
     
     def do_action(self, simulation: some_sim) -> str:
         """Modify agents in the simulation and return a string descriptive of the action."""
-        raise NotImplementedError
+        _ = some_sim
+        return "Base action unimplemented. No interaction was taken."
 
     def get_initiator_id(self) -> str:
         return self.initiator_id
