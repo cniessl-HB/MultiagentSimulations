@@ -93,12 +93,21 @@ def test_advance_sim_step() -> None:
     test_sim.advance_step()
     assert test_sim.sim_step == 1
 
+
+def test_catch_invalid_history_comparison() -> None:
+    sim_name = "TEST_SIM"
+    agent_name = "TEST_AGENT"
+    fake_log_entry = base_log_entry(sim_name, 
+                                    agent_name,
+                                    0,
+                                    f"Actual Log")   
+    assert fake_log_entry != sim_name
+
 def test_history_ordering() -> None:
     """Validate timestamp and step ordering of logged events."""
     sim_name = "TEST_SIM"
     agent_name = "TEST_AGENT"
     
-    first_time = datetime.now
     fake_log_entry_first = base_log_entry(sim_name, 
                                     agent_name,
                                     0,
