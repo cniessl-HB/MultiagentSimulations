@@ -11,10 +11,38 @@ import pytest
 from datetime import datetime
 
 from basesimlib.base_agent import base_agent
+from basesimlib.base_masim_types import some_log
 from basesimlib.base_log_entry import base_log_entry
 from basesimlib.base_exceptions import AgentNotFoundError, DeactivateInactiveAgentError, DuplicateAgentError
 from basesimlib.base_simulation import base_simulation
 
+def test_incomplete_masim_log_impl() -> None:
+    class incomplete_log_entry(some_log):
+        pass
+    
+    with pytest.raises(TypeError, match="Can't instantiate abstract class"):
+        test_log = incomplete_log_entry()
+    
+    class fake_log_entry(some_log):
+        
+        def get_step(self) -> int:
+            return super().get_step()
+        
+        def get_action_time(self) -> datetime:
+            return super().get_action_time()
+        
+        def __lt__(self, other) -> bool:
+            return super().__lt__(other)
+    
+        def __eq__(self, other) -> bool:
+            return super().__eq__(other)
+    
+    test_log2 = fake_log_entry()
+    assert test_log2.get_step() is None
+    assert test_log2.get_action_time() is None
+    assert test_log2.__lt__(test_log2) is None
+    assert test_log2.__eq__(test_log2) is None
+ 
 def test_create_agent() -> None:
     """Testes the agent name is passed properly to a created agent."""
     new_agent = base_agent("ABC")

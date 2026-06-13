@@ -28,7 +28,7 @@ class some_log(ABC):
     def __eq__(self, other) -> bool:
         pass
 
-class some_action_stub:
+class some_action_stub(ABC):
     
     @abstractmethod
     def apply(self, simulation) -> some_log:
@@ -42,10 +42,10 @@ class some_action_stub:
     def get_target_id(self) -> str:
         pass
 
-class some_action:
+class some_action(ABC):
     pass
 
-class some_agent:
+class some_agent(ABC):
 
     @abstractmethod
     def get_id(self) -> str:
