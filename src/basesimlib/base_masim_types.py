@@ -11,36 +11,42 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 
 class some_log(ABC):
+    """Type definition for log stubs.
+    
+       Do not user super to access these functions."""
 
     @abstractmethod
     def get_step(self) -> int:
-        pass
+        raise NotImplementedError
 
     @abstractmethod    
     def get_action_time(self) -> datetime:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def __lt__(self, other) -> bool:
-        pass
+        raise NotImplementedError
     
     @abstractmethod    
     def __eq__(self, other) -> bool:
-        pass
+        raise NotImplementedError
 
 class some_action_stub(ABC):
+    """Type definition for log stubs.
+    
+       Do not user super to access these functions."""
     
     @abstractmethod
     def apply(self, simulation) -> some_log:
-        pass
+        raise NotImplementedError
     
     @abstractmethod
     def get_initiator_id(self) -> str:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def get_target_id(self) -> str:
-        pass
+        raise NotImplementedError
 
 class some_action(ABC):
     pass
