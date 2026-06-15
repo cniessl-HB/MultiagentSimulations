@@ -49,11 +49,33 @@ def test_incomplete_masim_log_impl() -> None:
         test_log2.__eq__(test_log2)
 
 def test_incomplete_masim_action_impl() -> None:
+    
     class incomplete_action_stub(some_action_stub):
         pass
     
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
-        test_log = incomplete_action_stub()
+        test_action = incomplete_action_stub()
+
+    class fake_action_stub(some_action_stub):
+        
+        def apply(self, simulation) -> some_log:
+            return super().apply(simulation)
+    
+        def get_initiator_id(self) -> str:
+            return super().get_initiator_id()
+
+        def get_target_id(self) -> str:
+            return super().get_target_id()
+
+    test_action2 = fake_action_stub()
+    
+    with pytest.raises(NotImplementedError):
+        test_action2.apply(None)
+    with pytest.raises(NotImplementedError):
+        test_action2.get_initiator_id()
+    with pytest.raises(NotImplementedError):
+        test_action2.get_target_id()
+
 
 def test_create_agent() -> None:
     """Testes the agent name is passed properly to a created agent."""
