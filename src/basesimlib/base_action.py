@@ -8,7 +8,7 @@ See LICENSE.txt for usage.
 
 from basesimlib.base_masim_types import some_action, some_action_stub, some_agent
 
-class base_action_stub(some_action):
+class base_action(some_action):
     """Base log for an interaction.""" 
     
     def __init__(self, 

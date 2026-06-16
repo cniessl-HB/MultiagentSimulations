@@ -32,7 +32,7 @@ class some_log(ABC):
         raise NotImplementedError
 
 class some_action_stub(ABC):
-    """Type definition for log stubs.
+    """Type definition for action stubs.
     
        Do not user super to access these functions."""
     
