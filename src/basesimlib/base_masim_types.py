@@ -55,26 +55,26 @@ class some_agent(ABC):
 
     @abstractmethod
     def get_id(self) -> str:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def is_active(self) -> bool:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def plan_action(self) -> some_action_stub:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def add_to_history(self, log_entry) -> None:
-        pass
+        raise NotImplementedError
     
     @abstractmethod
     def get_history(self) -> list[some_log]:
-        pass
+        raise NotImplementedError
 
 class some_sim(ABC):
 
     @abstractmethod
     def get_step(self) -> int:
-        pass
+        raise NotImplementedError
