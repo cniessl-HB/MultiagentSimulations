@@ -84,3 +84,13 @@ def test_incomplete_masim_action_impl() -> None:
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
         test_action = incomplete_action()
 
+    class fake_action(some_action):
+        
+        def create_stub(self, target_id: str) -> some_action_stub:
+            return super().create_stub(target_id)
+
+    test_action = fake_action()
+
+    with pytest.raises(NotImplementedError):
+        test_action.create_stub("")
+
