@@ -1,5 +1,5 @@
 """
-base_agent.py - Common interface class for individual agents
+test_typing.py - Common interface class for individual agents
 
 Copyright 2026 - Christopher T Niessl
 
@@ -10,11 +10,7 @@ import pytest
 
 from datetime import datetime
 
-from basesimlib.base_agent import base_agent
-from basesimlib.base_masim_types import some_log, some_action, some_action_stub
-from basesimlib.base_log_entry import base_log_entry
-from basesimlib.base_exceptions import AgentNotFoundError, DeactivateInactiveAgentError, DuplicateAgentError
-from basesimlib.base_simulation import base_simulation
+from basesimlib.base_masim_types import some_log, some_action, some_action_stub, some_agent
 
 def test_incomplete_masim_log_impl() -> None:
     class incomplete_log_entry(some_log):
@@ -94,3 +90,11 @@ def test_incomplete_masim_action_impl() -> None:
     with pytest.raises(NotImplementedError):
         test_action.create_stub("")
 
+def test_incomplete_agent_impl() -> None:
+
+    class incomplete_agent(some_agent):
+        pass
+
+    with pytest.raises(TypeError, match="Can't instantiate abstract class"):
+        test_agent = incomplete_agent()       
+        
