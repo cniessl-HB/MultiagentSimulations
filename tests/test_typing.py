@@ -96,5 +96,14 @@ def test_incomplete_agent_impl() -> None:
         pass
 
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
-        test_agent = incomplete_agent()       
+        test_agent = incomplete_agent()
+    
+    class fake_agent(some_agent):
+    
+        def get_id(self) -> str:
+            return super().get_id()
+    
+    test_agent = fake_agent()
+    with pytest.raises(NotImplementedError):
+        test_agent.get_id()
         
