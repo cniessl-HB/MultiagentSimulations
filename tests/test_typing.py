@@ -102,6 +102,18 @@ def test_incomplete_agent_impl() -> None:
     
         def get_id(self) -> str:
             return super().get_id()
+
+        def is_active(self) -> bool:
+            return super().is_active
+
+        def plan_action(self) -> some_action_stub:
+            return super().plan_action()
+
+        def add_to_history(self, log_entry) -> None:
+            return super(log_entry).add_to_history()
+    
+        def get_history(self) -> list[some_log]:
+            return super().get_history()
     
     test_agent = fake_agent()
     with pytest.raises(NotImplementedError):
