@@ -12,26 +12,25 @@ from datetime import datetime
 
 from basesimlib.base_masim_types import some_log, some_action, some_action_stub, some_agent
 
+class fake_log_entry(some_log):
+    def get_step(self) -> int:
+        return super().get_step()
+        
+    def get_action_time(self) -> datetime:
+        return super().get_action_time()
+        
+    def __lt__(self, other) -> bool:
+        return super().__lt__(other)
+    
+    def __eq__(self, other) -> bool:
+        return super().__eq__(other)
+
 def test_incomplete_masim_log_impl() -> None:
     class incomplete_log_entry(some_log):
         pass
     
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
         test_log = incomplete_log_entry()
-    
-    class fake_log_entry(some_log):
-        
-        def get_step(self) -> int:
-            return super().get_step()
-        
-        def get_action_time(self) -> datetime:
-            return super().get_action_time()
-        
-        def __lt__(self, other) -> bool:
-            return super().__lt__(other)
-    
-        def __eq__(self, other) -> bool:
-            return super().__eq__(other)
     
     test_log2 = fake_log_entry()
     
@@ -104,13 +103,13 @@ def test_incomplete_agent_impl() -> None:
             return super().get_id()
 
         def is_active(self) -> bool:
-            return super().is_active
+            return super().is_active()
 
         def plan_action(self) -> some_action_stub:
             return super().plan_action()
 
         def add_to_history(self, log_entry) -> None:
-            return super(log_entry).add_to_history()
+            return super().add_to_history(log_entry)
     
         def get_history(self) -> list[some_log]:
             return super().get_history()
@@ -118,4 +117,16 @@ def test_incomplete_agent_impl() -> None:
     test_agent = fake_agent()
     with pytest.raises(NotImplementedError):
         test_agent.get_id()
+    
+    with pytest.raises(NotImplementedError):
+        test_agent.is_active()
+    
+    with pytest.raises(NotImplementedError):
+        test_agent.plan_action()
+    
+    with pytest.raises(NotImplementedError):
+        test_agent.add_to_history(fake_log_entry())
+    
+    with pytest.raises(NotImplementedError):
+        test_agent.get_history()
         
