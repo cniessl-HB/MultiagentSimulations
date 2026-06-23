@@ -129,4 +129,11 @@ def test_incomplete_agent_impl() -> None:
     
     with pytest.raises(NotImplementedError):
         test_agent.get_history()
-        
+
+def test_incomplete_sim_impl() -> None:
+
+    class incomplete_sim(some_sim):
+        pass
+
+    with pytest.raises(TypeError, match="Can't instantiate abstract class"):
+        test_sim = incomplete_sim()       
