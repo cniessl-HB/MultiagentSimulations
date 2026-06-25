@@ -10,7 +10,7 @@ import pytest
 
 from datetime import datetime
 
-from basesimlib.base_masim_types import some_log, some_action, some_action_stub, some_agent
+from basesimlib.base_masim_types import some_log, some_action, some_action_stub, some_agent, some_sim
 
 class fake_log_entry(some_log):
     def get_step(self) -> int:
