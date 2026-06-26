@@ -25,6 +25,34 @@ class fake_log_entry(some_log):
     def __eq__(self, other) -> bool:
         return super().__eq__(other)
 
+class fake_action_stub(some_action_stub):
+        
+    def apply(self, simulation) -> some_log:
+        return super().apply(simulation)
+    
+    def get_initiator_id(self) -> str:
+        return super().get_initiator_id()
+
+    def get_target_id(self) -> str:
+        return super().get_target_id()
+
+class fake_agent(some_agent):
+    
+    def get_id(self) -> str:
+        return super().get_id()
+
+    def is_active(self) -> bool:
+        return super().is_active()
+
+    def plan_action(self) -> some_action_stub:
+        return super().plan_action()
+
+    def add_to_history(self, log_entry) -> None:
+        return super().add_to_history(log_entry)
+    
+    def get_history(self) -> list[some_log]:
+        return super().get_history()
+
 def test_incomplete_masim_log_impl() -> None:
     class incomplete_log_entry(some_log):
         pass
@@ -50,17 +78,6 @@ def test_incomplete_masim_action_stub_impl() -> None:
     
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
         test_action = incomplete_action_stub()
-
-    class fake_action_stub(some_action_stub):
-        
-        def apply(self, simulation) -> some_log:
-            return super().apply(simulation)
-    
-        def get_initiator_id(self) -> str:
-            return super().get_initiator_id()
-
-        def get_target_id(self) -> str:
-            return super().get_target_id()
 
     test_action2 = fake_action_stub()
     
@@ -96,23 +113,6 @@ def test_incomplete_agent_impl() -> None:
 
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
         test_agent = incomplete_agent()
-    
-    class fake_agent(some_agent):
-    
-        def get_id(self) -> str:
-            return super().get_id()
-
-        def is_active(self) -> bool:
-            return super().is_active()
-
-        def plan_action(self) -> some_action_stub:
-            return super().plan_action()
-
-        def add_to_history(self, log_entry) -> None:
-            return super().add_to_history(log_entry)
-    
-        def get_history(self) -> list[some_log]:
-            return super().get_history()
     
     test_agent = fake_agent()
     with pytest.raises(NotImplementedError):
