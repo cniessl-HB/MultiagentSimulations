@@ -136,4 +136,14 @@ def test_incomplete_sim_impl() -> None:
         pass
 
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
-        test_sim = incomplete_sim()       
+        test_sim = incomplete_sim()     
+        
+    class fake_sim(some_sim):
+    
+        def get_step(self) -> int:
+            return super().get_step()
+    
+    test_sim = fake_sim()
+    with pytest.raises(NotImplementedError):
+        test_sim.get_step()
+
