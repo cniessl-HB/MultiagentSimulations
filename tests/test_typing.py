@@ -36,6 +36,11 @@ class fake_action_stub(some_action_stub):
     def get_target_id(self) -> str:
         return super().get_target_id()
 
+class fake_action(some_action):
+        
+    def create_stub(self, target_id: str) -> some_action_stub:
+        return super().create_stub(target_id)
+
 class fake_agent(some_agent):
     
     def get_id(self) -> str:
@@ -52,6 +57,11 @@ class fake_agent(some_agent):
     
     def get_history(self) -> list[some_log]:
         return super().get_history()
+
+class fake_sim(some_sim):
+    
+    def get_step(self) -> int:
+        return super().get_step()
 
 def test_incomplete_masim_log_impl() -> None:
     class incomplete_log_entry(some_log):
@@ -96,11 +106,6 @@ def test_incomplete_masim_action_impl() -> None:
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
         test_action = incomplete_action()
 
-    class fake_action(some_action):
-        
-        def create_stub(self, target_id: str) -> some_action_stub:
-            return super().create_stub(target_id)
-
     test_action = fake_action()
 
     with pytest.raises(NotImplementedError):
@@ -137,11 +142,6 @@ def test_incomplete_sim_impl() -> None:
 
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
         test_sim = incomplete_sim()     
-        
-    class fake_sim(some_sim):
-    
-        def get_step(self) -> int:
-            return super().get_step()
     
     test_sim = fake_sim()
     with pytest.raises(NotImplementedError):
