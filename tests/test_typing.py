@@ -63,14 +63,16 @@ class fake_sim(some_sim):
     def get_step(self) -> int:
         return super().get_step()
 
-def test_incomplete_masim_log_impl() -> None:
+def test_unimpl_log_entry() -> None:
+
     class incomplete_log_entry(some_log):
         pass
     
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
         test_log = incomplete_log_entry()
-    
-    test_log2 = fake_log_entry()
+        
+def test_incomplete_log_entry_impl() -> None:
+    test_log = fake_log_entry()
     
     with pytest.raises(NotImplementedError):
         test_log2.get_step()
