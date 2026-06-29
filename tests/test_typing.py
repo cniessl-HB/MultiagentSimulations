@@ -83,15 +83,16 @@ def test_incomplete_log_entry_impl() -> None:
     with pytest.raises(NotImplementedError):
         test_log2.__eq__(test_log2)
 
-def test_incomplete_masim_action_stub_impl() -> None:
-    
+def test_unimpl_action_stub() -> None:
     class incomplete_action_stub(some_action_stub):
         pass
     
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
         test_action = incomplete_action_stub()
 
-    test_action2 = fake_action_stub()
+
+def test_incomplete_masim_action_stub_impl() -> None:
+    test_action = fake_action_stub()
     
     with pytest.raises(NotImplementedError):
         test_action2.apply(None)
