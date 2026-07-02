@@ -69,26 +69,26 @@ def test_unimpl_log_entry() -> None:
         pass
     
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
-        test_log = incomplete_log_entry()
+        _ = incomplete_log_entry()
         
 def test_incomplete_log_entry_impl() -> None:
     test_log = fake_log_entry()
     
     with pytest.raises(NotImplementedError):
-        test_log2.get_step()
+        test_log.get_step()
     with pytest.raises(NotImplementedError):
-        test_log2.get_action_time()
+        test_log.get_action_time()
     with pytest.raises(NotImplementedError):
-        test_log2.__lt__(test_log2)
+        test_log.__lt__(test_log2)
     with pytest.raises(NotImplementedError):
-        test_log2.__eq__(test_log2)
+        test_log.__eq__(test_log2)
 
 def test_unimpl_action_stub() -> None:
     class incomplete_action_stub(some_action_stub):
         pass
     
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
-        test_action = incomplete_action_stub()
+        _ = incomplete_action_stub()
 
 
 def test_incomplete_masim_action_stub_impl() -> None:
@@ -96,18 +96,18 @@ def test_incomplete_masim_action_stub_impl() -> None:
     test_action = fake_action_stub()
     
     with pytest.raises(NotImplementedError):
-        test_action2.apply(None)
+        test_action.apply(None)
     with pytest.raises(NotImplementedError):
-        test_action2.get_initiator_id()
+        test_action.get_initiator_id()
     with pytest.raises(NotImplementedError):
-        test_action2.get_target_id()
+        test_action.get_target_id()
 
 def test_unimpl_action() -> None:
     class incomplete_action(some_action):
         pass
     
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
-        test_action = incomplete_action()
+        _ = incomplete_action()
 
 def test_incomplete_masim_action_impl() -> None:    
     test_action = fake_action()
@@ -120,7 +120,7 @@ def test_unimpl_agent() -> None:
         pass
 
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
-        test_agent = incomplete_agent()
+        _ = incomplete_agent()
 
 
 def test_incomplete_agent_impl() -> None:
@@ -142,14 +142,15 @@ def test_incomplete_agent_impl() -> None:
         test_agent.get_history()
 
 
-def test_incomplete_sim_impl() -> None:
-
+def test_unimpl_sim() -> None:
     class incomplete_sim(some_sim):
         pass
 
     with pytest.raises(TypeError, match="Can't instantiate abstract class"):
-        test_sim = incomplete_sim()     
-    
+        _ = incomplete_sim()
+
+
+def test_incomplete_sim_impl() -> None:
     test_sim = fake_sim()
     with pytest.raises(NotImplementedError):
         test_sim.get_step()
