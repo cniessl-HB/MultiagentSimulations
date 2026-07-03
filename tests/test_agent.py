@@ -8,10 +8,7 @@ See LICENSE.txt for usage.
 
 import pytest
 
-from datetime import datetime
-
 from basesimlib.base_agent import base_agent
-from basesimlib.base_masim_types import some_log, some_action, some_action_stub
 from basesimlib.base_log_entry import base_log_entry
 from basesimlib.base_exceptions import AgentNotFoundError, DeactivateInactiveAgentError, DuplicateAgentError
 from basesimlib.base_simulation import base_simulation
@@ -21,6 +18,7 @@ def test_create_agent() -> None:
     new_agent = base_agent("ABC")
     assert new_agent.agent_id == "ABC"
 
+
 def test_add_agent() -> None:
     """Tests that an agent can be added properly to a sim."""
     first_agent = base_agent("TEST_AGENT")
@@ -28,6 +26,7 @@ def test_add_agent() -> None:
     assert len(test_sim) == 0
     test_sim.add_agent(first_agent)
     assert len(test_sim) == 1
+
 
 def test_add_agent_same_name() -> None:
     """Tests that trying to add an agent with the same name.
@@ -101,8 +100,9 @@ def test_catch_invalid_history_comparison() -> None:
     fake_log_entry = base_log_entry(sim_name, 
                                     agent_name,
                                     0,
-                                    f"Actual Log")   
+                                    "Actual Log")   
     assert fake_log_entry != sim_name
+
 
 def test_history_ordering() -> None:
     """Validate timestamp and step ordering of logged events."""
@@ -112,11 +112,11 @@ def test_history_ordering() -> None:
     fake_log_entry_first = base_log_entry(sim_name, 
                                     agent_name,
                                     0,
-                                    f"Earliest Log")
+                                    "Earliest Log")
     fake_log_entry_second = base_log_entry(sim_name, 
                                     agent_name,
                                     0,
-                                    f"Earliest Log")
+                                    "Earliest Log")
     same_is_equal = (fake_log_entry_first == fake_log_entry_first)
     two_in_order_not_equal = (fake_log_entry_first != fake_log_entry_second)
     assert same_is_equal

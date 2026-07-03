@@ -6,13 +6,10 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
-from datetime import datetime, UTC
-
 from basesimlib.base_exceptions import AgentAssignedNoneError, AgentNotFoundError, DuplicateAgentError, DeactivateInactiveAgentError
 from basesimlib.base_masim_types import some_action_stub, some_agent, some_log, some_sim
 from basesimlib.base_log_entry import base_log_entry
 
-# TODO: Inherit basic sim type signature
 class base_simulation(some_sim):
     """Base simulation.""" 
     

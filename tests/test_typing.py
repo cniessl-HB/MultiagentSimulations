@@ -79,9 +79,9 @@ def test_incomplete_log_entry_impl() -> None:
     with pytest.raises(NotImplementedError):
         test_log.get_action_time()
     with pytest.raises(NotImplementedError):
-        test_log.__lt__(test_log2)
+        test_log.__lt__(test_log)
     with pytest.raises(NotImplementedError):
-        test_log.__eq__(test_log2)
+        test_log.__eq__(test_log)
 
 def test_unimpl_action_stub() -> None:
     class incomplete_action_stub(some_action_stub):
