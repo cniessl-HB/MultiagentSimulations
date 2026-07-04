@@ -19,7 +19,7 @@ def test_create_agent() -> None:
     assert new_agent.agent_id == "ABC"
 
 
-def test_add_agent() -> None:
+def test_sim_add_agent() -> None:
     """Tests that an agent can be added properly to a sim."""
     first_agent = base_agent("TEST_AGENT")
     test_sim = base_simulation("TEST_SIM")
@@ -28,7 +28,7 @@ def test_add_agent() -> None:
     assert len(test_sim) == 1
 
 
-def test_add_agent_same_name() -> None:
+def test_sim_add_agent_same_name() -> None:
     """Tests that trying to add an agent with the same name.
     
     This should raise the DuplicateAgentError."""
@@ -39,7 +39,7 @@ def test_add_agent_same_name() -> None:
     with pytest.raises(DuplicateAgentError):
         test_sim.add_agent(second_agent)
 
-def test_add_agent_diff_name() -> None:
+def test_sim_add_agent_diff_name() -> None:
     """Tests that adding an agent with a different name in a sim.
     
     This checks the number of agents in the sim is 2 after 2 additions."""
@@ -52,7 +52,7 @@ def test_add_agent_diff_name() -> None:
     assert len(test_sim) == 2
 
 
-def test_deactivate_agent() -> None:
+def test_sim_deactivate_agent() -> None:
     """Tests that deactivating an agent moves it to the inactive group."""
     first_agent = base_agent("TEST_AGENT")
     second_agent = base_agent("TEST_AGENT2")
@@ -65,7 +65,7 @@ def test_deactivate_agent() -> None:
     assert len(test_sim.active_agents) == 1
 
 
-def test_deactivate_non_existant_agent() -> None:
+def test_sim_deactivate_non_existant_agent() -> None:
     first_agent = base_agent("TEST_AGENT")
     second_agent = base_agent("TEST_AGENT2")
     test_sim = base_simulation("TEST_SIM")
@@ -74,7 +74,7 @@ def test_deactivate_non_existant_agent() -> None:
     with pytest.raises(AgentNotFoundError):
         test_sim.deactivate_agent("TEST_AGENT3")
 
-def test_deactivate_already_deactivated_agent() -> None:
+def test_sim_deactivate_already_deactivated_agent() -> None:
     first_agent = base_agent("TEST_AGENT")
     second_agent = base_agent("TEST_AGENT2")
     test_sim = base_simulation("TEST_SIM")
@@ -84,7 +84,7 @@ def test_deactivate_already_deactivated_agent() -> None:
     with pytest.raises(DeactivateInactiveAgentError):
         test_sim.deactivate_agent("TEST_AGENT2")
 
-def test_advance_sim_step() -> None:
+def test_sim_advance_step() -> None:
     first_agent = base_agent("TEST_AGENT")
     second_agent = base_agent("TEST_AGENT2")
     test_sim = base_simulation("TEST_SIM")
@@ -94,7 +94,7 @@ def test_advance_sim_step() -> None:
     assert test_sim.sim_step == 1
 
 
-def test_catch_invalid_history_comparison() -> None:
+def test_history_invalid_comparison() -> None:
     sim_name = "TEST_SIM"
     agent_name = "TEST_AGENT"
     fake_log_entry = base_log_entry(sim_name, 
@@ -104,8 +104,10 @@ def test_catch_invalid_history_comparison() -> None:
     assert fake_log_entry != sim_name
 
 
-def test_history_ordering() -> None:
-    """Validate timestamp and step ordering of logged events."""
+def test_history_same_step_ordering() -> None:
+    """Validate timestamp and step ordering of logged events.
+    
+    Events share the same step in the simulation."""
     sim_name = "TEST_SIM"
     agent_name = "TEST_AGENT"
     
@@ -121,6 +123,20 @@ def test_history_ordering() -> None:
     two_in_order_not_equal = (fake_log_entry_first != fake_log_entry_second)
     assert same_is_equal
     assert two_in_order_not_equal
+
+def test_history_ordering() -> None:
+    """Validate timestamp and step ordering of logged events."""
+    sim_name = "TEST_SIM"
+    agent_name = "TEST_AGENT"
+    
+    fake_log_entry_first = base_log_entry(sim_name, 
+                                    agent_name,
+                                    0,
+                                    "Earliest Log")
+    fake_log_entry_second = base_log_entry(sim_name, 
+                                    agent_name,
+                                    0,
+                                    "Earliest Log")
     
     fake_log_entry_first.step = 1
     first_comes_first = (fake_log_entry_first < fake_log_entry_second)
@@ -130,6 +146,10 @@ def test_history_ordering() -> None:
     assert second_comes_first
     assert diff_steps_not_eq is False
 
+
+def test_history_ordering_sync() -> None:
+    """Validate timestamp and step ordering of logged events."""
+    pass
 
 def test_get_sim_history() -> None:
     """Validate sim history stubs are created when added.

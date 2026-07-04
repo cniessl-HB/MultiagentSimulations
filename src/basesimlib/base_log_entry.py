@@ -64,6 +64,6 @@ class base_log_entry(some_log):
         log_str = log_str + f"{self.initiator_id} -> {self.other_id} "
         return log_str + self.action_msg
     
-    def adjust_time(self, desired_time: datetime) -> None:
-        """Adjust the timestamp of the log."""
-        self.action_time = desired_time
+    def synchronize_to_event(self, sync_event: some_log) -> None:
+        """Adjust the timestamp of the log to other event."""
+        self.action_time = sync_event.get_action_time()
