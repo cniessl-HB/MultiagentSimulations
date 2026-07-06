@@ -149,7 +149,22 @@ def test_history_ordering() -> None:
 
 def test_history_ordering_sync() -> None:
     """Validate timestamp and step ordering of logged events."""
-    pass
+    sim_name = "TEST_SIM"
+    agent_name = "TEST_AGENT"    
+    fake_log_entry_first = base_log_entry(sim_name, 
+                                    agent_name,
+                                    0,
+                                    "Earliest Log")
+    fake_log_entry_second = base_log_entry(sim_name, 
+                                    agent_name,
+                                    0,
+                                    "Earliest Log")
+    first_comes_first = (fake_log_entry_first < fake_log_entry_second)
+    assert first_comes_first is True
+    fake_log_entry_first.synchronize_to_event(fake_log_entry_second)
+    first_comes_first = (fake_log_entry_first < fake_log_entry_second)
+    assert first_comes_first is False
+    assert fake_log_entry_first == fake_log_entry_second
 
 def test_get_sim_history() -> None:
     """Validate sim history stubs are created when added.
