@@ -166,15 +166,16 @@ def test_history_ordering_sync() -> None:
     assert first_comes_first is False
     assert fake_log_entry_first == fake_log_entry_second
 
-def test_get_sim_history() -> None:
-    """Validate sim history stubs are created when added.
+def test_sim_get_history_agents_added() -> None:
+    """Validate sim history stubs are created when agents are added.
     
     This checks that two history stubs are created, and
     the records are in order.
     
     """
     number_to_add: int = 100
-    test_sim = base_simulation("TEST_SIM")
+    sim_name = "TEST_SIM"
+    test_sim = base_simulation(sim_name)
     for ii in range(0, number_to_add):
         agent_name = f"TEST_AGENT_{ii:02d}"
         new_agent = base_agent(agent_name)
@@ -184,7 +185,7 @@ def test_get_sim_history() -> None:
     assert all(history_list[ii] < history_list[ii + 1] for ii in range(0, len(history_list) - 1))
 
 
-def test_get_agents_histories() -> None:
+def test_sim_get_history_active_agents() -> None:
     """Validate active agent history stubs are created when added.
     
     This checks that a fake history entry for each agent is present
