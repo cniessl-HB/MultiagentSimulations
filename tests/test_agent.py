@@ -10,7 +10,7 @@ import pytest
 
 from basesimlib.base_agent import base_agent
 from basesimlib.base_log_entry import base_log_entry
-from basesimlib.base_exceptions import AgentNotFoundError, DeactivateInactiveAgentError, DuplicateAgentError
+from basesimlib.base_exceptions import AgentNotFoundError, DeactivateInactiveAgentError, DuplicateAgentError, AgentAssignedNoneError
 from basesimlib.base_simulation import base_simulation
 
 def test_create_agent() -> None:
@@ -83,6 +83,14 @@ def test_sim_deactivate_already_deactivated_agent() -> None:
     test_sim.deactivate_agent("TEST_AGENT2")
     with pytest.raises(DeactivateInactiveAgentError):
         test_sim.deactivate_agent("TEST_AGENT2")
+
+def test_sim_catch_none_assigned() -> None:
+    first_agent = base_agent("TEST_AGENT")
+    test_sim = base_simulation("TEST_SIM")
+    test_sim.add_agent(first_agent)
+    test_sim.active_agents["TEST_AGENT"] = None
+    with pytest.raises(AgentAssignedNoneError):
+        test_sim.deactivate_agent("TEST_AGENT")
 
 def test_sim_advance_step() -> None:
     first_agent = base_agent("TEST_AGENT")
