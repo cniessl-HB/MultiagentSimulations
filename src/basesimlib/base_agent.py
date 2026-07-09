@@ -35,6 +35,9 @@ class base_agent(some_agent):
     def is_active(self) -> bool:
         return self.active
     
+    def set_active(self, active_val: bool) -> None:
+        self.active = active_val
+    
     def plan_action(self) -> some_action_stub:
         """Override this function with planning method."""
         return base_action_stub(self.agent_id, "")

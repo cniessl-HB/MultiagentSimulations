@@ -74,6 +74,7 @@ def test_sim_deactivate_non_existant_agent() -> None:
     with pytest.raises(AgentNotFoundError):
         test_sim.deactivate_agent("TEST_AGENT3")
 
+
 def test_sim_deactivate_already_deactivated_agent() -> None:
     first_agent = base_agent("TEST_AGENT")
     second_agent = base_agent("TEST_AGENT2")
@@ -84,6 +85,7 @@ def test_sim_deactivate_already_deactivated_agent() -> None:
     with pytest.raises(DeactivateInactiveAgentError):
         test_sim.deactivate_agent("TEST_AGENT2")
 
+
 def test_sim_catch_none_assigned() -> None:
     first_agent = base_agent("TEST_AGENT")
     test_sim = base_simulation("TEST_SIM")
@@ -91,6 +93,18 @@ def test_sim_catch_none_assigned() -> None:
     test_sim.active_agents["TEST_AGENT"] = None
     with pytest.raises(AgentAssignedNoneError):
         test_sim.deactivate_agent("TEST_AGENT")
+
+
+def test_sim_cleanup_inactive_agents() -> None:
+    first_agent = base_agent("TEST_AGENT")
+    second_agent = base_agent("TEST_AGENT2")
+    test_sim = base_simulation("TEST_SIM")
+    test_sim.add_agent(first_agent)
+    test_sim.add_agent(second_agent)  
+    first_agent.set_active(False)
+    second_agent.set_active(False)
+    test_sim.cleanup()
+    assert len(test_sim.active_agents) == 0
 
 def test_sim_advance_step() -> None:
     first_agent = base_agent("TEST_AGENT")

@@ -66,6 +66,10 @@ class some_agent(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def set_active(self, active_val: bool) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
     def plan_action(self) -> some_action_stub:
         raise NotImplementedError
 
