@@ -80,10 +80,13 @@ class base_simulation(some_sim):
     
     def cleanup(self) -> None:
         """Remove deactivated agents from the simulation."""
+        selected_for_removal = []
         for agent_key in self.active_agents.keys():
             target_agent = self.active_agents[agent_key]
             if not target_agent.is_active():
-                self.deactivate_agent(agent_key)
+                selected_for_removal.append(agent_key)
+        for agent_key in selected_for_removal:
+            self.deactivate_agent(agent_key)
 
     def get_step(self) -> int:
         """Return the current simulation step."""

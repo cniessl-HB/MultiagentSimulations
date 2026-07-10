@@ -52,6 +52,9 @@ class fake_agent(some_agent):
     def plan_action(self) -> some_action_stub:
         return super().plan_action()
 
+    def set_active(self, active_val: bool) -> None:
+        return super().set_active(active_val)
+
     def add_to_history(self, log_entry) -> None:
         return super().add_to_history(log_entry)
     
@@ -134,6 +137,9 @@ def test_incomplete_agent_impl() -> None:
     
     with pytest.raises(NotImplementedError):
         test_agent.plan_action()
+    
+    with pytest.raises(NotImplementedError):
+        test_agent.set_active(False)
     
     with pytest.raises(NotImplementedError):
         test_agent.add_to_history(fake_log_entry())
