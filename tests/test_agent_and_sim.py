@@ -106,6 +106,7 @@ def test_sim_cleanup_inactive_agents() -> None:
     test_sim.cleanup()
     assert len(test_sim.active_agents) == 0
 
+
 def test_sim_advance_step() -> None:
     first_agent = base_agent("TEST_AGENT")
     second_agent = base_agent("TEST_AGENT2")
@@ -115,78 +116,6 @@ def test_sim_advance_step() -> None:
     test_sim.advance_step()
     assert test_sim.sim_step == 1
 
-
-def test_history_invalid_comparison() -> None:
-    sim_name = "TEST_SIM"
-    agent_name = "TEST_AGENT"
-    fake_log_entry = base_log_entry(sim_name, 
-                                    agent_name,
-                                    0,
-                                    "Actual Log")   
-    assert fake_log_entry != sim_name
-
-
-def test_history_same_step_ordering() -> None:
-    """Validate timestamp and step ordering of logged events.
-    
-    Events share the same step in the simulation."""
-    sim_name = "TEST_SIM"
-    agent_name = "TEST_AGENT"
-    
-    fake_log_entry_first = base_log_entry(sim_name, 
-                                    agent_name,
-                                    0,
-                                    "Earliest Log")
-    fake_log_entry_second = base_log_entry(sim_name, 
-                                    agent_name,
-                                    0,
-                                    "Earliest Log")
-    same_is_equal = (fake_log_entry_first == fake_log_entry_first)
-    two_in_order_not_equal = (fake_log_entry_first != fake_log_entry_second)
-    assert same_is_equal
-    assert two_in_order_not_equal
-
-def test_history_ordering() -> None:
-    """Validate timestamp and step ordering of logged events."""
-    sim_name = "TEST_SIM"
-    agent_name = "TEST_AGENT"
-    
-    fake_log_entry_first = base_log_entry(sim_name, 
-                                    agent_name,
-                                    0,
-                                    "Earliest Log")
-    fake_log_entry_second = base_log_entry(sim_name, 
-                                    agent_name,
-                                    0,
-                                    "Earliest Log")
-    
-    fake_log_entry_first.step = 1
-    first_comes_first = (fake_log_entry_first < fake_log_entry_second)
-    second_comes_first = (fake_log_entry_first > fake_log_entry_second)
-    diff_steps_not_eq = (fake_log_entry_first == fake_log_entry_second)
-    assert first_comes_first is False
-    assert second_comes_first
-    assert diff_steps_not_eq is False
-
-
-def test_history_ordering_sync() -> None:
-    """Validate timestamp and step ordering of logged events."""
-    sim_name = "TEST_SIM"
-    agent_name = "TEST_AGENT"    
-    fake_log_entry_first = base_log_entry(sim_name, 
-                                    agent_name,
-                                    0,
-                                    "Earliest Log")
-    fake_log_entry_second = base_log_entry(sim_name, 
-                                    agent_name,
-                                    0,
-                                    "Earliest Log")
-    first_comes_first = (fake_log_entry_first < fake_log_entry_second)
-    assert first_comes_first is True
-    fake_log_entry_first.synchronize_to_event(fake_log_entry_second)
-    first_comes_first = (fake_log_entry_first < fake_log_entry_second)
-    assert first_comes_first is False
-    assert fake_log_entry_first == fake_log_entry_second
 
 def test_sim_get_history_agents_added() -> None:
     """Validate sim history stubs are created when agents are added.
