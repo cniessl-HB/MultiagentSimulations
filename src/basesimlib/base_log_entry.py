@@ -6,6 +6,8 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
+import json
+
 from datetime import datetime
 
 from basesimlib.base_masim_types import some_log
@@ -48,15 +50,15 @@ class base_log_entry(some_log):
             return (self.get_action_time() == other.get_action_time())
         return False
         
-    def __json__(self) -> dict:
+    def __json__(self) -> str:
         """Dump json formatted version of this entry."""
         ret_dict: dict = {}
         ret_dict["initiator_id"] = self.initiator_id
         ret_dict["other_id"] = self.other_id
         ret_dict["step"] = self.step
-        ret_dict["action_time"] = self.action_time
+        ret_dict["action_time"] = self.action_time.strftime('%Y-%m-%d %H:%M:%S.%f')
         ret_dict["action_msg"] = self.action_msg
-        return ret_dict
+        return json.dumps(ret_dict)
     
     def __str__(self) -> str:
         """Get string output of log entry."""

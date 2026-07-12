@@ -6,6 +6,7 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
+import json
 import pytest
 
 from basesimlib.base_agent import base_agent
@@ -95,3 +96,8 @@ def test_history_ordering_sync() -> None:
     assert first_comes_first is False
     assert fake_log_entry_first == fake_log_entry_second
 
+def test_history_json_dump() -> None:
+    """Validate the str decorator produces valid json output."""
+    fake_log_entry = base_log_entry("", "", 0, "")
+    fake_log_entry_dump = fake_log_entry.__json__()
+    assert json.loads(fake_log_entry_dump)
