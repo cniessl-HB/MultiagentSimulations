@@ -96,8 +96,24 @@ def test_history_ordering_sync() -> None:
     assert first_comes_first is False
     assert fake_log_entry_first == fake_log_entry_second
 
+
+def test_history_str_output() -> None:
+    """Validate the str decorator produces its expected output."""
+    agent_name1 = "TEST_AGENT_A"
+    agent_name2 = "TEST_AGENT_B"
+    log_message = "A log message would be here."
+    fake_log_entry = base_log_entry(agent_name1, 
+                                   agent_name2,
+                                   0,
+                                   log_message)
+    log_out_str = str(fake_log_entry)
+    assert agent_name1 in log_out_str
+    assert agent_name2 in log_out_str
+    assert "0" in log_out_str
+
+
 def test_history_json_dump() -> None:
-    """Validate the str decorator produces valid json output."""
+    """Validate the json decorator produces valid json output."""
     fake_log_entry = base_log_entry("", "", 0, "")
     fake_log_entry_dump = fake_log_entry.__json__()
     assert json.loads(fake_log_entry_dump)
