@@ -10,6 +10,7 @@ import pytest
 
 from basesimlib.base_agent import base_agent
 from basesimlib.base_log_entry import base_log_entry
+from basesimlib.base_action_stub import base_action_stub
 from basesimlib.base_exceptions import AgentNotFoundError, DeactivateInactiveAgentError, DuplicateAgentError, AgentAssignedNoneError
 from basesimlib.base_simulation import base_simulation
 
@@ -117,6 +118,19 @@ def test_sim_advance_step() -> None:
     assert test_sim.sim_step == 1
 
 
+def test_agent_interaction_gen_history() -> None:
+    first_agent = base_agent("TEST_AGENT1")
+    second_agent = base_agent("TEST_AGENT2")
+    test_sim = base_simulation("TEST_SIM")
+    test_sim.add_agent(first_agent)
+    test_sim.add_agent(second_agent)
+    action_to_apply: base_action_stub = base_action_stub("TEST_AGENT1", "TEST_AGENT2")
+    test_sim.apply_action(action_to_apply)
+    hist1 = first_agent.get_history()
+    hist2 = second_agent.get_history()
+    assert len(hist1) == len(hist2)
+    assert hist1[0].initiator_id == hist2[0].initiator_id
+
 def test_sim_get_history_agents_added() -> None:
     """Validate sim history stubs are created when agents are added.
     
@@ -157,5 +171,4 @@ def test_sim_get_history_active_agents() -> None:
     history_list = test_sim.dump_sim_active_agent_history_list()
     assert len(history_list) == number_to_add
     assert all(history_list[ii] < history_list[ii + 1] for ii in range(0, len(history_list) - 1))
-
-        
+    
