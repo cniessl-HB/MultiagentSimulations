@@ -119,6 +119,7 @@ def test_sim_advance_step() -> None:
 
 
 def test_agent_interaction_gen_history() -> None:
+    """Validate agent interactions generate history stubs."""
     first_agent = base_agent("TEST_AGENT1")
     second_agent = base_agent("TEST_AGENT2")
     test_sim = base_simulation("TEST_SIM")
@@ -128,8 +129,12 @@ def test_agent_interaction_gen_history() -> None:
     test_sim.apply_action(action_to_apply)
     hist1 = first_agent.get_history()
     hist2 = second_agent.get_history()
+    assert len(hist1) == 1
     assert len(hist1) == len(hist2)
     assert hist1[0].initiator_id == hist2[0].initiator_id
+    assert hist1[0].other_id == hist2[0].other_id
+    assert hist1[0].step == hist2[0].step
+    assert hist1[0] == hist2[0]
 
 def test_sim_get_history_agents_added() -> None:
     """Validate sim history stubs are created when agents are added.
