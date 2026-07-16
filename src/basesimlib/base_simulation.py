@@ -126,6 +126,14 @@ class base_simulation(some_sim):
             return_list.extend(current_agent.get_history())
         return return_list
 
+    def dump_sim_inactive_agent_history_list(self) -> list[some_log]:
+        """Dump the history of all inactive agents."""
+        return_list: list[some_log] = []
+        for agent_name in self.inactive_agents:
+            current_agent = self.inactive_agents[agent_name]
+            return_list.extend(current_agent.get_history())
+        return return_list
+
     def dump_full_history_list(self) -> list[some_log]:
         # TODO: Refactor this based on dump_active and inactive history
         raise NotImplementedError
