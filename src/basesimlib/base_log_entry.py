@@ -7,6 +7,7 @@ See LICENSE.txt for usage.
 """
 
 import json
+import uuid
 
 from datetime import datetime
 
@@ -26,12 +27,16 @@ class base_log_entry(some_log):
         self.step: int = step
         self.action_time: datetime = datetime.now()
         self.action_msg: str = action_msg
+        self.uuid = uuid.uuid4()
     
     def get_step(self) -> int:
         return self.step
     
     def get_action_time(self) -> datetime:
         return self.action_time
+    
+    def get_uuid(self) -> uuid.UUID:
+        return self.uuid
     
     def __lt__(self, other: some_log):
         """Less than comparison for sorting."""
