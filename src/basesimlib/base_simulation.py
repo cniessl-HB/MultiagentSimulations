@@ -134,6 +134,14 @@ class base_simulation(some_sim):
             return_list.extend(current_agent.get_history())
         return return_list
 
+    def filter_duplicate_log_events(self, logs_to_filter: list[some_log) -> list[some_log]:
+        """Take a sorted list of log events, and check for duplicates."""
+        start_index = 0
+        return_list = []
+        while start_index < len(logs_to_filter):
+            return NotImplementedError
+        return return_list
+
     def dump_full_history_list(self) -> list[some_log]:
         # TODO: Refactor this based on dump_active and inactive history
         raise NotImplementedError
