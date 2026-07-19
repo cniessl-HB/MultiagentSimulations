@@ -39,10 +39,10 @@ class base_simulation(some_sim):
     
     def add_agent(self, agent_to_add: some_agent) -> None:
         """Add an agent to the active agents."""
-        if agent_to_add.get_id() not in self.active_agents:
-            self._gen_add_history_stub(agent_to_add)
-        else:
+        if agent_to_add.get_id() in self.active_agents:
             raise DuplicateAgentError
+        hist_stub = self._gen_add_history_stub(agent_to_add)
+        agent_to_add.add_to_history(hist_stub)
         self.active_agents[agent_to_add.get_id()] = agent_to_add
     
     def _gen_deact_history_stub(self, agent_to_deact: some_agent) -> None:
@@ -54,7 +54,7 @@ class base_simulation(some_sim):
                                                action_message)
         self.sim_act_history.append(stub_to_add)    	
     
-    def _gen_add_history_stub(self, agent_to_add: some_agent) -> None:
+    def _gen_add_history_stub(self, agent_to_add: some_agent) -> some_log:
         """Add the addition of an agent in the log."""
         action_message = "Added {agent_to_deact.agent_id} to Simulation."
         stub_to_add: some_log = base_log_entry(self.sim_name,
@@ -62,6 +62,22 @@ class base_simulation(some_sim):
                                                self.sim_step,
                                                action_message)
         self.sim_act_history.append(stub_to_add)
+        return stub_to_add
+
+    def _filter_duplicate_log_events(self, logs_to_filter: list[some_log]) -> list[some_log]:
+        """Take a sorted list of log events, and check for duplicates."""
+        start_index = 1
+        if len(logs_to_filter) < 2:
+            return [logs_to_filter[0]]
+        last_uuid_found = logs_to_filter[0].get_uuid()
+        return_list = [logs_to_filter[0]]
+        while start_index < len(logs_to_filter):
+            current_uuid = logs_to_filter[index].get_uuid()
+            if current_uuid != last_uuid_found:
+                return_list.append(logs_to_filter[index])
+                last_uuid_found = current_uuid
+            index += 1
+        return return_list
 
     def deactivate_agent(self, agent_to_deact: str) -> None:
         """Move an agent from active agents to inactive."""
@@ -134,21 +150,13 @@ class base_simulation(some_sim):
             return_list.extend(current_agent.get_history())
         return return_list
 
-    def filter_duplicate_log_events(self, logs_to_filter: list[some_log]) -> list[some_log]:
-        """Take a sorted list of log events, and check for duplicates."""
-        start_index = 1
-        if len(logs_to_filter) < 2:
-            return [logs_to_filter[0]]
-        last_uuid_found = logs_to_filter[0].get_uuid()
-        return_list = [logs_to_filter[0]]
-        while start_index < len(logs_to_filter):
-            current_uuid = logs_to_filter[index].get_uuid()
-            if current_uuid != last_uuid_found:
-                return_list.append(logs_to_filter[index])
-                last_uuid_found = current_uuid
-            index += 1
-        return return_list
-
     def dump_full_history_list(self) -> list[some_log]:
-        # TODO: Refactor this based on dump_active and inactive history
+        """Dump the full history of the sim and active and inactive agents.
+        
+        Removes duplicates, so any interactions between agents or the sim are
+        only included once.
+        
+        """
+        
+        
         raise NotImplementedError
