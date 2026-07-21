@@ -7,9 +7,7 @@ See LICENSE.txt for usage.
 """
 
 import json
-import pytest
 
-from basesimlib.base_agent import base_agent
 from basesimlib.base_log_entry import base_log_entry
 
 

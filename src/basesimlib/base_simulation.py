@@ -66,12 +66,12 @@ class base_simulation(some_sim):
 
     def _filter_duplicate_log_events(self, logs_to_filter: list[some_log]) -> list[some_log]:
         """Take a sorted list of log events, and check for duplicates."""
-        start_index = 1
+        index = 1
         if len(logs_to_filter) < 2:
             return [logs_to_filter[0]]
         last_uuid_found = logs_to_filter[0].get_uuid()
         return_list = [logs_to_filter[0]]
-        while start_index < len(logs_to_filter):
+        while index < len(logs_to_filter):
             current_uuid = logs_to_filter[index].get_uuid()
             if current_uuid != last_uuid_found:
                 return_list.append(logs_to_filter[index])
