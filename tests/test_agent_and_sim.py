@@ -11,8 +11,14 @@ import pytest
 from basesimlib.base_agent import base_agent
 from basesimlib.base_log_entry import base_log_entry
 from basesimlib.base_action_stub import base_action_stub
-from basesimlib.base_exceptions import AgentNotFoundError, DeactivateInactiveAgentError, DuplicateAgentError, AgentAssignedNoneError
+from basesimlib.base_exceptions import (
+    AgentNotFoundError,
+    DeactivateInactiveAgentError,
+    DuplicateAgentError,
+    AgentAssignedNoneError,
+)
 from basesimlib.base_simulation import base_simulation
+
 
 def test_create_agent() -> None:
     """Testes the agent name is passed properly to a created agent."""
@@ -31,7 +37,7 @@ def test_sim_add_agent() -> None:
 
 def test_sim_add_agent_same_name() -> None:
     """Tests that trying to add an agent with the same name.
-    
+
     This should raise the DuplicateAgentError."""
     first_agent = base_agent("TEST_AGENT")
     second_agent = base_agent("TEST_AGENT")
@@ -40,11 +46,12 @@ def test_sim_add_agent_same_name() -> None:
     with pytest.raises(DuplicateAgentError):
         test_sim.add_agent(second_agent)
 
+
 def test_sim_add_agent_diff_name() -> None:
     """Tests that adding an agent with a different name in a sim.
-    
+
     This checks the number of agents in the sim is 2 after 2 additions."""
-    
+
     first_agent = base_agent("TEST_AGENT")
     second_agent = base_agent("TEST_AGENT2")
     test_sim = base_simulation("TEST_SIM")
@@ -101,7 +108,7 @@ def test_sim_cleanup_inactive_agents() -> None:
     second_agent = base_agent("TEST_AGENT2")
     test_sim = base_simulation("TEST_SIM")
     test_sim.add_agent(first_agent)
-    test_sim.add_agent(second_agent)  
+    test_sim.add_agent(second_agent)
     first_agent.set_active(False)
     second_agent.set_active(False)
     test_sim.cleanup()
@@ -136,12 +143,13 @@ def test_agent_interaction_gen_history() -> None:
     assert hist1[0].step == hist2[0].step
     assert hist1[0] == hist2[0]
 
+
 def test_sim_get_history_agents_added() -> None:
     """Validate sim history stubs are created when agents are added.
-    
+
     This checks that two history stubs are created, and
     the records are in order.
-    
+
     """
     number_to_add: int = 100
     sim_name = "TEST_SIM"
@@ -152,12 +160,15 @@ def test_sim_get_history_agents_added() -> None:
         test_sim.add_agent(new_agent)
     history_list = test_sim.dump_sim_history_list()
     assert len(history_list) == number_to_add
-    assert all(history_list[ii] < history_list[ii + 1] for ii in range(0, len(history_list) - 1))
+    assert all(
+        history_list[ii] < history_list[ii + 1]
+        for ii in range(0, len(history_list) - 1)
+    )
 
 
 def test_sim_get_history_active_agents() -> None:
     """Validate active agent history stubs are created when added.
-    
+
     This checks that a fake history entry for each agent is present
     and the records are in otder.
     """
@@ -167,13 +178,14 @@ def test_sim_get_history_active_agents() -> None:
     for ii in range(0, number_to_add):
         agent_name = f"TEST_AGENT_{ii:02d}"
         new_agent = base_agent(agent_name)
-        fake_log_entry = base_log_entry(sim_name, 
-                                        agent_name,
-                                        test_sim.sim_step,
-                                        f"Added to {sim_name}")
+        fake_log_entry = base_log_entry(
+            sim_name, agent_name, test_sim.sim_step, f"Added to {sim_name}"
+        )
         new_agent.add_to_history(fake_log_entry)
         test_sim.add_agent(new_agent)
     history_list = test_sim.dump_sim_active_agent_history_list()
     assert len(history_list) == number_to_add
-    assert all(history_list[ii] < history_list[ii + 1] for ii in range(0, len(history_list) - 1))
-    
+    assert all(
+        history_list[ii] < history_list[ii + 1]
+        for ii in range(0, len(history_list) - 1)
+    )
