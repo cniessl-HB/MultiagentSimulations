@@ -132,16 +132,21 @@ def test_agent_interaction_gen_history() -> None:
     test_sim = base_simulation("TEST_SIM")
     test_sim.add_agent(first_agent)
     test_sim.add_agent(second_agent)
-    action_to_apply: base_action_stub = base_action_stub("TEST_AGENT1", "TEST_AGENT2")
-    test_sim.apply_action(action_to_apply)
     hist1 = first_agent.get_history()
     hist2 = second_agent.get_history()
     assert len(hist1) == 1
     assert len(hist1) == len(hist2)
+    action_to_apply: base_action_stub = base_action_stub("TEST_AGENT1", "TEST_AGENT2")
+    test_sim.apply_action(action_to_apply)
+    hist1 = first_agent.get_history()
+    hist2 = second_agent.get_history()
+    assert len(hist1) == 2
+    assert len(hist1) == len(hist2)
+    assert hist1[0].initiator_id == "TEST_SIM"
     assert hist1[0].initiator_id == hist2[0].initiator_id
-    assert hist1[0].other_id == hist2[0].other_id
+    assert hist1[0].other_id == "TEST_AGENT1"
+    assert hist2[0].other_id == "TEST_AGENT2"
     assert hist1[0].step == hist2[0].step
-    assert hist1[0] == hist2[0]
 
 
 def test_sim_get_history_agents_added() -> None:
@@ -178,10 +183,6 @@ def test_sim_get_history_active_agents() -> None:
     for ii in range(0, number_to_add):
         agent_name = f"TEST_AGENT_{ii:02d}"
         new_agent = base_agent(agent_name)
-        fake_log_entry = base_log_entry(
-            sim_name, agent_name, test_sim.sim_step, f"Added to {sim_name}"
-        )
-        new_agent.add_to_history(fake_log_entry)
         test_sim.add_agent(new_agent)
     history_list = test_sim.dump_sim_active_agent_history_list()
     assert len(history_list) == number_to_add
