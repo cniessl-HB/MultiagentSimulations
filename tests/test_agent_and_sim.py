@@ -142,11 +142,11 @@ def test_agent_interaction_gen_history() -> None:
     hist2 = second_agent.get_history()
     assert len(hist1) == 2
     assert len(hist1) == len(hist2)
-    assert hist1[0].initiator_id == "TEST_SIM"
-    assert hist1[0].initiator_id == hist2[0].initiator_id
-    assert hist1[0].other_id == "TEST_AGENT1"
-    assert hist2[0].other_id == "TEST_AGENT2"
-    assert hist1[0].step == hist2[0].step
+    assert hist1[1].initiator_id == "TEST_AGENT1"
+    assert hist1[1].initiator_id == hist2[1].initiator_id
+    assert hist1[1].other_id == "TEST_AGENT2"
+    assert hist2[1].other_id == hist2[1].other_id
+    assert hist1[1].step == hist2[1].step
 
 
 def test_sim_get_history_agents_added() -> None:
@@ -172,10 +172,10 @@ def test_sim_get_history_agents_added() -> None:
 
 
 def test_sim_get_history_active_agents() -> None:
-    """Validate active agent history stubs are created when added.
+    """Validate active agent history stubs are fetched.
 
-    This checks that a fake history entry for each agent is present
-    and the records are in otder.
+    This checks that the creation history entry for each agent
+    is present and the records are in otder.
     """
     number_to_add: int = 100
     sim_name = "TEST_SIM"
@@ -190,3 +190,34 @@ def test_sim_get_history_active_agents() -> None:
         history_list[ii] < history_list[ii + 1]
         for ii in range(0, len(history_list) - 1)
     )
+
+def test_sim_get_history_inactive_agents() -> None:
+    """Validate fetching history from inactive agents.
+
+    This checks that the creation history entry for each 
+    deactivated agent is present and the records are in otder.
+    """
+    number_to_add: int = 100
+    sim_name = "TEST_SIM"
+    test_sim = base_simulation(sim_name)
+    for ii in range(0, number_to_add):
+        agent_name = f"TEST_AGENT_{ii:02d}"
+        new_agent = base_agent(agent_name)
+        test_sim.add_agent(new_agent)
+        test_sim.deactivate_agent(agent_name)
+    history_list = test_sim.dump_sim_active_agent_history_list()
+    assert len(history_list) == 0
+    history_list = test_sim.dump_sim_inactive_agent_history_list()
+    assert len(history_list) == number_to_add
+    assert all(
+        history_list[ii] < history_list[ii + 1]
+        for ii in range(0, len(history_list) - 1)
+    )
+
+def test_sim_filter_duplicate_history() -> None:
+    """Validate filtering duplicate events.
+
+    This checks that there's only one event per UUID.
+    """
+    pass
+

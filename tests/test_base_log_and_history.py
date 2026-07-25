@@ -7,6 +7,7 @@ See LICENSE.txt for usage.
 """
 
 import json
+import uuid
 
 from basesimlib.base_log_entry import base_log_entry
 
@@ -91,3 +92,11 @@ def test_history_json_dump() -> None:
     fake_log_entry = base_log_entry("", "", 0, "")
     fake_log_entry_dump = fake_log_entry.__json__()
     assert json.loads(fake_log_entry_dump)
+
+def test_get_uuid() -> None:
+    """Validate the UUID provider returns the correct UUID."""
+    sim_name = "TEST_SIM"
+    agent_name = "TEST_AGENT"
+    fake_log_entry = base_log_entry(sim_name, agent_name, 0, "Earliest Log")
+    test_uuid = fake_log_entry.get_uuid()
+    assert type(test_uuid) == uuid.UUID
