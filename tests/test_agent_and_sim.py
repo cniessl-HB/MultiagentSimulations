@@ -214,10 +214,15 @@ def test_sim_get_history_inactive_agents() -> None:
         for ii in range(0, len(history_list) - 1)
     )
 
-def test_sim_filter_duplicate_history() -> None:
-    """Validate filtering duplicate events.
+def test_sim_filter_duplicate_history_singleton() -> None:
+    """Validate early exit if only one item in history list."""
+    test_sim = base_simulation("TEST_SIM")
+    test_event = base_log_entry("TEST_SIM", "", 0, "")
+    test_sim.sim_act_history.append(test_event)
+    history_dump = test_sim.dump_full_history_list()
+    assert len(history_dump) == 1
 
-    This checks that there's only one event per UUID.
-    """
+def test_sim_filter_duplicate_history() -> None:
+    """Validate no duplicates in generated history list."""
     pass
 
