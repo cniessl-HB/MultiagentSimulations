@@ -93,6 +93,7 @@ def test_history_json_dump() -> None:
     fake_log_entry_dump = fake_log_entry.__json__()
     assert json.loads(fake_log_entry_dump)
 
+
 def test_get_uuid() -> None:
     """Validate the UUID provider returns the correct UUID."""
     sim_name = "TEST_SIM"
