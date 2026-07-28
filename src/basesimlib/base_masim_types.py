@@ -51,12 +51,6 @@ class some_action_stub(ABC):
         raise NotImplementedError
 
 
-class some_action(ABC):
-    @abstractmethod
-    def create_stub(self, target_id: str) -> some_action_stub:
-        raise NotImplementedError
-
-
 class some_agent(ABC):
     @abstractmethod
     def get_id(self) -> str:
