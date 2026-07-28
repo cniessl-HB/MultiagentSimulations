@@ -12,7 +12,6 @@ from datetime import datetime
 
 from basesimlib.base_masim_types import (
     some_log,
-    some_action,
     some_action_stub,
     some_agent,
     some_sim,
@@ -42,11 +41,6 @@ class fake_action_stub(some_action_stub):
 
     def get_target_id(self) -> str:
         return super().get_target_id()
-
-
-class fake_action(some_action):
-    def create_stub(self, target_id: str) -> some_action_stub:
-        return super().create_stub(target_id)
 
 
 class fake_agent(some_agent):
@@ -114,21 +108,6 @@ def test_incomplete_masim_action_stub_impl() -> None:
         test_action.get_initiator_id()
     with pytest.raises(NotImplementedError):
         test_action.get_target_id()
-
-
-def test_unimpl_action() -> None:
-    class incomplete_action(some_action):
-        pass
-
-    with pytest.raises(TypeError, match="Can't instantiate abstract class"):
-        _ = incomplete_action()
-
-
-def test_incomplete_masim_action_impl() -> None:
-    test_action = fake_action()
-
-    with pytest.raises(NotImplementedError):
-        test_action.create_stub("")
 
 
 def test_unimpl_agent() -> None:

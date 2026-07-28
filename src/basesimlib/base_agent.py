@@ -7,7 +7,6 @@ See LICENSE.txt for usage.
 """
 
 from basesimlib.base_masim_types import (
-    some_action,
     some_action_stub,
     some_agent,
     some_log,
@@ -32,7 +31,8 @@ class base_agent(some_agent):
         "Initialize the agent"
         self.agent_id: str = agent_id
         self.active: bool = True
-        self.possible_actions: dict[str, some_action] = {}
+        self.possible_actions: dict[str, callable] = {}
+        self.next_action: str | None = None
         self.history_list: list[some_log] = []
 
     def get_id(self) -> str:
