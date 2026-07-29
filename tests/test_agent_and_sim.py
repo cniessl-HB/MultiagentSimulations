@@ -227,4 +227,16 @@ def test_sim_filter_duplicate_history_singleton() -> None:
 
 def test_sim_filter_duplicate_history() -> None:
     """Validate no duplicates in generated history list."""
-    pass
+    first_agent = base_agent("TEST_AGENT1")
+    second_agent = base_agent("TEST_AGENT2")
+    test_sim = base_simulation("TEST_SIM")
+    test_sim.add_agent(first_agent)
+    test_sim.add_agent(second_agent)
+    history_dump = test_sim.dump_full_history_list()
+    dup_check_dict = {}
+    for elem in history_dump:
+        elem_key = elem.get_uuid()
+        if elem_key in dup_check_dict:
+            raise Exception
+        dup_check_dict[elem_key] = elem
+    assert len(history_dump) == 2
