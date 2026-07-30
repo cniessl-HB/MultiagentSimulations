@@ -61,7 +61,7 @@ class base_simulation(some_sim):
 
     def _gen_add_history_stub(self, agent_to_add: some_agent) -> some_log:
         """Add the addition of an agent in the log."""
-        action_message = "Added {agent_to_deact.agent_id} to Simulation."
+        action_message = f"Added {agent_to_add.agent_id} to Simulation."
         stub_to_add: some_log = base_log_entry(
             self.sim_name, agent_to_add.get_id(), self.sim_step, action_message
         )
