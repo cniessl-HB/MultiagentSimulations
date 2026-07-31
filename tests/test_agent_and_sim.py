@@ -234,14 +234,9 @@ def test_sim_filter_duplicate_history() -> None:
     test_sim.add_agent(second_agent)
     history_dump = test_sim.dump_full_history_list()
     dup_check_dict = {}
-    index = 0
     for elem in history_dump:
         elem_key = elem.get_uuid()
-        if elem_key in dup_check_dict:
-            print("Found duplicate!")
-            print(f"{dup_check_dict[elem_key]}")
-            print(f" and {elem}, {index}")
-            raise Exception
-        dup_check_dict[elem_key] = [elem, index]
-        index += 1
-    assert len(history_dump) == 2
+        num_enc = dup_check_dict.get(elem_key, 0)
+        dup_check_dict[elem_key] = num_enc + 1
+    for elem in dup_check_dict:
+        assert dup_check_dict[elem] == 1

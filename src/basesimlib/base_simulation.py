@@ -166,4 +166,5 @@ class base_simulation(some_sim):
         combined_list = self.dump_sim_history_list()
         combined_list.extend(self.dump_sim_active_agent_history_list())
         combined_list.extend(self.dump_sim_inactive_agent_history_list())
+        combined_list.sort()
         return self._filter_duplicate_log_events(combined_list)
