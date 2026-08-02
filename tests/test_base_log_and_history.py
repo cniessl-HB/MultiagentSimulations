@@ -100,4 +100,4 @@ def test_get_uuid() -> None:
     agent_name = "TEST_AGENT"
     fake_log_entry = base_log_entry(sim_name, agent_name, 0, "Earliest Log")
     test_uuid = fake_log_entry.get_uuid()
-    assert type(test_uuid) == uuid.UUID
+    assert type(test_uuid) is uuid.UUID
