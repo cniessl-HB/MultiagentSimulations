@@ -6,6 +6,8 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
+from pathlib import Path
+
 from basesimlib.base_exceptions import (
     AgentAssignedNoneError,
     AgentNotFoundError,
@@ -19,12 +21,16 @@ from basesimlib.base_log_entry import base_log_entry
 class base_dist_simulation_orch(some_sim):
     """Base distributed simulation."""
 
-    def __init__(self, sim_name: str) -> None:
+    def __init__(self, sim_name: str, config_path: Path) -> None:
         """Initialize the simulation."""
-        raise NotImplementedError
+        full_config_path = config_path.resolve().expanduser()
+        self._read_network_config(config_path)
 
     def __len__(self) -> int:
         return len(self.active_agents) + len(self.inactive_agents)
+
+    def _read_network_config(self, config_path: Path) -> None:
+        raise NotImplementedError
 
     def advance_step(self) -> None:
         """Perform a timestep in the simulation."""
