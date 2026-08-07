@@ -21,16 +21,21 @@ from basesimlib.base_log_entry import base_log_entry
 class base_dist_simulation_orch(some_sim):
     """Base distributed simulation."""
 
-    def __init__(self, sim_name: str, config_path: Path) -> None:
+    def __init__(self, sim_name: str, json_config: dict) -> None:
         """Initialize the simulation."""
-        full_config_path = config_path.resolve().expanduser()
-        self._read_network_config(config_path)
+        super().__init__(sim_name)
+        self._read_network_config(json_config)
 
     def __len__(self) -> int:
         return len(self.active_agents) + len(self.inactive_agents)
 
-    def _read_network_config(self, config_path: Path) -> None:
-        raise NotImplementedError
+    def _read_network_config(self, config_dict: dict) -> None:
+        self.sub_agent_net_cfgs = {}
+        for key in config_dict:
+            new_agent_net_cfg = dist_resource_info(**config_dict[key])
+            new_agent_key = new_agent_net_cfg.resc_name
+            self.sub_agent_net_cfgs[resc_name] = new_agent_net_cfg
+            
 
     def advance_step(self) -> None:
         """Perform a timestep in the simulation."""
