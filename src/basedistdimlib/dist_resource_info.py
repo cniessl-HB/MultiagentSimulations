@@ -13,8 +13,14 @@ class dist_resource_info(base_dist_resc):
                  resc_name: str, 
                  ip_addr: str, 
                  port: int,
-                 auth_ket: str):
+                 auth_ket: str,
+                 require_online = False):
         self.resc_name: str = resc_name
         self.ip_addr: str = ip_addr
         self.port: int = port
         self.auth_key: str = auth_key
+        self.require_online: bool = require_online
+    
+    def connect(self) -> bool:
+        """Attempt handshake connection with resource."""
+        raise NotImplementedError
