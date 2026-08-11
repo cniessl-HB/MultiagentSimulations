@@ -9,7 +9,7 @@ See LICENSE.txt for usage.
 import socket
 import ssl
 
-class dist_resource_info(base_dist_resc):
+class dist_resource(base_dist_resc):
     """Distributed resource info class."""
     
     def __init__(self, 
@@ -30,6 +30,10 @@ class dist_resource_info(base_dist_resc):
     def __del__(self):
         if self._is_connected:
             self.disconnect()
+    
+    def send_command(self, json_fmt_cmd: str):
+        """Send a command to a remote resource."""
+        raise NotImplementedError
     
     def is_connected(self) -> bool:
         """Return connection state."""
