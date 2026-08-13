@@ -19,6 +19,11 @@ from basesimlib.base_log_entry import base_log_entry
 
 from basedistsimlib.dist_resource import dist_resource
 
+from basedistsimlib.dist_exceptions import (
+    SubsimNotFoundError
+    SubsimDisconnectedError
+)
+
 class base_dist_simulation_orch(some_sim):
     """Base distributed simulation."""
 
@@ -52,10 +57,10 @@ class base_dist_simulation_orch(some_sim):
 
     def _send_rpc_to_subsim(self, rpc: str, target_subsim: str) -> str:
         if target_subsim not in self.subsims:
-            raise Exception # TODO: Use a more narrow defined exception here.
+            raise SubsimNotFoundError
         subsim = self.subsims[target_subsim]
         if not subsim.is_connected():
-            raise Exception # TODO: Use a more narrow defined exception here.
+            raise SubsimDisconnectedError
         return subsim.send_command(rpc)
 
     def advance_step(self) -> None:
