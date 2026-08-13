@@ -31,7 +31,7 @@ class dist_resource(base_dist_resc):
         if self._is_connected:
             self.disconnect()
     
-    def send_command(self, json_fmt_cmd: str):
+    def send_command(self, json_fmt_cmd: str) -> str:
         """Send a command to a remote resource."""
         raise NotImplementedError
     

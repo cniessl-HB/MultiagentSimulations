@@ -17,6 +17,7 @@ from basesimlib.base_exceptions import (
 from basesimlib.base_masim_types import some_action_stub, some_agent, some_log, some_sim
 from basesimlib.base_log_entry import base_log_entry
 
+from basedistsimlib.dist_resource import dist_resource
 
 class base_dist_simulation_orch(some_sim):
     """Base distributed simulation."""
@@ -34,8 +35,8 @@ class base_dist_simulation_orch(some_sim):
     def _read_network_config(self, config_dict: dict) -> None:
         self.sub_agent_net_cfgs = {}
         for key in config_dict:
-            new_subsim_cfg = dist_resource_info(**config_dict[key])
-            new_subsim_key = new_subsim_net_cfg.resc_name
+            new_subsim_cfg = dist_resource(**config_dict[key])
+            new_subsim_key = new_subsim_cfg.resc_name
             self.subsims[resc_name] = new_subsim_cfg
     
     def _handshake_with_subsims(self) -> None:
@@ -48,6 +49,14 @@ class base_dist_simulation_orch(some_sim):
                if subsim_cfg.require_online:
                    raise ex
        self._connected_to_subsims = True
+
+    def _send_rpc_to_subsim(self, rpc: str, target_subsim: str) -> str:
+        if target_subsim not in self.subsims:
+            raise Exception # TODO: Use a more narrow defined exception here.
+        subsim = self.subsims[target_subsim]
+        if not subsim.is_connected():
+            raise Exception # TODO: Use a more narrow defined exception here.
+        return subsim.send_command(rpc)
 
     def advance_step(self) -> None:
         """Perform a timestep in the simulation."""
