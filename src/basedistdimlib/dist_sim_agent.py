@@ -12,6 +12,10 @@ from basesimlib.base_masim_types import (
     some_log,
 )
 
+import hashlib
+import uuid
+
+
 class dist_sim_agent(some_agent):
     """Base distributed agent."""
 
@@ -24,8 +28,10 @@ class dist_sim_agent(some_agent):
         self.history_list: list[some_log] = []
         self.uuid: uuid.UUID = self._get_sim_uuid(host_sim_name)
 
-    def _get_sim_uuid(self, host_sim_name) -> uuid.UUID
-        raise NotImplementedError
+    def _get_sim_uuid(self, host_sim_name: str) -> uuid.UUID
+        hash_gen = hashlib.shake_128(host_sim_name.encode())
+        hexdigest = hash_gen.hexdigest(16)
+        return uuid.UUID(hexdigest)
 
     def get_id(self) -> str:
         raise NotImplementedError
