@@ -21,20 +21,23 @@ class dist_sim_agent(some_agent):
 
     def __init__(self, agent_id: str, host_sim_name) -> None:
         "Initialize the agent"
-        self.agent_id: str = agent_id
+        self._agent_id: str = agent_id
         self.active: bool = True
         self.possible_actions: dict[str, callable] = {}
         self.next_action: str | None = None
         self.history_list: list[some_log] = []
-        self.uuid: uuid.UUID = self._get_sim_uuid(host_sim_name)
+        self._uuid: uuid.UUID = self._get_sim_uuid(host_sim_name)
 
     def _get_sim_uuid(self, host_sim_name: str) -> uuid.UUID
         hash_gen = hashlib.shake_128(host_sim_name.encode())
         hexdigest = hash_gen.hexdigest(16)
         return uuid.UUID(hexdigest)
 
+    def get_uuid(self) -> str:
+        return self._uuid
+
     def get_id(self) -> str:
-        raise NotImplementedError
+        return self._agent_id
 
 
     def is_active(self) -> bool:
