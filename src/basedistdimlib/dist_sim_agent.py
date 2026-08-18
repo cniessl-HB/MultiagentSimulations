@@ -19,10 +19,12 @@ import uuid
 class dist_sim_agent(some_agent):
     """Base distributed agent."""
 
-    def __init__(self, agent_id: str, host_sim_name) -> None:
+    def __init__(self, 
+                 agent_id: str, 
+                 host_sim_name: str) -> None:
         "Initialize the agent"
         self._agent_id: str = agent_id
-        self.active: bool = True
+        self._is_active: bool = True
         self.possible_actions: dict[str, callable] = {}
         self.next_action: str | None = None
         self.history_list: list[some_log] = []
@@ -41,11 +43,11 @@ class dist_sim_agent(some_agent):
 
 
     def is_active(self) -> bool:
-        raise NotImplementedError
+        return self._is_active
 
 
     def set_active(self, active_val: bool) -> None:
-        raise NotImplementedError
+        self._is_active = active_val
 
 
     def plan_action(self) -> some_action_stub:
