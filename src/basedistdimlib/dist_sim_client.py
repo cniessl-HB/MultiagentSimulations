@@ -6,12 +6,18 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
+from libChord import ChordNode 
+
 class dist_sim_client(some_sim):
     """Base distributed simulation."""
 
-    def __init__(self, sim_name: str) -> None:
+    def __init__(self, 
+                 expected_sim_name: str, 
+                 personal_identifier: str) -> None:
         """Initialize the simulation."""
-        raise NotImplementedError
+        self._expected_sim_name = expected_sim_name
+        self._personal_identifier = personal_identifier
+        self._active_agents: dict[str, some_agent] = {}
 
     def __len__(self) -> int:
         return len(self.active_agents) + len(self.inactive_agents)
@@ -22,7 +28,11 @@ class dist_sim_client(some_sim):
 
     def add_agent(self, agent_to_add: some_agent) -> None:
         """Add an agent to the active agents."""
-        raise NotImplementedError
+        if agent_to_add.get_id() in self.active_agents:
+            raise DuplicateAgentError
+        hist_stub = self._gen_add_history_stub(agent_to_add)
+        agent_to_add.add_to_history(hist_stub)
+        self.active_agents[agent_to_add.get_id()] = agent_to_add
 
     def _gen_deact_history_stub(self, agent_to_deact: some_agent) -> None:
         """Add the move to inactive for an agent in the log."""
