@@ -5,8 +5,7 @@ Copyright 2026 - Christopher T Niessl
 
 See LICENSE.txt for usage.
 """
-
-from libChord import ChordNode 
+ 
 
 class dist_sim_client(some_sim):
     """Base distributed simulation."""

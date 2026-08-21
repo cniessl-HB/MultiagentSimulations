@@ -18,6 +18,13 @@ class dist_hash_peer():
         self._ranking = ranking
         self._target_host = target_host
         self._target_port = target_port
+        self._socket = None
+    
+    def connect(self):
+        raise NotImplementedError
+        
+    def query_agent(self, target_ranking: int):
+        raise NotImplementedError
                  
 class dist_hash_table():
     """Distributed hash table."""
@@ -29,3 +36,8 @@ class dist_hash_table():
         self._my_ranking = my_ranking
         self._expected_total = expected_total
     
+    def _answer_query(self) -> dict:
+        raise NotImplementedError
+        
+    def comms_loop(self):
+        raise NotImplementedError

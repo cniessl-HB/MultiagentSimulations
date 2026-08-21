@@ -30,7 +30,7 @@ class base_dist_simulation_orch(some_sim):
     def __init__(self, sim_name: str, json_config: dict) -> None:
         """Initialize the simulation."""
         super().__init__(sim_name)
-        self.subsims = {}
+        self._subsims = {}
         self._read_network_config(json_config)
         self._connected_to_subsims = False
 
@@ -38,11 +38,10 @@ class base_dist_simulation_orch(some_sim):
         return len(self.active_agents) + len(self.inactive_agents)
 
     def _read_network_config(self, config_dict: dict) -> None:
-        self.sub_agent_net_cfgs = {}
         for key in config_dict:
             new_subsim_cfg = dist_resource(**config_dict[key])
             new_subsim_key = new_subsim_cfg.resc_name
-            self.subsims[resc_name] = new_subsim_cfg
+            self._subsims[resc_name] = new_subsim_cfg
     
     def _handshake_with_subsims(self) -> None:
        for resc_name_key in self.subsim_net_cfgs:
@@ -62,6 +61,11 @@ class base_dist_simulation_orch(some_sim):
         if not subsim.is_connected():
             raise SubsimDisconnectedError
         return subsim.send_command(rpc)
+
+    def connect(self) -> None:
+        """Connect to every subsystem specified in the network config."""
+        
+        self._handshake_with_subsims()
 
     def advance_step(self) -> None:
         """Perform a timestep in the simulation."""
