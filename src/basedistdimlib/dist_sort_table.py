@@ -11,16 +11,22 @@ from queue import Queue
 import socket
 import ssl
 
-class dist_hash_peer():
+class dist_sort_peer():
 
     def __init__(self,
                  ranking: int,
+                 min_key: str,
+                 max_key: str,
                  target_host: str,
                  target_port: str):
         self._ranking = ranking
+        self._min_key = min_key
+        self._max_key = max_key
         self._target_host = target_host
         self._target_port = target_port
         self._socket = None
+    
+    def hand
     
     def connect(self):
         raise NotImplementedError
@@ -33,8 +39,8 @@ class dist_hash_task():
     def __init__(self,
                  
          
-class dist_hash_table():
-    """Distributed hash table."""
+class dist_sort_table():
+    """Distributed sorted table."""
     
     def __init__(self, 
                  my_ranking: int,
@@ -66,5 +72,5 @@ class dist_hash_table():
         return json.dumps(ret_dict)
         
         
-    def comms_loop(self):
+    def _comms_loop(self):
         raise NotImplementedError
