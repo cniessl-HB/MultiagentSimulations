@@ -6,6 +6,8 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
+from queue import Queue
+
 import socket
 import ssl
 
@@ -25,19 +27,44 @@ class dist_hash_peer():
         
     def query_agent(self, target_ranking: int):
         raise NotImplementedError
+
+class dist_hash_task():
+ 
+    def __init__(self,
                  
+         
 class dist_hash_table():
     """Distributed hash table."""
     
     def __init__(self, 
                  my_ranking: int,
-                 expected_total: int):
+                 expected_total: int,
+                 parent_object,
+                 comms_socket):
+        self._inbound_message_queue = Queue(maxsize=32)
+        self._outstanding_tasks = {}
+        
         self._finger_table = {}
         self._my_ranking = my_ranking
         self._expected_total = expected_total
+        
+        self._parent_object = parent_object
+        self._my_socket = comms_socket
     
-    def _answer_query(self) -> dict:
+    def _handshake_peer(self, target_host, target_port) -> bool:
         raise NotImplementedError
+    
+    def _pass_request_on(self, target) -> str:
+    
+    
+    def _give_my_info(self) -> str:
+        """return JSON string containing target information."""
+        ret_dict = {"ranking": self._my_ranking,
+                    "hostname": self._my_host,
+                    "port": self._my_port
+        
+        return json.dumps(ret_dict)
+        
         
     def comms_loop(self):
         raise NotImplementedError
