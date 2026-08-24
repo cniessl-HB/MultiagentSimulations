@@ -7,9 +7,11 @@ See LICENSE.txt for usage.
 """
 
 from queue import Queue
+from BTrees.OOBTree import OOBTree
 
 import socket
 import ssl
+
 
 class dist_sort_peer():
 
@@ -26,13 +28,12 @@ class dist_sort_peer():
         self._target_port = target_port
         self._socket = None
     
-    def hand
-    
-    def connect(self):
+    def handshake_peer(self):
         raise NotImplementedError
         
-    def query_agent(self, target_ranking: int):
+    def query_agent(self, target_key: str):
         raise NotImplementedError
+    
 
 class dist_hash_task():
  
@@ -44,28 +45,31 @@ class dist_sort_table():
     
     def __init__(self, 
                  my_ranking: int,
-                 expected_total: int,
+                 expected_num_agents: int,
                  parent_object,
                  comms_socket):
         self._inbound_message_queue = Queue(maxsize=32)
         self._outstanding_tasks = {}
         
-        self._finger_table = {}
+        self._dist_key_table = OOBTree()
         self._my_ranking = my_ranking
-        self._expected_total = expected_total
+        self.expected_num_agents = expected_total
         
         self._parent_object = parent_object
         self._my_socket = comms_socket
+    
+    def find_resource(self, target_key: str)
     
     def _handshake_peer(self, target_host, target_port) -> bool:
         raise NotImplementedError
     
     def _pass_request_on(self, target) -> str:
-    
+        raise NotImplementedError
     
     def _give_my_info(self) -> str:
         """return JSON string containing target information."""
         ret_dict = {"ranking": self._my_ranking,
+                    "min_key": self
                     "hostname": self._my_host,
                     "port": self._my_port
         
