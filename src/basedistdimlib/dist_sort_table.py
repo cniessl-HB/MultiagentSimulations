@@ -52,13 +52,23 @@ class dist_sort_table():
         self._outstanding_tasks = {}
         
         self._dist_key_table = OOBTree()
+        
         self._my_ranking = my_ranking
         self.expected_num_agents = expected_total
         
         self._parent_object = parent_object
         self._my_socket = comms_socket
     
-    def find_resource(self, target_key: str)
+    
+    
+    def find_resource(self, target_key: str) -> str:
+        raise NotImplementedError
+    
+    def get_min_key(self) -> str:
+        return self._dist_key_table.minKey()
+    
+    def get_max_key(self) -> str:
+        return self._dist_key_table.maxKey()
     
     def _handshake_peer(self, target_host, target_port) -> bool:
         raise NotImplementedError
