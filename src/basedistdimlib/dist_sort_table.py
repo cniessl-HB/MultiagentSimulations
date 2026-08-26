@@ -7,6 +7,7 @@ See LICENSE.txt for usage.
 """
 
 from queue import Queue
+import threading
 from BTrees.OOBTree import OOBTree
 
 import socket
@@ -49,6 +50,8 @@ class dist_sort_table():
                  parent_object,
                  comms_socket):
         self._inbound_message_queue = Queue(maxsize=32)
+        self._task_manager_mutex = threading.Lock()
+        self._task_notifiers = {}
         self._outstanding_tasks = {}
         
         self._dist_key_table = OOBTree()
@@ -62,7 +65,9 @@ class dist_sort_table():
     
     
     def find_resource(self, target_key: str) -> str:
-        raise NotImplementedError
+        if self._dist_key_table.has_key(target_key):
+            return self._dist_key_table[target_key]
+        return self._continuation_find(target_key)
     
     def get_min_key(self) -> str:
         return self._dist_key_table.minKey()
@@ -70,6 +75,18 @@ class dist_sort_table():
     def get_max_key(self) -> str:
         return self._dist_key_table.maxKey()
     
+    def _continuation_find(self, target_key: str)
+        completed = False
+        raise NotImplementedError
+        """
+        while not completed:
+            with self._task_manager_mutex:
+                if target_key in self._outstanding_tasks:
+                    task_to_exec = self.outstanding_tasks.pop(target_key)
+                    return self._process_task(task_to_exec)
+            self.
+        """
+        
     def _handshake_peer(self, target_host, target_port) -> bool:
         raise NotImplementedError
     
