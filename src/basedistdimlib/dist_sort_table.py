@@ -38,7 +38,8 @@ class dist_sort_peer():
 
 class dist_hash_task():
  
-    def __init__(self,
+    def __init__(self, task_name: str):
+        self.task_name = task_name
                  
          
 class dist_sort_table():
@@ -67,6 +68,7 @@ class dist_sort_table():
     def find_resource(self, target_key: str) -> str:
         if self._dist_key_table.has_key(target_key):
             return self._dist_key_table[target_key]
+        # TODO: Add task in outstanding tasks for execution in comms_loop
         return self._continuation_find(target_key)
     
     def get_min_key(self) -> str:
