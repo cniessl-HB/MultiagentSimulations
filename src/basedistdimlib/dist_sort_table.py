@@ -49,21 +49,25 @@ class dist_sort_table():
                  my_ranking: int,
                  expected_num_agents: int,
                  parent_object,
-                 comms_socket):
+                 listening_port):
+        
+        # Communication related variables
+        self._listening_port = listening_port
         self._inbound_message_queue = Queue(maxsize=32)
+        
+        # Task related variables
         self._task_manager_mutex = threading.Lock()
         self._task_notifiers = {}
         self._outstanding_tasks = {}
+        self._completed_tasks = {}
         
-        self._dist_key_table = OOBTree()
-        
+        # Distributed peer talk table
         self._my_ranking = my_ranking
         self.expected_num_agents = expected_total
+        self._dist_key_table = OOBTree()
         
+        # Callback to manager.
         self._parent_object = parent_object
-        self._my_socket = comms_socket
-    
-    
     
     def find_resource(self, target_key: str) -> str:
         if self._dist_key_table.has_key(target_key):
@@ -77,7 +81,10 @@ class dist_sort_table():
     def get_max_key(self) -> str:
         return self._dist_key_table.maxKey()
     
-    def _continuation_find(self, target_key: str)
+    def _accept_connection(self):
+        raise NotImplementedError
+    
+    def _continuation_find(self, target_key: str):
         completed = False
         raise NotImplementedError
         """
@@ -98,7 +105,8 @@ class dist_sort_table():
     def _give_my_info(self) -> str:
         """return JSON string containing target information."""
         ret_dict = {"ranking": self._my_ranking,
-                    "min_key": self
+                    "min_key": self.get_min_key(),
+                    "max_key": self.get_max_key(),
                     "hostname": self._my_host,
                     "port": self._my_port
         
