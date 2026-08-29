@@ -9,9 +9,7 @@ See LICENSE.txt for usage.
 
 class SubsimNotFoundError(Exception):
     """Passed a subsim ID for fetching a subsim that was not added."""
-    pass
 
 
 class SubsimDisconnectedError(Exception):
     """Attempted an operation on a disconnected subsim."""
-    pass

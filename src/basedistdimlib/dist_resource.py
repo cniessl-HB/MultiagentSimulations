@@ -9,6 +9,7 @@ See LICENSE.txt for usage.
 import socket
 import ssl
 
+
 class dist_resource(base_dist_resc):
     """Distributed resource info class."""
     
