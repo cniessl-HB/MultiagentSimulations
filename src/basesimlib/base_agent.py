@@ -6,13 +6,12 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
+from basesimlib.base_action_stub import base_action_stub
 from basesimlib.base_masim_types import (
     some_action_stub,
     some_agent,
     some_log,
 )
-
-from basesimlib.base_action_stub import base_action_stub
 
 
 class base_agent(some_agent):

@@ -6,9 +6,8 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
-from basesimlib.base_masim_types import some_action_stub, some_log, some_sim
-
 from basesimlib.base_log_entry import base_log_entry
+from basesimlib.base_masim_types import some_action_stub, some_log, some_sim
 
 
 class base_action_stub(some_action_stub):

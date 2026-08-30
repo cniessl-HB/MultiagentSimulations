@@ -8,7 +8,6 @@ See LICENSE.txt for usage.
 
 import json
 import uuid
-
 from datetime import datetime
 
 from basesimlib.base_masim_types import some_log

@@ -7,7 +7,6 @@ See LICENSE.txt for usage.
 """
 
 from abc import ABC, abstractmethod
-
 from datetime import datetime
 
 
