@@ -1,5 +1,5 @@
 """
-dist_hash_table.py - Distributed hash table
+dist_sort_table.py - Distributed organized table.
 
 Copyright 2026 - Christopher T Niessl
 
@@ -8,7 +8,7 @@ See LICENSE.txt for usage.
 
 from queue import Queue
 import threading
-from BTrees.OOBTree import OOBTree
+from BTrees.IOBTree import IOBTree
 
 import socket
 import ssl
@@ -53,7 +53,7 @@ class dist_sort_table():
         
         # Communication related variables
         self._listening_port = listening_port
-        self._inbound_message_queue = Queue(maxsize=32)
+        self._inbound_message_queue = Queue(maxsize=expected_num_agents)
         
         # Task related variables
         self._task_manager_mutex = threading.Lock()
@@ -63,11 +63,20 @@ class dist_sort_table():
         
         # Distributed peer talk table
         self._my_ranking = my_ranking
-        self.expected_num_agents = expected_total
-        self._dist_key_table = OOBTree()
+        self._expected_num_agents = expected_total
+        self._obj_key_table = IOBTree()
+        self._peer_table = {}
         
         # Callback to manager.
         self._parent_object = parent_object
+    
+    def add_resource(self, resource) -> bool:
+        new_key = self._find_next_key_to_use()
+        if new_key % my_ranking == 0:
+            self._add_to_my_table(new_key, resource)
+        else:
+            raise NotImplementedError
+        
     
     def find_resource(self, target_key: str) -> str:
         if self._dist_key_table.has_key(target_key):
@@ -76,12 +85,15 @@ class dist_sort_table():
         return self._continuation_find(target_key)
     
     def get_min_key(self) -> str:
-        return self._dist_key_table.minKey()
+        return self._obj_key_table.minKey()
     
     def get_max_key(self) -> str:
-        return self._dist_key_table.maxKey()
+        return self._obj_key_table.maxKey()
     
     def _accept_connection(self):
+        raise NotImplementedError
+    
+    def _add_to_my_table(self, key, resource):
         raise NotImplementedError
     
     def _continuation_find(self, target_key: str):
@@ -95,7 +107,9 @@ class dist_sort_table():
                     return self._process_task(task_to_exec)
             self.
         """
-        
+    def _find_next_key_to_use(self) -> int:
+        raise NotImplementedError
+    
     def _handshake_peer(self, target_host, target_port) -> bool:
         raise NotImplementedError
     
