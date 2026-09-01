@@ -18,21 +18,23 @@ class dist_sort_peer():
 
     def __init__(self,
                  ranking: int,
-                 min_key: str,
-                 max_key: str,
                  target_host: str,
                  target_port: str):
         self._ranking = ranking
-        self._min_key = min_key
-        self._max_key = max_key
         self._target_host = target_host
         self._target_port = target_port
         self._socket = None
     
     def handshake_peer(self):
         raise NotImplementedError
+    
+    def query_resc(self, target_key: str):
+        raise NotImplementedError
         
-    def query_agent(self, target_key: str):
+    def query_max_key(self):
+        raise NotImplementedError
+    
+    def _send_query(self, target_key: str):
         raise NotImplementedError
     
 
@@ -65,7 +67,7 @@ class dist_sort_table():
         self._my_ranking = my_ranking
         self._expected_num_agents = expected_total
         self._obj_key_table = IOBTree()
-        self._peer_table = {}
+        self._peer_table = IOBTree()
         
         # Callback to manager.
         self._parent_object = parent_object
@@ -82,7 +84,7 @@ class dist_sort_table():
         if self._dist_key_table.has_key(target_key):
             return self._dist_key_table[target_key]
         # TODO: Add task in outstanding tasks for execution in comms_loop
-        return self._continuation_find(target_key)
+        return self._continuation_find_resc(target_key)
     
     def get_min_key(self) -> str:
         return self._obj_key_table.minKey()
@@ -96,7 +98,7 @@ class dist_sort_table():
     def _add_to_my_table(self, key, resource):
         raise NotImplementedError
     
-    def _continuation_find(self, target_key: str):
+    def _continuation_find_resc(self, target_key: str):
         completed = False
         raise NotImplementedError
         """
@@ -108,7 +110,14 @@ class dist_sort_table():
             self.
         """
     def _find_next_key_to_use(self) -> int:
-        raise NotImplementedError
+        # Start by finding three reference points for
+        highest_known = self.get_max_key()
+        for peer in list(self._peer_table.keys()):
+        compare_list[0] = self.get_max_key()
+        
+        mid_peer = 
+        
+        compare_list[1] = 
     
     def _handshake_peer(self, target_host, target_port) -> bool:
         raise NotImplementedError
