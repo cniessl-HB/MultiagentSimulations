@@ -13,6 +13,7 @@ from BTrees.IOBTree import IOBTree
 import socket
 import ssl
 
+from network_call_manager import network_call_manager
 
 class dist_sort_peer():
 
@@ -58,10 +59,7 @@ class dist_sort_table():
         self._inbound_message_queue = Queue(maxsize=expected_num_agents)
         
         # Task related variables
-        self._task_manager_mutex = threading.Lock()
-        self._task_notifiers = {}
-        self._outstanding_tasks = {}
-        self._completed_tasks = {}
+        self._network_call_manager = network_call_manager()
         
         # Distributed peer talk table
         self._my_ranking = my_ranking
