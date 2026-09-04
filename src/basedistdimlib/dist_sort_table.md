@@ -22,3 +22,9 @@ The total number of resources may change over time, increasing or decreasing as 
 Nodes should be as balanced as possible with the amount of resources they are responsible for running.
 
 Overhead for maintaining the table should aim for best scalable performance. O(log(n)) as opposed to O(n) if possible.
+
+## Design
+
+Since resources are given an index or ID in numerical order, assigning resources to nodes becomes trivial via modulo calculation and assignment.
+
+The bottleneck for performance then becomes maintaining a list of peer connections for each node, and finding the next available ID for a resource creation operation.
