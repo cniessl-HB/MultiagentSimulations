@@ -10,6 +10,21 @@ import threading
 
 from time import sleep
 
+class ncm_task():
+
+    def __init__(self, 
+                 task_name: str, 
+                 task_state: str):
+        self._task_name = task_name
+        self._task_state = task_state
+        self._notifier = threading.Event()
+    
+    def get_notifier(self):
+        return self.notifier
+    
+    def handle_input(self):
+        raise NotImplementedError
+
 class network_call_manager():
 
     def __init__():
