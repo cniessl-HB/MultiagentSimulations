@@ -9,33 +9,39 @@ See LICENSE.txt for usage.
 import threading
 
 from time import sleep
+import uuid
 
 class ncm_task():
 
     def __init__(self, 
-                 task_name: str, 
-                 task_state: str):
-        self._task_name = task_name
+                 task_name_root: str, 
+                 task_state: str,):
+        self._task_name_root = task_name_root
+        self._uuid = uuid.uuid4()
+        self._full_task_name = self._task_name_root + "_" + str(self._uuid)
         self._task_state = task_state
-        self._notifier = threading.Event()
     
-    def get_notifier(self):
-        return self.notifier
+    def get_full_task_name(self):
+        return self._full_task_name
     
-    def handle_input(self):
+    def handle_input(self, input_json):
         raise NotImplementedError
 
 class network_call_manager():
 
     def __init__():
-        self._task_manager_mutex = threading.Lock()
-        self._task_notifiers = {}
-        self._outstanding_tasks = {}
-        self._completed_tasks = {}
-        self._shutdown_notifier = threading.Event()
         
+        # Operation variables
+        self._task_manager_mutex = threading.Lock()
+        self._shutdown_notifier = threading.Event()
         self._is_running = False
         self._ready = False
+
+        # Task related variables
+        self._outstanding_tasks = {}
+        self._completed_tasks = {}
+        
+        
         self._msg_handler = None
     
     def is_running(self):
