@@ -14,36 +14,6 @@ import socket
 import ssl
 
 from network_call_manager import network_call_manager
-
-class dist_sort_peer():
-
-    def __init__(self,
-                 ranking: int,
-                 target_host: str,
-                 target_port: str):
-        self._ranking = ranking
-        self._target_host = target_host
-        self._target_port = target_port
-        self._socket = None
-    
-    def handshake_peer(self):
-        raise NotImplementedError
-    
-    def query_resc(self, target_key: str):
-        raise NotImplementedError
-        
-    def query_max_key(self):
-        raise NotImplementedError
-    
-    def _send_query(self, target_key: str):
-        raise NotImplementedError
-    
-
-class dist_hash_task():
- 
-    def __init__(self, task_name: str):
-        self.task_name = task_name
-                 
          
 class dist_sort_table():
     """Distributed sorted table."""
