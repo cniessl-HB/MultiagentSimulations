@@ -27,29 +27,6 @@ class ncm_task():
     def handle_input(self, input_json):
         raise NotImplementedError
 
-class ncm_peer():
-
-    def __init__(self,
-                 ranking: int,
-                 target_host: str,
-                 target_port: str):
-        self._ranking = ranking
-        self._target_host = target_host
-        self._target_port = target_port
-        self._socket = None
-    
-    def handshake_peer(self):
-        raise NotImplementedError
-    
-    def query_resc(self, target_key: str):
-        raise NotImplementedError
-        
-    def query_max_key(self):
-        raise NotImplementedError
-    
-    def _send_query(self, target_key: str):
-        raise NotImplementedError
-
 class network_call_manager():
 
     def __init__(self, ):
@@ -88,16 +65,7 @@ class network_call_manager():
             self._msg_handler.join() 
        
     def _main_listen_loop(self):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0) as sock:
-                sock.bind(("127.0.0.1", 8443))
-    sock.listen(5)
-            while self.is_running():
-            
+        while self.is_running():
+            sleep(1)
 
-    
-    print("Server listening on port 8443...")
-    
-    while True:
-        # Accept raw TCP connections
-        client_sock, addr = sock.accept()
         

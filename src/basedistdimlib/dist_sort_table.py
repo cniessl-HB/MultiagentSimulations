@@ -28,14 +28,14 @@ class dist_sort_table():
         self._listening_port = listening_port
         self._inbound_message_queue = Queue(maxsize=expected_num_agents)
         
-        # Task related variables
-        self._network_call_manager = network_call_manager()
-        
         # Distributed peer talk table
         self._my_ranking = my_ranking
         self._expected_num_agents = expected_total
         self._obj_key_table = IOBTree()
         self._peer_table = IOBTree()
+        
+        # Task related variables
+        self._network_call_managers = {}
         
         # Callback to manager.
         self._parent_object = parent_object
@@ -105,4 +105,8 @@ class dist_sort_table():
         
         
     def _comms_loop(self):
-        raise NotImplementedError
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0) as sock:
+            sock.bind(("127.0.0.1", 8443))
+            while self.is_running():
+                sock.listen(5)    
+                client_sock, addr = sock.accept()
