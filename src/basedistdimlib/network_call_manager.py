@@ -20,6 +20,7 @@ class ncm_task():
         self._uuid = uuid.uuid4()
         self._full_task_name = self._task_name_root + "_" + str(self._uuid)
         self._task_state = task_state
+        self._completion_notifier = threading.Event()
     
     def get_full_task_name(self):
         return self._full_task_name
@@ -29,7 +30,7 @@ class ncm_task():
 
 class network_call_manager():
 
-    def __init__(self, ):
+    def __init__(self, io_socket):
         
         # Operation variables
         self._task_manager_mutex = threading.Lock()
@@ -41,12 +42,12 @@ class network_call_manager():
         self._outstanding_tasks = {}
         self._completed_tasks = {}
     
+        # IO Socket
+        self._io_socket = io_socket
+    
     def is_running(self):
         with self._task_manager_mutex:
             return self._is_running
-    
-    def setup_connection(self):
-        raise NotImplementedError
     
     def setup_task(self):
         raise NotImplementedError
@@ -66,6 +67,9 @@ class network_call_manager():
        
     def _main_listen_loop(self):
         while self.is_running():
-            sleep(1)
+            incoming_data = self._io_socket.recv(MAX_PACK_SIZE)
+            if len(incoming_data) > 0:
+                print(incoming_data)
+            
 
         
