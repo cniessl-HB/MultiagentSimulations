@@ -30,6 +30,9 @@ class ncm_task():
 
 class network_call_manager():
 
+    MAX_PACK_SIZE = 4096
+    MAX_QUEUE_SIZE = 64
+
     def __init__(self, io_socket):
         
         # Operation variables
@@ -64,12 +67,28 @@ class network_call_manager():
             self._is_running = False
         if self._msg_handler:
             self._msg_handler.join() 
-       
+    
+    def _enque_packet(self, data):
+        raise NotImplementedError
+    
+    def _process_queue(self):
+        raise NotImplementedError
+    
     def _main_listen_loop(self):
         while self.is_running():
-            incoming_data = self._io_socket.recv(MAX_PACK_SIZE)
+            # If Queue is maxed out, process packet first
+            if self.queue_size() >= self.MAX_QUEUE_SIZE:
+                self._process_queue()
+            
+            # Check incoming data. Queue it up if available.
+            # Otherwise process more messages on the queue.
+            incoming_data = self._io_socket.recv(self.MAX_PACK_SIZE)
             if len(incoming_data) > 0:
-                print(incoming_data)
+                self._enque_packet(incoming_data)
+            elif self.queue_size() > 0:
+                self._process_queue()
+            
+            
             
 
         
