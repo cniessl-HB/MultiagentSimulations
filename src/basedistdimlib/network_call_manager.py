@@ -8,6 +8,7 @@ See LICENSE.txt for usage.
 
 import threading
 
+from collections import deque
 from time import sleep
 import uuid
 
@@ -42,11 +43,16 @@ class network_call_manager():
         self._ready = False
 
         # Task related variables
+        self._packet_queue = deque()
         self._outstanding_tasks = {}
         self._completed_tasks = {}
     
         # IO Socket
         self._io_socket = io_socket
+    
+    def get_queue_size(self):
+        with self._task_manager_mutex:
+            return len(self._packet_queue)
     
     def is_running(self):
         with self._task_manager_mutex:
@@ -85,7 +91,7 @@ class network_call_manager():
             incoming_data = self._io_socket.recv(self.MAX_PACK_SIZE)
             if len(incoming_data) > 0:
                 self._enque_packet(incoming_data)
-            elif self.queue_size() > 0:
+            elif self.get_queue_size() > 0:
                 self._process_queue()
             
             
