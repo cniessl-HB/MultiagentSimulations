@@ -39,8 +39,8 @@ class network_call_manager():
         # Operation variables
         self._task_manager_mutex = threading.Lock()
         self._shutdown_notifier = threading.Event()
-        self._is_running = False
-        self._ready = False
+        self._is_running: bool = False
+        self._ready: bool = False
 
         # Task related variables
         self._packet_queue = deque()
@@ -50,11 +50,11 @@ class network_call_manager():
         # IO Socket
         self._io_socket = io_socket
     
-    def get_queue_size(self):
+    def get_queue_size(self) -> int:
         with self._task_manager_mutex:
             return len(self._packet_queue)
     
-    def is_running(self):
+    def is_running(self) -> bool:
         with self._task_manager_mutex:
             return self._is_running
     

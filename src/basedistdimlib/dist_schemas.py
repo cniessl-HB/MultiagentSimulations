@@ -22,12 +22,11 @@ class schema_header():
         self.total_size = total_size
         self.text_checksum = text_checksum
 
-def decode_header(input_bytes: bytes):
+def decode_header(input_bytes: bytes) -> schema_header:
     magic_number = int.from_bytes(input_bytes[0:4], byteorder='big')
     if magic_number != SCHEMA_HEADER_MAGIC_NUM:
         return None
     
     total_size = int.from_bytes(input_bytes[4:8], byteorder='big')
     text_checksum = input_bytes[8:]
-    
-    raise NotImplementedError
+    return schema_header(total_size, text_checksum)
