@@ -22,6 +22,13 @@ class schema_header():
         self.total_size = total_size
         self.text_checksum = text_checksum
 
+def scan_for_start(self, input_bytes: bytes) -> int:
+    for ii in range(0, len(input_bytes) - 4):
+        if input_bytes[ii:(ii+4)] == SCHEMA_HEADER_MAGIC_NUM:
+            return ii
+    return -1
+    # TODO: Change this to be more robust to partial packets
+
 def decode_header(input_bytes: bytes) -> schema_header:
     magic_number = int.from_bytes(input_bytes[0:4], byteorder='big')
     if magic_number != SCHEMA_HEADER_MAGIC_NUM:

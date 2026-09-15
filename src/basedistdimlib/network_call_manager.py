@@ -85,11 +85,13 @@ class network_call_manager():
             # If Queue is maxed out, process packet first
             if self.queue_size() >= self.MAX_QUEUE_SIZE:
                 self._process_queue()
-            
             # Check incoming data. Queue it up if available.
             # Otherwise process more messages on the queue.
             incoming_data = self._io_socket.recv(self.MAX_PACK_SIZE)
             if len(incoming_data) > 0:
+                if self._packet_state == "scanning":
+                    start_point = dist_schemas.scan_for_start(incoming_data)
+            
                 self._enque_packet(incoming_data)
             elif self.get_queue_size() > 0:
                 self._process_queue()
