@@ -9,6 +9,7 @@ See LICENSE.txt for usage.
 import threading
 
 from collections import deque
+from enum import Enum
 from time import sleep
 import uuid
 
