@@ -45,21 +45,39 @@ class packet_scanner():
 
     def scan_and_process(self, input_bytes: bytes):
         trun_bytes = b''
+        ret_val = 0
         if self.state == packet_state.SCANNING_MN:
             ret_val = self._scan_magic_number(input_bytes)
-            if ret_val > 0:
-                trun_bytes = input_bytes[ret_val:]
+            if ret_val == 0:
+                return
+        trun_bytes = input_bytes[ret_val:]
+        if self.state == packet_state.SCANNING_SIZE:
+            ret_val = self._scan_size(input_bytes)
+            if ret_val == 0:
+                return
 
     def _scan_magic_number(self, input_bytes: bytes) -> int:
         for ii in range(0, len(input_bytes)):
             if input_bytes[ii] == SCHEMA_HEADER_MAGIC_NUM[self.bytes_in_state]:
                 self.bytes_in_state += 1
+            else:
+                self.bytes_in_state = 0
+                continue
             if self.bytes_in_state >= 4:
-                self.state == packet_state.SCANNING_SIZE
+                self.state = packet_state.SCANNING_SIZE
+                self.bytes_in_state = 0
                 return ii+1
         return 0
     
-    def _scan_size(self, input_bytes: bytes) -> int
+    def _scan_size(self, input_bytes: bytes) -> int:
+        for ii in range(0, len(input_bytes)):
+            self.current_header = input_bytes[self.bytes_in_state]
+            self.bytes_in_state += 1
+            if self.bytes_in_state >= 4:
+                self.state = packet_state.SCANNING_CHKSUM
+                self.bytes_in_state = 0
+                return ii+1
+        return 0
 
 def decode_header(input_bytes: bytes) -> schema_header:
     magic_number = int.from_bytes(input_bytes[0:4], byteorder='big')
