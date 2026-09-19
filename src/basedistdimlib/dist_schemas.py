@@ -71,19 +71,14 @@ class packet_scanner():
     
     def _scan_size(self, input_bytes: bytes) -> int:
         for ii in range(0, len(input_bytes)):
-            self.current_header = input_bytes[self.bytes_in_state]
+            self.current_header.size_bytes = input_bytes[self.bytes_in_state]
             self.bytes_in_state += 1
             if self.bytes_in_state >= 4:
                 self.state = packet_state.SCANNING_CHKSUM
                 self.bytes_in_state = 0
                 return ii+1
         return 0
-
-def decode_header(input_bytes: bytes) -> schema_header:
-    magic_number = int.from_bytes(input_bytes[0:4], byteorder='big')
-    if magic_number != SCHEMA_HEADER_MAGIC_NUM:
-        return None
     
-    total_size = int.from_bytes(input_bytes[4:8], byteorder='big')
-    text_checksum = input_bytes[8:]
-    return schema_header(total_size, text_checksum)
+    def _scan_checksum(self, input_bytes: bytes) -> int:
+        raise NotImplementedError
+
