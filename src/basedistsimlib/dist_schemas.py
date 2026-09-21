@@ -71,7 +71,8 @@ class packet_scanner():
     
     def _scan_size(self, input_bytes: bytes) -> int:
         for ii in range(0, len(input_bytes)):
-            self.current_header.size_bytes = input_bytes[self.bytes_in_state]
+            size_value = input_bytes[self.bytes_in_state]
+            self.current_header.size_bytes[self.bytes_in_state] = size_value
             self.bytes_in_state += 1
             if self.bytes_in_state >= 4:
                 self.state = packet_state.SCANNING_CHKSUM
@@ -80,5 +81,13 @@ class packet_scanner():
         return 0
     
     def _scan_checksum(self, input_bytes: bytes) -> int:
-        raise NotImplementedError
+        for ii in range(0, len(input_bytes)):
+            checksum_value = input_bytes[self.bytes_in_state]
+            self.current_header.checksum_bytes[self.bytes_in_state] = checksum_value
+            self.bytes_in_state += 1
+            if self.bytes_in_state >= 4:
+                self.state = packet_state.READING_DATA
+                self.bytes_in_state = 0
+                return ii+1
+        return 0
 
