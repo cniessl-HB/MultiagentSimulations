@@ -55,6 +55,10 @@ class packet_scanner():
             ret_val = self._scan_size(input_bytes)
             if ret_val == 0:
                 return
+        if self.state == packet_state.SCANNING_CHKSUM:
+            ret_val = self._scan_checksum(self, input_bytes)
+            if ret_val == 0:
+                return
 
     def _scan_magic_number(self, input_bytes: bytes) -> int:
         for ii in range(0, len(input_bytes)):
