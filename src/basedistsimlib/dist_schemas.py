@@ -36,12 +36,15 @@ class packet_state(Enum):
 
 class packet_scanner():
 
+    def _reset_state(self):
+        raise NotImplementedError
+
     def __init__(self):
         self.state = packet_state.SCANNING_MN
         self.current_header = schema_header(b'\x00\x00\x00\x00', 
                                             b'\x00\x00\x00\x00')
         self.bytes_in_state = 0
-        self.buffer = b''
+        self.working_buffer = b''
 
     def scan_and_process(self, input_bytes: bytes):
         trun_bytes = b''
@@ -59,6 +62,8 @@ class packet_scanner():
             ret_val = self._scan_checksum(self, input_bytes)
             if ret_val == 0:
                 return
+        if self.state == packet_state.READING_DATA:
+            ret_val = self._scan_packet_content(self, 
 
     def _scan_magic_number(self, input_bytes: bytes) -> int:
         for ii in range(0, len(input_bytes)):
@@ -94,4 +99,7 @@ class packet_scanner():
                 self.bytes_in_state = 0
                 return ii+1
         return 0
+
+    def _scan_packet_content(self, input_bytes) -> int:
+        raise NotImplementedError
 
