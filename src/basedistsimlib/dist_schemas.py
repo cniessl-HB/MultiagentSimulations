@@ -22,7 +22,7 @@ class schema_header():
         self.size_bytes = total_size
         self.text_checksum = text_checksum
     
-    def get_size_from_bytes(self) -> int:
+    def compare_size(self, current_size) -> bool:
         raise NotImplementedError
     
     def get_checksum_from_bytes(self) -> int:
@@ -54,7 +54,8 @@ class packet_scanner():
             ret_val = self._scan_magic_number(input_bytes)
             if ret_val == 0:
                 return
-        trun_bytes = input_bytes[ret_val:]
+            else:
+                trun_bytes = input_bytes[ret_val:]
         if self.state == packet_state.SCANNING_SIZE:
             ret_val = self._scan_size(input_bytes)
             if ret_val == 0:
@@ -69,6 +70,8 @@ class packet_scanner():
                 trun_bytes = input_bytes[ret_val:]
         if self.state == packet_state.READING_DATA:
             ret_val = self._scan_packet_content(self, input_bytes)
+            if self.current_header.compare_size(self.bytes_in_state):
+            
 
     def _scan_magic_number(self, input_bytes: bytes) -> int:
         for ii in range(0, len(input_bytes)):
