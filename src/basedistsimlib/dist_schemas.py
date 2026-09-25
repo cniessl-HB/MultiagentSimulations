@@ -59,10 +59,14 @@ class packet_scanner():
             ret_val = self._scan_size(input_bytes)
             if ret_val == 0:
                 return
+            else:
+                trun_bytes = input_bytes[ret_val:]
         if self.state == packet_state.SCANNING_CHKSUM:
             ret_val = self._scan_checksum(self, input_bytes)
             if ret_val == 0:
                 return
+            else:
+                trun_bytes = input_bytes[ret_val:]
         if self.state == packet_state.READING_DATA:
             ret_val = self._scan_packet_content(self, input_bytes)
 
