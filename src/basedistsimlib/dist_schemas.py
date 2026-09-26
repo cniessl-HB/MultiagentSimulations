@@ -18,9 +18,9 @@ SCHEMA_HEADER_MAGIC_NUM = b'\x4d\x53\x69\x6d'
 
 class schema_header():
 
-    def __init__(self, total_size, text_checksum):
-        self.size_bytes = total_size
-        self.text_checksum = text_checksum
+    def __init__(self):
+        self.size_bytes = b'\x00\x00\x00\x00'
+        self.text_checksum = b'\x00\x00\x00\x00'
     
     def compare_size(self, current_size) -> bool:
         raise NotImplementedError
@@ -38,8 +38,7 @@ class packet_scanner():
 
     def _reset_state(self):
         self.state = packet_state.SCANNING_MN
-        self.current_header = schema_header(b'\x00\x00\x00\x00', 
-                                            b'\x00\x00\x00\x00')
+        self.current_header = schema_header()
         self.bytes_in_state = 0
         self.working_buffer = b''
         self.working_chescksum = 0
