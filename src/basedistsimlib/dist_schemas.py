@@ -22,8 +22,11 @@ class schema_header():
         self.size_bytes = b'\x00\x00\x00\x00'
         self.text_checksum = b'\x00\x00\x00\x00'
     
-    def compare_size(self, current_size) -> bool:
-        raise NotImplementedError
+    def _decode_size(self) -> int:
+        return int.from_bytes(self.size_bytes, byteorder='big')
+    
+    def compare_size(self, current_size: int) -> bool:
+        return (self._decode_size == current_size)
     
     def get_checksum_from_bytes(self) -> int:
         raise NotImplementedError
