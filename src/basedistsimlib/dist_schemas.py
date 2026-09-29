@@ -25,8 +25,8 @@ class schema_header():
     def _decode_size(self) -> int:
         return int.from_bytes(self.size_bytes, byteorder='big')
     
-    def compare_size(self, current_size: int) -> bool:
-        return (self._decode_size == current_size)
+    def compare_size(self, read_buffer_size: int) -> bool:
+        return (self._decode_size == read_buffer_size + 12)
     
     def get_checksum_from_bytes(self) -> int:
         raise NotImplementedError
@@ -36,6 +36,7 @@ class packet_state(Enum):
     SCANNING_SIZE = 2
     SCANNING_CHKSUM = 3
     READING_DATA = 4
+    READING_COMPLETE = 5
 
 class packet_scanner():
 
@@ -72,7 +73,12 @@ class packet_scanner():
                 trun_bytes = input_bytes[ret_val:]
         if self.state == packet_state.READING_DATA:
             ret_val = self._scan_packet_content(self, input_bytes)
-            if self.current_header.compare_size(self.bytes_in_state):
+            if ret_val == 0:
+                return
+            else:
+                raise NotImplementedError
+        if self.state == packet_state.READING_COMPLETE:
+            raise NotImplementedError
             
 
     def _scan_magic_number(self, input_bytes: bytes) -> int:
@@ -111,5 +117,12 @@ class packet_scanner():
         return 0
 
     def _scan_packet_content(self, input_bytes) -> int:
-        raise NotImplementedError
+        for ii in range(0, len(input_bytes)):
+            self.working_checksum += input_bytes[ii]
+            self.working_buffer.append(input_bytes[ii])
+            self.bytes_in_state += 1
+            if self.current_header.compare_size(self.bytes_in_state):
+                self.state = packet_state.READING_COMPLETE
+                return ii
+        return 0
 
