@@ -25,11 +25,14 @@ class schema_header():
     def _decode_size(self) -> int:
         return int.from_bytes(self.size_bytes, byteorder='big')
     
-    def compare_size(self, read_buffer_size: int) -> bool:
-        return (self._decode_size == read_buffer_size + 12)
+    def _decode_checksum(self) -> int:
+        return int.from_bytes(self.text_checksum, byteorder='big')
     
-    def get_checksum_from_bytes(self) -> int:
-        raise NotImplementedError
+    def compare_size(self, read_buffer_size: int) -> bool:
+        return (self._decode_size() == read_buffer_size + 12)
+    
+    def compare_checksums(self, checksum: int) -> bool:
+        return (self._decode_checksum() == checksum)
 
 class packet_state(Enum):
     SCANNING_MN = 1
