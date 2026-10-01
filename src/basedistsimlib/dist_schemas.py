@@ -81,7 +81,7 @@ class packet_scanner():
             else:
                 raise NotImplementedError
         if self.state == packet_state.READING_COMPLETE:
-            raise NotImplementedError
+            if self._validate_packet()
             
 
     def _scan_magic_number(self, input_bytes: bytes) -> int:
@@ -128,4 +128,7 @@ class packet_scanner():
                 self.state = packet_state.READING_COMPLETE
                 return ii
         return 0
+    
+    def _validate_packet(self) -> bool:
+        return self.current_header.compare_checksum(self.working_checksum)
 
