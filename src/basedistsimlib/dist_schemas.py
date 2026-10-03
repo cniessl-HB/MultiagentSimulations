@@ -53,29 +53,29 @@ class packet_scanner():
     def __init__(self):
         self._reset_state()
 
-    def scan_and_process(self, input_bytes: bytes):
-        trun_bytes = b''
+    def scan_and_process(self, input_bytes: bytes) -> :
+        trun_bytes = bytearray(input_bytes)
         ret_val = 0
         if self.state == packet_state.SCANNING_MN:
-            ret_val = self._scan_magic_number(input_bytes)
+            ret_val = self._scan_magic_number(trun_bytes)
             if ret_val == 0:
                 return
             else:
-                trun_bytes = input_bytes[ret_val:]
+                trun_bytes = trun_bytes[ret_val:]
         if self.state == packet_state.SCANNING_SIZE:
-            ret_val = self._scan_size(input_bytes)
+            ret_val = self._scan_size(trun_bytes)
             if ret_val == 0:
                 return
             else:
-                trun_bytes = input_bytes[ret_val:]
+                trun_bytes = trun_bytes[ret_val:]
         if self.state == packet_state.SCANNING_CHKSUM:
-            ret_val = self._scan_checksum(self, input_bytes)
+            ret_val = self._scan_checksum(self, trun_bytes)
             if ret_val == 0:
                 return
             else:
-                trun_bytes = input_bytes[ret_val:]
+                trun_bytes = trun_bytes[ret_val:]
         if self.state == packet_state.READING_DATA:
-            ret_val = self._scan_packet_content(self, input_bytes)
+            ret_val = self._scan_packet_content(self, trun_bytes)
             if ret_val == 0:
                 return
             else:
