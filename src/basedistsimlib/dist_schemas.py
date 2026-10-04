@@ -34,6 +34,12 @@ class schema_header():
     def compare_checksums(self, checksum: int) -> bool:
         return (self._decode_checksum() == checksum)
 
+class full_schema_packet():
+
+    def __init__(self, header, content):
+        self.header = header
+        self.content = content
+
 class packet_state(Enum):
     SCANNING_MN = 1
     SCANNING_SIZE = 2
@@ -53,7 +59,7 @@ class packet_scanner():
     def __init__(self):
         self._reset_state()
 
-    def scan_and_process(self, input_bytes: bytes) -> :
+    def scan_and_process(self, input_bytes: bytes) -> bool:
         trun_bytes = bytearray(input_bytes)
         ret_val = 0
         if self.state == packet_state.SCANNING_MN:
@@ -79,9 +85,10 @@ class packet_scanner():
             if ret_val == 0:
                 return
             else:
-                raise NotImplementedError
+                trun_bytes = trun_bytes[ret_val:]
         if self.state == packet_state.READING_COMPLETE:
-            if self._validate_packet()
+            if self._validate_packet():
+                raise NotImplementedError
             
 
     def _scan_magic_number(self, input_bytes: bytes) -> int:
@@ -91,7 +98,7 @@ class packet_scanner():
             else:
                 self.bytes_in_state = 0
                 continue
-            if self.bytes_in_state >= 4:
+            if self.bytes_in_state == 4:
                 self.state = packet_state.SCANNING_SIZE
                 self.bytes_in_state = 0
                 return ii+1
@@ -126,7 +133,8 @@ class packet_scanner():
             self.bytes_in_state += 1
             if self.current_header.compare_size(self.bytes_in_state):
                 self.state = packet_state.READING_COMPLETE
-                return ii
+                self.bytes_in_state = 0
+                return ii+1
         return 0
     
     def _validate_packet(self) -> bool:
