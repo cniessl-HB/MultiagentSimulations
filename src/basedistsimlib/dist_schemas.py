@@ -59,36 +59,42 @@ class packet_scanner():
     def __init__(self):
         self._reset_state()
 
-    def scan_and_process(self, input_bytes: bytes) -> bool:
+    def get_processed_packet(self) -> full_schema_packet:
+        return_packet = self.processed_packet
+        self.processed_packet = None
+
+    def scan_and_process(self, input_bytes: bytes) -> int:
         trun_bytes = bytearray(input_bytes)
-        ret_val = 0
+        bytes_processed = 0
         if self.state == packet_state.SCANNING_MN:
-            ret_val = self._scan_magic_number(trun_bytes)
-            if ret_val == 0:
-                return
+            bytes_processed = self._scan_magic_number(trun_bytes)
+            if bytes_processed == 0:
+                return 0
             else:
-                trun_bytes = trun_bytes[ret_val:]
+                trun_bytes = trun_bytes[bytes_processed:]
         if self.state == packet_state.SCANNING_SIZE:
-            ret_val = self._scan_size(trun_bytes)
-            if ret_val == 0:
-                return
+            bytes_processed = self._scan_size(trun_bytes)
+            if bytes_processed == 0:
+                return 0
             else:
-                trun_bytes = trun_bytes[ret_val:]
+                trun_bytes = trun_bytes[bytes_processed:]
         if self.state == packet_state.SCANNING_CHKSUM:
-            ret_val = self._scan_checksum(self, trun_bytes)
-            if ret_val == 0:
-                return
+            bytes_processed = self._scan_checksum(self, trun_bytes)
+            if bytes_processed == 0:
+                return 0
             else:
-                trun_bytes = trun_bytes[ret_val:]
+                trun_bytes = trun_bytes[bytes_processed:]
         if self.state == packet_state.READING_DATA:
-            ret_val = self._scan_packet_content(self, trun_bytes)
-            if ret_val == 0:
-                return
+            bytes_processed = self._scan_packet_content(self, trun_bytes)
+            if bytes_processed == 0:
+                return 0
             else:
-                trun_bytes = trun_bytes[ret_val:]
+                trun_bytes = trun_bytes[bytes_processed:]
         if self.state == packet_state.READING_COMPLETE:
             if self._validate_packet():
-                raise NotImplementedError
+                self.processed_packet = full_schema_packet(self.current_header, self.working_buffer)
+            self.state = packet_state.SCANNING_MN
+            return len(input_bytes) - len(trun_bytes)
             
 
     def _scan_magic_number(self, input_bytes: bytes) -> int:
