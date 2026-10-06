@@ -55,6 +55,7 @@ class packet_scanner():
         self.bytes_in_state = 0
         self.working_buffer = b''
         self.working_chescksum = 0
+        self.processed_packet = None
 
     def __init__(self):
         self._reset_state()
@@ -62,6 +63,7 @@ class packet_scanner():
     def get_processed_packet(self) -> full_schema_packet:
         return_packet = self.processed_packet
         self.processed_packet = None
+        return return_packet
 
     def scan_and_process(self, input_bytes: bytes) -> int:
         trun_bytes = bytearray(input_bytes)
