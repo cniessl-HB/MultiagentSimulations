@@ -13,6 +13,8 @@ from enum import Enum
 from time import sleep
 import uuid
 
+from dist_schemas import packet_scanner
+
 class ncm_task():
 
     def __init__(self, 
@@ -23,6 +25,7 @@ class ncm_task():
         self._full_task_name = self._task_name_root + "_" + str(self._uuid)
         self._task_state = task_state
         self._completion_notifier = threading.Event()
+        self._packet_scanner = 
     
     def get_full_task_name(self):
         return self._full_task_name
