@@ -25,7 +25,6 @@ class ncm_task():
         self._full_task_name = self._task_name_root + "_" + str(self._uuid)
         self._task_state = task_state
         self._completion_notifier = threading.Event()
-        self._packet_scanner = 
     
     def get_full_task_name(self):
         return self._full_task_name
@@ -51,8 +50,9 @@ class network_call_manager():
         self._outstanding_tasks = {}
         self._completed_tasks = {}
     
-        # IO Socket
+        # IO Socket variables
         self._io_socket = io_socket
+        self._packet_scanner = packet_scanner()
     
     def get_queue_size(self) -> int:
         with self._task_manager_mutex:
@@ -93,10 +93,13 @@ class network_call_manager():
             # Otherwise process more messages on the queue.
             incoming_data = self._io_socket.recv(self.MAX_PACK_SIZE)
             if len(incoming_data) > 0:
+                trun_point = 0
                 if self._packet_state == "scanning":
-                    start_point = dist_schemas.scan_for_start(incoming_data)
-            
-                self._enque_packet(incoming_data)
+                    trun_point = self._packet_scanner.scan_and_process(incoming_data)
+                if trun_point == 0:
+                    raise NotImplementedError
+                else:
+                    raise NotImplementedError
             elif self.get_queue_size() > 0:
                 self._process_queue()
             
