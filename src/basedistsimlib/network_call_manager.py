@@ -97,8 +97,11 @@ class network_call_manager():
                 if self._packet_state == "scanning":
                     trun_point = self._packet_scanner.scan_and_process(incoming_data)
                 if trun_point == 0:
-                    raise NotImplementedError
+                    # The whole packet was used, but a new one isn't available
+                    continue
                 else:
+                    # A packet is ready, enqueue the packet and retain the rest for
+                    # processing on the next cycle.
                     raise NotImplementedError
             elif self.get_queue_size() > 0:
                 self._process_queue()
