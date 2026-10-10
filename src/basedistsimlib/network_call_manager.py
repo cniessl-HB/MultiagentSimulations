@@ -85,6 +85,7 @@ class network_call_manager():
         raise NotImplementedError
     
     def _main_listen_loop(self):
+        prev_ret_data = b''
         while self.is_running():
             # If Queue is maxed out, process packet first
             if self.queue_size() >= self.MAX_QUEUE_SIZE:
@@ -92,17 +93,17 @@ class network_call_manager():
             # Check incoming data. Queue it up if available.
             # Otherwise process more messages on the queue.
             incoming_data = self._io_socket.recv(self.MAX_PACK_SIZE)
-            if len(incoming_data) > 0:
-                trun_point = 0
-                if self._packet_state == "scanning":
-                    trun_point = self._packet_scanner.scan_and_process(incoming_data)
+            prev_ret_data = prev_ret_data + incoming_data
+            if len(prev_ret_data) > 0:
+                trun_point = self._packet_scanner.scan_and_process(incoming_data)
                 if trun_point == 0:
                     # The whole packet was used, but a new one isn't available
                     continue
                 else:
                     # A packet is ready, enqueue the packet and retain the rest for
                     # processing on the next cycle.
-                    raise NotImplementedError
+                    prev_ret_data = prev_ret_data[trun_point:]
+                    self._enque_packet(self._packet_scanner.get_processed_packet())
             elif self.get_queue_size() > 0:
                 self._process_queue()
             
