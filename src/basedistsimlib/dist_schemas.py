@@ -15,6 +15,7 @@ get_peer_network_info = {}
 find_next_available_key = {}
 
 SCHEMA_HEADER_MAGIC_NUM = b'\x4d\x53\x69\x6d'
+SCHEMA_MAX_PAYLOAD_SIZE = 1024
 
 class schema_header():
 
@@ -38,7 +39,18 @@ class full_schema_packet():
 
     def __init__(self, header, content):
         self.header = header
-        self.content = content
+        self.raw_content = content
+        self.decoded_content = None
+        
+    def _check_conformity(self) -> bool:
+        if len(self.content.encode('utf-8')) > MAX_JSON_SIZE:
+            raise ValueError("Payload too large")
+        try:
+            self.decoded_content = json.loads(self.content)
+            return True
+        except json.JSONDecodeError as err:
+            print(f"Malicious or malformed JSON detected: {err}")
+            return False
 
 class packet_state(Enum):
     SCANNING_MN = 1
