@@ -44,13 +44,19 @@ class full_schema_packet():
         
     def _check_conformity(self) -> bool:
         if len(self.content.encode('utf-8')) > MAX_JSON_SIZE:
-            raise ValueError("Payload too large")
+            raise ValueError("Exceeds max size")
         try:
             self.decoded_content = json.loads(self.content)
             return True
         except json.JSONDecodeError as err:
             print(f"Malicious or malformed JSON detected: {err}")
             return False
+
+    def get_decoded_content(self) -> dict:
+        if not self._check_conformity():
+            return {"type":"error"}
+        # Check for initial schema hint, then validate against it.
+        raise NotImplementedError            
 
 class packet_state(Enum):
     SCANNING_MN = 1
