@@ -6,13 +6,15 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
-get_resource_at_key_schema = {}
+from jsonschema import validate
 
-pass_resource_to_peer_schema = {}
+GET_RESC_AT_KEY = {}
 
-get_peer_network_info = {}
+PASS_RESC_TO_PEER = {}
 
-find_next_available_key = {}
+GET_PEER_NETWORK_INFO = {}
+
+FIND_NEXT_AVAILABLE_KEY = {}
 
 SCHEMA_HEADER_MAGIC_NUM = b'\x4d\x53\x69\x6d'
 SCHEMA_MAX_PAYLOAD_SIZE = 1024
@@ -54,9 +56,12 @@ class full_schema_packet():
 
     def get_decoded_content(self) -> dict:
         if not self._check_conformity():
-            return {"type":"error"}
+            return {"type":"error - invalid json"}
         # Check for initial schema hint, then validate against it.
-        raise NotImplementedError            
+        if "type" not in self.decoded_content:
+            return {"type":"error - missing type"}
+        target_type = self.decoded_content["type"]
+        raise NotImplementedError          
 
 class packet_state(Enum):
     SCANNING_MN = 1
