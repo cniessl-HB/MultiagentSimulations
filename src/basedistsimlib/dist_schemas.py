@@ -43,6 +43,12 @@ class full_schema_packet():
         self.header = header
         self.raw_content = content
         self.decoded_content = None
+        self.decode_dict = {
+            "get_resource": GET_RESC_AT_KEY,
+            "pass_resource": PASS_RESC_TO_PEER,
+            "get_peer_info": GET_PEER_NETWORK_INFO,
+            "find_next_key": FIND_NEXT_AVAILABLE_KEY
+        }
         
     def _check_conformity(self) -> bool:
         if len(self.content.encode('utf-8')) > MAX_JSON_SIZE:
@@ -61,6 +67,8 @@ class full_schema_packet():
         if "type" not in self.decoded_content:
             return {"type":"error - missing type"}
         target_type = self.decoded_content["type"]
+        if target_type not in self.decode_dict:
+            return {"type":"error - non-supported type"}
         raise NotImplementedError          
 
 class packet_state(Enum):
