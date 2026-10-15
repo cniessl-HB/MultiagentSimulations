@@ -69,7 +69,15 @@ class full_schema_packet():
         target_type = self.decoded_content["type"]
         if target_type not in self.decode_dict:
             return {"type":"error - non-supported type"}
-        raise NotImplementedError          
+        target_schema = self.decode_dict[target_type]
+        try:
+            # This will pass silently if the data matches the schema
+            validate(instance=self.raw_content, schema=target_schema)
+        except jsonschema.exceptions.ValidationError as e:
+            return {"type":"error - failed validation"}
+        except jsonschema.exceptions.SchemaError as e:
+            return {"type":"error - schema invalid"}
+        return self.decoded_content
 
 class packet_state(Enum):
     SCANNING_MN = 1
