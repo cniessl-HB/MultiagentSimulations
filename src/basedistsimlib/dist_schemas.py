@@ -8,8 +8,15 @@ See LICENSE.txt for usage.
 
 from jsonschema import validate
 
-GET_RESC_AT_KEY = {}
-
+GET_RESC_AT_KEY = {"type" : "object:",
+                   "properties":{
+                       "packet_type": {"type": "string"},
+                       "resource_key": {"type": "string"},
+                       "query_origin": {"type": "integer"}
+                   },
+                   "required": ["packet_type","resource_key","query_origin"],
+                   "additionalProperties": False
+                   }
 PASS_RESC_TO_PEER = {}
 
 GET_PEER_NETWORK_INFO = {}
@@ -64,7 +71,7 @@ class full_schema_packet():
         if not self._check_conformity():
             return {"type":"error - invalid json"}
         # Check for initial schema hint, then validate against it.
-        if "type" not in self.decoded_content:
+        if "packet_type" not in self.decoded_content:
             return {"type":"error - missing type"}
         target_type = self.decoded_content["type"]
         if target_type not in self.decode_dict:
