@@ -8,23 +8,51 @@ See LICENSE.txt for usage.
 
 from jsonschema import validate
 
+ACK_PACKET = {"type" : "object:",
+                   "properties":{
+                       "packet_type": {"type": "string"},
+                       "packet_id": {"type": "string"},
+                       "acked_packet_id": {"type": "string"},
+                   },
+                   "required": ["packet_type","packet_id","acked_packet_id"],
+                   "additionalProperties": False
+                   }
+
 GET_RESC_AT_KEY = {"type" : "object:",
                    "properties":{
                        "packet_type": {"type": "string"},
+                       "packet_id": {"type": "string"},
                        "resource_key": {"type": "string"},
                        "query_origin": {"type": "integer"}
                    },
-                   "required": ["packet_type","resource_key","query_origin"],
+                   "required": ["packet_type","packet_id","resource_key","query_origin"],
                    "additionalProperties": False
                    }
-PASS_RESC_TO_PEER = {}
+                   
+PASS_RESC_TO_PEER = {"type" : "object:",
+                     "properties":{
+                       "packet_type": {"type": "string"},
+                       "packet_id": {"type": "string"},
+                       "resource_key": {"type": "string"},
+                       "fragment_num": {"type": "integer"},
+                       "total_fragments": {"type" : "integer"},
+                       "fragment_data": {"type" : "string"}
+                   },
+                   "required": ["packet_type", "packet_id", "resource_key","fragment_num", "total_fragments", "fragment_data"],
+                   "additionalProperties": False}
+
+REREQUEST_MISSING_FRAGMENT = {}
 
 GET_PEER_NETWORK_INFO = {}
 
+PEER_NETWORK_INFO = {}
+
 FIND_NEXT_AVAILABLE_KEY = {}
 
+PROVIDED_NEXT_AVAILABLE_KEY = {}
+
 SCHEMA_HEADER_MAGIC_NUM = b'\x4d\x53\x69\x6d'
-SCHEMA_MAX_PAYLOAD_SIZE = 1024
+SCHEMA_MAX_PAYLOAD_SIZE = 2048
 
 class schema_header():
 
