@@ -41,7 +41,15 @@ PASS_RESC_TO_PEER = {"type" : "object:",
                    "required": ["packet_type", "packet_id", "resource_key","fragment_num", "total_fragments", "fragment_data"],
                    "additionalProperties": False}
 
-REREQUEST_MISSING_FRAGMENT = {}
+REREQUEST_MISSING_FRAGMENT = {"type" : "object:",
+                     "properties":{
+                       "packet_type": {"type": "string"},
+                       "packet_id": {"type": "string"},
+                       "resource_key": {"type": "string"},
+                       "fragment_num": {"type": "integer"},
+                   },
+                   "required": ["packet_type", "packet_id", "resource_key","fragment_num"],
+                   "additionalProperties": False}
 
 GET_PEER_NETWORK_INFO = {}
 
