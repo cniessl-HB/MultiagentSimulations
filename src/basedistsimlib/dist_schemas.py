@@ -51,7 +51,15 @@ REREQUEST_MISSING_FRAGMENT = {"type" : "object:",
                    "required": ["packet_type", "packet_id", "resource_key","fragment_num"],
                    "additionalProperties": False}
 
-GET_PEER_NETWORK_INFO = {}
+GET_PEER_NETWORK_INFO = {"type" : "object:",
+                     "properties":{
+                       "packet_type": {"type": "string"},
+                       "packet_id": {"type": "string"},
+                       "peer_id": {"type": "integer"},
+                       "network_address": {"type": "string"},
+                   },
+                   "required": ["packet_type", "packet_id", "peer_id","network_address"],
+                   "additionalProperties": False}
 
 PEER_NETWORK_INFO = {}
 
