@@ -56,12 +56,19 @@ GET_PEER_NETWORK_INFO = {"type" : "object:",
                        "packet_type": {"type": "string"},
                        "packet_id": {"type": "string"},
                        "peer_id": {"type": "integer"},
+                   },
+                   "required": ["packet_type", "packet_id", "peer_id"],
+                   "additionalProperties": False}
+
+PEER_NETWORK_INFO = {"type" : "object:",
+                     "properties":{
+                       "packet_type": {"type": "string"},
+                       "packet_id": {"type": "string"},
+                       "peer_id": {"type": "integer"},
                        "network_address": {"type": "string"},
                    },
                    "required": ["packet_type", "packet_id", "peer_id","network_address"],
                    "additionalProperties": False}
-
-PEER_NETWORK_INFO = {}
 
 FIND_NEXT_AVAILABLE_KEY = {}
 
