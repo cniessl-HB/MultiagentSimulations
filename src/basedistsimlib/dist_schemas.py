@@ -79,7 +79,14 @@ FIND_NEXT_AVAILABLE_KEY = {"type" : "object:",
                    "required": ["packet_type", "packet_id", "max_key_hint"],
                    "additionalProperties": False}
 
-PROVIDED_NEXT_AVAILABLE_KEY = {}
+PROVIDED_NEXT_AVAILABLE_KEY = {"type" : "object:",
+                     "properties":{
+                       "packet_type": {"type": "string"},
+                       "packet_id": {"type": "string"},
+                       "new_key_granted": {"type": "int"},
+                   },
+                   "required": ["packet_type", "packet_id", "new_key_granted"],
+                   "additionalProperties": False}
 
 PUSH_RESC_REQUEST = {}
 
