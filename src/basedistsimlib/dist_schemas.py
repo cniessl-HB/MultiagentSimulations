@@ -55,24 +55,33 @@ GET_PEER_NETWORK_INFO = {"type" : "object:",
                      "properties":{
                        "packet_type": {"type": "string"},
                        "packet_id": {"type": "string"},
-                       "peer_id": {"type": "integer"},
+                       "target_peer_id": {"type": "integer"},
                    },
-                   "required": ["packet_type", "packet_id", "peer_id"],
+                   "required": ["packet_type", "packet_id", "target_peer_id"],
                    "additionalProperties": False}
 
 PEER_NETWORK_INFO = {"type" : "object:",
                      "properties":{
                        "packet_type": {"type": "string"},
                        "packet_id": {"type": "string"},
-                       "peer_id": {"type": "integer"},
+                       "target_peer_id": {"type": "integer"},
                        "network_address": {"type": "string"},
                    },
-                   "required": ["packet_type", "packet_id", "peer_id","network_address"],
+                   "required": ["packet_type", "packet_id", "target_peer_id","network_address"],
                    "additionalProperties": False}
 
-FIND_NEXT_AVAILABLE_KEY = {}
+FIND_NEXT_AVAILABLE_KEY = {"type" : "object:",
+                     "properties":{
+                       "packet_type": {"type": "string"},
+                       "packet_id": {"type": "string"},
+                       "max_key_hint": {"type": "int"},
+                   },
+                   "required": ["packet_type", "packet_id", "max_key_hint"],
+                   "additionalProperties": False}
 
 PROVIDED_NEXT_AVAILABLE_KEY = {}
+
+PUSH_RESC_REQUEST = {}
 
 SCHEMA_HEADER_MAGIC_NUM = b'\x4d\x53\x69\x6d'
 SCHEMA_MAX_PAYLOAD_SIZE = 2048
