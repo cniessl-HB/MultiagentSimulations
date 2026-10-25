@@ -99,7 +99,16 @@ PUSH_RESC_REQUEST = {"type" : "object:",
                    "additionalProperties": False
                    }
 
-READY_TO_REC_RESC = {}
+READY_TO_REC_RESC = {"type" : "object:",
+                   "properties":{
+                       "packet_type": {"type": "string"},
+                       "packet_id": {"type": "string"},
+                       "resource_key": {"type": "string"},
+                       "push_packet_id": {"type": "string"}
+                   },
+                   "required": ["packet_type","packet_id","resource_key","push_packet_id"],
+                   "additionalProperties": False
+                   }
 
 SCHEMA_HEADER_MAGIC_NUM = b'\x4d\x53\x69\x6d'
 SCHEMA_MAX_PAYLOAD_SIZE = 2048
