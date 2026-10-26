@@ -1,5 +1,5 @@
 """
-schema_dict.py - JSON Schemas for various RPC/peer-tasks.
+dist_schemas.py - JSON Schemas for various RPC/peer-tasks.
 
 Copyright 2026 - Christopher T Niessl
 
@@ -107,3 +107,11 @@ READY_TO_REC_RESC = {"type" : "object:",
                    "required": ["packet_type","packet_id","resource_key","push_packet_id"],
                    "additionalProperties": False
                    }
+
+def get_dist_schema_dict() -> dict:
+    self.decode_dict = {
+        "get_resource": GET_RESC_AT_KEY,
+        "pass_resource": PASS_RESC_TO_PEER,
+        "get_peer_info": GET_PEER_NETWORK_INFO,
+        "find_next_key": FIND_NEXT_AVAILABLE_KEY
+    }
