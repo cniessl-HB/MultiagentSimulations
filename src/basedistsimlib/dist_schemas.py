@@ -8,7 +8,7 @@ See LICENSE.txt for usage.
 
 from jsonschema import validate
 
-from schema_dict import schema_dict 
+from schema_dict import get_dist_schema_dict 
 
 
 SCHEMA_HEADER_MAGIC_NUM = b'\x4d\x53\x69\x6d'
@@ -38,12 +38,7 @@ class full_schema_packet():
         self.header = header
         self.raw_content = content
         self.decoded_content = None
-        self.decode_dict = {
-            "get_resource": GET_RESC_AT_KEY,
-            "pass_resource": PASS_RESC_TO_PEER,
-            "get_peer_info": GET_PEER_NETWORK_INFO,
-            "find_next_key": FIND_NEXT_AVAILABLE_KEY
-        }
+        self.decode_dict = get_dist_schema_dict()
         
     def _check_conformity(self) -> bool:
         if len(self.content.encode('utf-8')) > MAX_JSON_SIZE:
