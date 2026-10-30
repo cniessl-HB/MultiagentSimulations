@@ -7,14 +7,12 @@ See LICENSE.txt for usage.
 """
 
 from jsonschema import validate
-
-from schema_dict import get_dist_schema_dict 
-
+from schema_dict import get_dist_schema_dict
 
 SCHEMA_HEADER_MAGIC_NUM = b'\x4d\x53\x69\x6d'
 SCHEMA_MAX_PAYLOAD_SIZE = 2048
 
-class schema_header():
+class schema_header:
 
     def __init__(self):
         self.size_bytes = b'\x00\x00\x00\x00'
@@ -32,7 +30,7 @@ class schema_header():
     def compare_checksums(self, checksum: int) -> bool:
         return (self._decode_checksum() == checksum)
 
-class full_schema_packet():
+class full_schema_packet:
 
     def __init__(self, header, content):
         self.header = header
@@ -63,9 +61,9 @@ class full_schema_packet():
         try:
             # This will pass silently if the data matches the schema
             validate(instance=self.raw_content, schema=target_schema)
-        except jsonschema.exceptions.ValidationError as e:
+        except jsonschema.exceptions.ValidationError:
             return {"type":"error - failed validation"}
-        except jsonschema.exceptions.SchemaError as e:
+        except jsonschema.exceptions.SchemaError:
             return {"type":"error - schema invalid"}
         return self.decoded_content
 
@@ -76,7 +74,7 @@ class packet_state(Enum):
     READING_DATA = 4
     READING_COMPLETE = 5
 
-class packet_scanner():
+class packet_scanner:
 
     def _reset_state(self):
         self.state = packet_state.SCANNING_MN
@@ -129,7 +127,7 @@ class packet_scanner():
             
 
     def _scan_magic_number(self, input_bytes: bytes) -> int:
-        for ii in range(0, len(input_bytes)):
+        for ii in range(len(input_bytes)):
             if input_bytes[ii] == SCHEMA_HEADER_MAGIC_NUM[self.bytes_in_state]:
                 self.bytes_in_state += 1
             else:
@@ -142,7 +140,7 @@ class packet_scanner():
         return 0
     
     def _scan_size(self, input_bytes: bytes) -> int:
-        for ii in range(0, len(input_bytes)):
+        for ii in range(len(input_bytes)):
             size_value = input_bytes[self.bytes_in_state]
             self.current_header.size_bytes[self.bytes_in_state] = size_value
             self.bytes_in_state += 1
@@ -153,7 +151,7 @@ class packet_scanner():
         return 0
     
     def _scan_checksum(self, input_bytes: bytes) -> int:
-        for ii in range(0, len(input_bytes)):
+        for ii in range(len(input_bytes)):
             checksum_value = input_bytes[self.bytes_in_state]
             self.current_header.checksum_bytes[self.bytes_in_state] = checksum_value
             self.bytes_in_state += 1
@@ -164,7 +162,7 @@ class packet_scanner():
         return 0
 
     def _scan_packet_content(self, input_bytes) -> int:
-        for ii in range(0, len(input_bytes)):
+        for ii in range(len(input_bytes)):
             self.working_checksum += input_bytes[ii]
             self.working_buffer.append(input_bytes[ii])
             self.bytes_in_state += 1

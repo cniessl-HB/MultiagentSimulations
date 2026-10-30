@@ -7,15 +7,13 @@ See LICENSE.txt for usage.
 """
 
 import threading
-
-from collections import deque
-from enum import Enum
-from time import sleep
 import uuid
+from collections import deque
 
 from dist_schemas import packet_scanner
 
-class ncm_task():
+
+class ncm_task:
 
     def __init__(self, 
                  task_name_root: str, 
@@ -32,7 +30,7 @@ class ncm_task():
     def handle_input(self, input_json):
         raise NotImplementedError
 
-class network_call_manager():
+class network_call_manager:
 
     MAX_PACK_SIZE = 4096
     MAX_QUEUE_SIZE = 64
