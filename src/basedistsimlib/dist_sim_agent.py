@@ -19,9 +19,7 @@ import uuid
 class dist_sim_agent(some_agent):
     """Base distributed agent."""
 
-    def __init__(self, 
-                 agent_id: str, 
-                 host_sim_name: str) -> None:
+    def __init__(self, agent_id: str, host_sim_name: str) -> None:
         "Initialize the agent"
         self._agent_id: str = agent_id
         self._is_active: bool = True
@@ -30,7 +28,7 @@ class dist_sim_agent(some_agent):
         self.history_list: list[some_log] = []
         self._uuid: uuid.UUID = self._get_sim_uuid(host_sim_name)
 
-    def _get_sim_uuid(self, host_sim_name: str) -> uuid.UUID
+    def _get_sim_uuid(self, host_sim_name: str) -> uuid.UUID:
         hash_gen = hashlib.shake_128(host_sim_name.encode())
         hexdigest = hash_gen.hexdigest(16)
         return uuid.UUID(hexdigest)
@@ -41,22 +39,17 @@ class dist_sim_agent(some_agent):
     def get_id(self) -> str:
         return self._agent_id
 
-
     def is_active(self) -> bool:
         return self._is_active
-
 
     def set_active(self, active_val: bool) -> None:
         self._is_active = active_val
 
-
     def plan_action(self) -> some_action_stub:
         raise NotImplementedError
 
-
     def add_to_history(self, log_entry) -> None:
         raise NotImplementedError
-
 
     def get_history(self) -> list[some_log]:
         raise NotImplementedError

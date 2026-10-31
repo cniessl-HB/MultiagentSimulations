@@ -19,10 +19,8 @@ from basesimlib.base_log_entry import base_log_entry
 
 from basedistsimlib.dist_resource import dist_resource
 
-from basedistsimlib.dist_exceptions import (
-    SubsimNotFoundError
-    SubsimDisconnectedError
-)
+from basedistsimlib.dist_exceptions import SubsimNotFoundError, SubsimDisconnectedError
+
 
 class base_dist_simulation_orch(some_sim):
     """Base distributed simulation."""
@@ -42,17 +40,17 @@ class base_dist_simulation_orch(some_sim):
             new_subsim_cfg = dist_resource(**config_dict[key])
             new_subsim_key = new_subsim_cfg.resc_name
             self._subsims[resc_name] = new_subsim_cfg
-    
+
     def _handshake_with_subsims(self) -> None:
-       for resc_name_key in self.subsim_net_cfgs:
-           subsim_cfg = self.subsim_net_cfgs[resc_name]
-           try:
-               did_connect = subsim_cfg.connect()
-           except Exception as ex:
-               did_connect = False
-               if subsim_cfg.require_online:
-                   raise ex
-       self._connected_to_subsims = True
+        for resc_name_key in self.subsim_net_cfgs:
+            subsim_cfg = self.subsim_net_cfgs[resc_name]
+            try:
+                did_connect = subsim_cfg.connect()
+            except Exception as ex:
+                did_connect = False
+                if subsim_cfg.require_online:
+                    raise ex
+        self._connected_to_subsims = True
 
     def _send_rpc_to_subsim(self, rpc: str, target_subsim: str) -> str:
         if target_subsim not in self.subsims:
@@ -64,7 +62,7 @@ class base_dist_simulation_orch(some_sim):
 
     def connect(self) -> None:
         """Connect to every subsystem specified in the network config."""
-        
+
         self._handshake_with_subsims()
 
     def advance_step(self) -> None:
@@ -99,7 +97,7 @@ class base_dist_simulation_orch(some_sim):
 
     def get_step(self) -> int:
         """Return the current simulation step."""
-       raise NotImplementedError
+        raise NotImplementedError
 
     def setup_phase(self) -> None:
         """Check global conditions and modify them here."""

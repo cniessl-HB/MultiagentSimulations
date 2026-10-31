@@ -5,14 +5,12 @@ Copyright 2026 - Christopher T Niessl
 
 See LICENSE.txt for usage.
 """
- 
+
 
 class dist_sim_client(some_sim):
     """Base distributed simulation."""
 
-    def __init__(self, 
-                 expected_sim_name: str, 
-                 personal_identifier: str) -> None:
+    def __init__(self, expected_sim_name: str, personal_identifier: str) -> None:
         """Initialize the simulation."""
         self._expected_sim_name = expected_sim_name
         self._personal_identifier = personal_identifier
@@ -57,7 +55,7 @@ class dist_sim_client(some_sim):
 
     def get_step(self) -> int:
         """Return the current simulation step."""
-       raise NotImplementedError
+        raise NotImplementedError
 
     def setup_phase(self) -> None:
         """Check global conditions and modify them here."""

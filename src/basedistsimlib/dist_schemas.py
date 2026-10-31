@@ -9,37 +9,37 @@ See LICENSE.txt for usage.
 from jsonschema import validate
 from schema_dict import get_dist_schema_dict
 
-SCHEMA_HEADER_MAGIC_NUM = b'\x4d\x53\x69\x6d'
+SCHEMA_HEADER_MAGIC_NUM = b"\x4d\x53\x69\x6d"
 SCHEMA_MAX_PAYLOAD_SIZE = 2048
 
-class schema_header:
 
+class schema_header:
     def __init__(self):
-        self.size_bytes = b'\x00\x00\x00\x00'
-        self.text_checksum = b'\x00\x00\x00\x00'
-    
+        self.size_bytes = b"\x00\x00\x00\x00"
+        self.text_checksum = b"\x00\x00\x00\x00"
+
     def _decode_size(self) -> int:
-        return int.from_bytes(self.size_bytes, byteorder='big')
-    
+        return int.from_bytes(self.size_bytes, byteorder="big")
+
     def _decode_checksum(self) -> int:
-        return int.from_bytes(self.text_checksum, byteorder='big')
-    
+        return int.from_bytes(self.text_checksum, byteorder="big")
+
     def compare_size(self, read_buffer_size: int) -> bool:
-        return (self._decode_size() == read_buffer_size + 12)
-    
+        return self._decode_size() == read_buffer_size + 12
+
     def compare_checksums(self, checksum: int) -> bool:
-        return (self._decode_checksum() == checksum)
+        return self._decode_checksum() == checksum
+
 
 class full_schema_packet:
-
     def __init__(self, header, content):
         self.header = header
         self.raw_content = content
         self.decoded_content = None
         self.decode_dict = get_dist_schema_dict()
-        
+
     def _check_conformity(self) -> bool:
-        if len(self.content.encode('utf-8')) > MAX_JSON_SIZE:
+        if len(self.content.encode("utf-8")) > MAX_JSON_SIZE:
             raise ValueError("Exceeds max size")
         try:
             self.decoded_content = json.loads(self.content)
@@ -50,22 +50,23 @@ class full_schema_packet:
 
     def get_decoded_content(self) -> dict:
         if not self._check_conformity():
-            return {"type":"error - invalid json"}
+            return {"type": "error - invalid json"}
         # Check for initial schema hint, then validate against it.
         if "packet_type" not in self.decoded_content:
-            return {"type":"error - missing type"}
+            return {"type": "error - missing type"}
         target_type = self.decoded_content["type"]
         if target_type not in self.decode_dict:
-            return {"type":"error - non-supported type"}
+            return {"type": "error - non-supported type"}
         target_schema = self.decode_dict[target_type]
         try:
             # This will pass silently if the data matches the schema
             validate(instance=self.raw_content, schema=target_schema)
         except jsonschema.exceptions.ValidationError:
-            return {"type":"error - failed validation"}
+            return {"type": "error - failed validation"}
         except jsonschema.exceptions.SchemaError:
-            return {"type":"error - schema invalid"}
+            return {"type": "error - schema invalid"}
         return self.decoded_content
+
 
 class packet_state(Enum):
     SCANNING_MN = 1
@@ -74,13 +75,13 @@ class packet_state(Enum):
     READING_DATA = 4
     READING_COMPLETE = 5
 
-class packet_scanner:
 
+class packet_scanner:
     def _reset_state(self):
         self.state = packet_state.SCANNING_MN
         self.current_header = schema_header()
         self.bytes_in_state = 0
-        self.working_buffer = b''
+        self.working_buffer = b""
         self.working_chescksum = 0
 
     def __init__(self):
@@ -121,10 +122,11 @@ class packet_scanner:
                 trun_bytes = trun_bytes[bytes_processed:]
         if self.state == packet_state.READING_COMPLETE:
             if self._validate_packet():
-                self.processed_packet = full_schema_packet(self.current_header, self.working_buffer)
+                self.processed_packet = full_schema_packet(
+                    self.current_header, self.working_buffer
+                )
             self._reset_state()
             return len(input_bytes) - len(trun_bytes)
-            
 
     def _scan_magic_number(self, input_bytes: bytes) -> int:
         for ii in range(len(input_bytes)):
@@ -136,9 +138,9 @@ class packet_scanner:
             if self.bytes_in_state == 4:
                 self.state = packet_state.SCANNING_SIZE
                 self.bytes_in_state = 0
-                return ii+1
+                return ii + 1
         return 0
-    
+
     def _scan_size(self, input_bytes: bytes) -> int:
         for ii in range(len(input_bytes)):
             size_value = input_bytes[self.bytes_in_state]
@@ -147,9 +149,9 @@ class packet_scanner:
             if self.bytes_in_state >= 4:
                 self.state = packet_state.SCANNING_CHKSUM
                 self.bytes_in_state = 0
-                return ii+1
+                return ii + 1
         return 0
-    
+
     def _scan_checksum(self, input_bytes: bytes) -> int:
         for ii in range(len(input_bytes)):
             checksum_value = input_bytes[self.bytes_in_state]
@@ -158,7 +160,7 @@ class packet_scanner:
             if self.bytes_in_state >= 4:
                 self.state = packet_state.READING_DATA
                 self.bytes_in_state = 0
-                return ii+1
+                return ii + 1
         return 0
 
     def _scan_packet_content(self, input_bytes) -> int:
@@ -169,9 +171,8 @@ class packet_scanner:
             if self.current_header.compare_size(self.bytes_in_state):
                 self.state = packet_state.READING_COMPLETE
                 self.bytes_in_state = 0
-                return ii+1
+                return ii + 1
         return 0
-    
+
     def _validate_packet(self) -> bool:
         return self.current_header.compare_checksum(self.working_checksum)
-

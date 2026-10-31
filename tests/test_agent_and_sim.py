@@ -166,8 +166,7 @@ def test_sim_get_history_agents_added() -> None:
     history_list = test_sim.dump_sim_history_list()
     assert len(history_list) == number_to_add
     assert all(
-        history_list[ii] < history_list[ii + 1]
-        for ii in range(len(history_list) - 1)
+        history_list[ii] < history_list[ii + 1] for ii in range(len(history_list) - 1)
     )
 
 
@@ -187,8 +186,7 @@ def test_sim_get_history_active_agents() -> None:
     history_list = test_sim.dump_sim_active_agent_history_list()
     assert len(history_list) == number_to_add
     assert all(
-        history_list[ii] < history_list[ii + 1]
-        for ii in range(len(history_list) - 1)
+        history_list[ii] < history_list[ii + 1] for ii in range(len(history_list) - 1)
     )
 
 
@@ -211,8 +209,7 @@ def test_sim_get_history_inactive_agents() -> None:
     history_list = test_sim.dump_sim_inactive_agent_history_list()
     assert len(history_list) == number_to_add
     assert all(
-        history_list[ii] < history_list[ii + 1]
-        for ii in range(len(history_list) - 1)
+        history_list[ii] < history_list[ii + 1] for ii in range(len(history_list) - 1)
     )
 
 
