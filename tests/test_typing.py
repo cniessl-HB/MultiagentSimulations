@@ -6,14 +6,14 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
-import pytest
-
 from datetime import datetime
 
+import pytest
+
 from basesimlib.base_masim_types import (
-    some_log,
     some_action_stub,
     some_agent,
+    some_log,
     some_sim,
 )
 
