@@ -6,14 +6,10 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
-from queue import Queue
-import threading
-from BTrees.IOBTree import IOBTree
-
 import socket
-import ssl
+from queue import Queue
 
-from network_call_manager import network_call_manager
+from BTrees.IOBTree import IOBTree
 
 
 class dist_sort_table:
