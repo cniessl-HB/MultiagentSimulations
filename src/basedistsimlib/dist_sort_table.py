@@ -6,6 +6,7 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
+import json
 import socket
 from queue import Queue
 
@@ -110,4 +111,5 @@ class dist_sort_table:
             sock.bind(("127.0.0.1", 8443))
             while self.is_running():
                 sock.listen(5)
-                client_sock, addr = sock.accept()
+                _client_sock, _addr = sock.accept()
+                #TODO Pass socket and adder to a network call manager creator.

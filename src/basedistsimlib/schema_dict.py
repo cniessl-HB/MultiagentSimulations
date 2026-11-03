@@ -133,7 +133,7 @@ READY_TO_REC_RESC = {
 
 
 def get_dist_schema_dict() -> dict:
-    self.decode_dict = {
+    decode_dict = {
         "ack_packet": ACK_PACKET,
         "get_resource": GET_RESC_AT_KEY,
         "pass_resource": PASS_RESC_TO_PEER,
@@ -143,5 +143,6 @@ def get_dist_schema_dict() -> dict:
         "find_next_key": FIND_NEXT_AVAILABLE_KEY,
         "the_next_key": PROVIDED_NEXT_AVAILABLE_KEY,
         "push_resource": PUSH_RESC_REQUEST,
-        "ready_to_receive": READ_TO_REC_RESC,
+        "ready_to_receive": READY_TO_REC_RESC,
     }
+    return decode_dict

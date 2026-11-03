@@ -66,7 +66,7 @@ class network_call_manager:
 
     def start(self):
         if not self._ready:
-            raise RuntimeException
+            raise RuntimeError
         self._is_running = True
         self._msg_handler = threading.Thread(
             target=self._main_listen_loop(), daemon=True
