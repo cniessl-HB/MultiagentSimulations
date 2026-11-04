@@ -7,6 +7,7 @@ See LICENSE.txt for usage.
 """
 
 from jsonschema import validate
+
 from schema_dict import get_dist_schema_dict
 
 SCHEMA_HEADER_MAGIC_NUM = b"\x4d\x53\x69\x6d"

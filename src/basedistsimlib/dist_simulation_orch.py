@@ -7,9 +7,10 @@ See LICENSE.txt for usage.
 """
 
 
+from basesimlib.base_masim_types import some_action_stub, some_agent, some_log, some_sim
+
 from basedistsimlib.dist_exceptions import SubsimDisconnectedError, SubsimNotFoundError
 from basedistsimlib.dist_resource import dist_resource
-from basesimlib.base_masim_types import some_action_stub, some_agent, some_log, some_sim
 
 
 class base_dist_simulation_orch(some_sim):
@@ -29,17 +30,16 @@ class base_dist_simulation_orch(some_sim):
         for key in config_dict:
             new_subsim_cfg = dist_resource(**config_dict[key])
             new_subsim_key = new_subsim_cfg.resc_name
-            self._subsims[resc_name] = new_subsim_cfg
+            self._subsims[new_subsim_key] = new_subsim_cfg
 
     def _handshake_with_subsims(self) -> None:
         for resc_name_key in self.subsim_net_cfgs:
-            subsim_cfg = self.subsim_net_cfgs[resc_name]
+            subsim_cfg = self.subsim_net_cfgs[resc_name_key]
             try:
-                did_connect = subsim_cfg.connect()
-            except Exception as ex:
-                did_connect = False
+                subsim_cfg.connect()
+            except Exception:
                 if subsim_cfg.require_online:
-                    raise ex
+                    raise
         self._connected_to_subsims = True
 
     def _send_rpc_to_subsim(self, rpc: str, target_subsim: str) -> str:
