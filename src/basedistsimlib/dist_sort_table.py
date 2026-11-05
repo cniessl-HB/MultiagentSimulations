@@ -26,7 +26,7 @@ class dist_sort_table:
 
         # Distributed peer talk table
         self._my_ranking = my_ranking
-        self._expected_num_agents = expected_total
+        self._expected_num_agents = expected_num_agents
         self._obj_key_table = IOBTree()
         self._peer_table = IOBTree()
 
