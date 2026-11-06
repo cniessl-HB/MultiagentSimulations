@@ -10,7 +10,7 @@ import socket
 import ssl
 
 
-class dist_resource(base_dist_resc):
+class dist_resource:
     """Distributed resource info class."""
 
     def __init__(
@@ -25,7 +25,7 @@ class dist_resource(base_dist_resc):
         self.resc_name: str = resc_name
         self.target_host_name: str = target_host_name
         self.target_ip_addr: str = target_ip_addr
-        self.port: int = port
+        self.port: int = target_port
         self.auth_cert: str = auth_cert
         self.require_online: bool = require_online
         self._is_connected: bool = False

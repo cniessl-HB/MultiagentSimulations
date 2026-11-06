@@ -27,8 +27,8 @@ class base_dist_simulation_orch(some_sim):
         return len(self.active_agents) + len(self.inactive_agents)
 
     def _read_network_config(self, config_dict: dict) -> None:
-        for key in config_dict:
-            new_subsim_cfg = dist_resource(**config_dict[key])
+        for item in config_dict.items():
+            new_subsim_cfg = dist_resource(**item)
             new_subsim_key = new_subsim_cfg.resc_name
             self._subsims[new_subsim_key] = new_subsim_cfg
 
