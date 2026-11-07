@@ -6,7 +6,10 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
-from jsonschema import validate
+import json
+from enum import Enum
+
+import jsonschema
 
 from schema_dict import get_dist_schema_dict
 
@@ -61,7 +64,7 @@ class full_schema_packet:
         target_schema = self.decode_dict[target_type]
         try:
             # This will pass silently if the data matches the schema
-            validate(instance=self.raw_content, schema=target_schema)
+            jsonschema.validate(instance=self.raw_content, schema=target_schema)
         except jsonschema.exceptions.ValidationError:
             return {"type": "error - failed validation"}
         except jsonschema.exceptions.SchemaError:
