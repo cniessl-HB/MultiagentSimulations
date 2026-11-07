@@ -43,7 +43,7 @@ class full_schema_packet:
         self.decode_dict = get_dist_schema_dict()
 
     def _check_conformity(self) -> bool:
-        if len(self.content.encode("utf-8")) > MAX_JSON_SIZE:
+        if len(self.content.encode("utf-8")) > SCHEMA_MAX_PAYLOAD_SIZE:
             raise ValueError("Exceeds max size")
         try:
             self.decoded_content = json.loads(self.content)
