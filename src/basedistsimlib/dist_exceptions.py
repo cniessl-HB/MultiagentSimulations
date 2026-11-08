@@ -13,3 +13,6 @@ class SubsimNotFoundError(Exception):
 
 class SubsimDisconnectedError(Exception):
     """Attempted an operation on a disconnected subsim."""
+    
+class DuplicateAgentError(Exception):
+    """An agent with the same ID was added in the simulation."""

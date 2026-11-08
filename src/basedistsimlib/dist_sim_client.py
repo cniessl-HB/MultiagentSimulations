@@ -7,6 +7,7 @@ See LICENSE.txt for usage.
 """
 
 from basesimlib.base_masim_types import some_action_stub, some_agent, some_log, some_sim
+from dist_exceptions.DuplicateAgentError import DuplicateAgentError
 
 
 class dist_sim_client(some_sim):
