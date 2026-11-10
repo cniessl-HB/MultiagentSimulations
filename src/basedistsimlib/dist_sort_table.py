@@ -38,7 +38,7 @@ class dist_sort_table:
 
     def add_resource(self, resource) -> bool:
         new_key = self._find_next_key_to_use()
-        if new_key % my_ranking == 0:
+        if new_key % self._my_ranking == 0:
             self._add_to_my_table(new_key, resource)
         else:
             raise NotImplementedError
