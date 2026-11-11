@@ -36,7 +36,7 @@ class network_call_manager:
     MAX_PACK_SIZE = 4096
     MAX_QUEUE_SIZE = 64
 
-    def __init__(self, io_socket):
+    def __init__(self, io_socket, addr):
 
         # Operation variables
         self._task_manager_mutex = threading.Lock()
@@ -52,6 +52,9 @@ class network_call_manager:
         # IO Socket variables
         self._io_socket = io_socket
         self._packet_scanner = packet_scanner()
+        
+        # Additional variables
+        self.addr = addr
 
     def get_queue_size(self) -> int:
         with self._task_manager_mutex:

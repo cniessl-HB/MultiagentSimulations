@@ -22,7 +22,6 @@ class dist_sort_table:
 
         # Communication related variables
         self._listening_port = listening_port
-        self._inbound_message_queue = Queue(maxsize=expected_num_agents)
 
         # Distributed peer talk table
         self._my_ranking = my_ranking
@@ -31,10 +30,15 @@ class dist_sort_table:
         self._peer_table = IOBTree()
 
         # Task related variables
-        self._network_call_managers = {}
+        self._standby_peers = []
+        self._peer_connections = {}
 
         # Callback to manager.
         self._parent_object = parent_object
+
+    def _accept_connection(self, client_sock, addr):
+        new_network_manager = network_call_manager(client_sock, addr)
+        self._standby_peers.append(new_network_manager)
 
     def add_resource(self, resource) -> bool:
         new_key = self._find_next_key_to_use()
@@ -54,9 +58,6 @@ class dist_sort_table:
 
     def get_max_key(self) -> str:
         return self._obj_key_table.maxKey()
-
-    def _accept_connection(self):
-        raise NotImplementedError
 
     def _add_to_my_table(self, key, resource):
         raise NotImplementedError
@@ -109,7 +110,12 @@ class dist_sort_table:
     def _comms_loop(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0) as sock:
             sock.bind(("127.0.0.1", 8443))
+            sock.listen(5)
+            sock.settimeout(5.0)
             while self.is_running():
-                sock.listen(5)
-                _client_sock, _addr = sock.accept()
-                #TODO Pass socket and adder to a network call manager creator.
+                try:
+                    client_sock, addr = sock.accept()
+                    self.accept_connection(client_sock, addr)
+                except TimeoutError:
+                    printf("No connection received")
+                    # TODO: Check all available activities for connections here.
