@@ -8,7 +8,6 @@ See LICENSE.txt for usage.
 
 import json
 import socket
-from queue import Queue
 
 from BTrees.IOBTree import IOBTree
 
@@ -107,6 +106,12 @@ class dist_sort_table:
 
         return json.dumps(ret_dict)
 
+    def _check_standby_peers(self):
+        raise NotImplementedError
+    
+    def _check_connected_peers(self):
+        raise NotImplementedError
+
     def _comms_loop(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0) as sock:
             sock.bind(("127.0.0.1", 8443))
@@ -118,4 +123,5 @@ class dist_sort_table:
                     self.accept_connection(client_sock, addr)
                 except TimeoutError:
                     printf("No connection received")
-                    # TODO: Check all available activities for connections here.
+                self._check_standby_peers()
+                self._check_connected_peers()
