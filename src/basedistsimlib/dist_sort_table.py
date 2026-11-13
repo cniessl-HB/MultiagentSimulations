@@ -37,6 +37,7 @@ class dist_sort_table:
 
     def _accept_connection(self, client_sock, addr):
         new_network_manager = network_call_manager(client_sock, addr)
+        net_network_manager.start()
         self._standby_peers.append(new_network_manager)
 
     def add_resource(self, resource) -> bool:
@@ -107,7 +108,8 @@ class dist_sort_table:
         return json.dumps(ret_dict)
 
     def _check_standby_peers(self):
-        raise NotImplementedError
+        for peer_network_manager in self._standby_peers:
+        
     
     def _check_connected_peers(self):
         raise NotImplementedError

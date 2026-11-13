@@ -44,8 +44,12 @@ class network_call_manager:
         self._is_running: bool = False
         self._ready: bool = False
 
-        # Task related variables
-        self._packet_queue = deque()
+        # Packet queues
+        self._inbound_packet_queue = deque()
+        self._outbound_packet_queue = deque()
+        self._parent_packet_queue = deque()
+
+        # Task/state-machine related variables        
         self._outstanding_tasks = {}
         self._completed_tasks = {}
 
@@ -83,7 +87,8 @@ class network_call_manager:
             self._msg_handler.join()
 
     def _enque_packet(self, data):
-        raise NotImplementedError
+        with self._task_manager_mutex:
+            self._inbound_packet_queue.append(data)
 
     def _process_queue(self):
         raise NotImplementedError
