@@ -9,8 +9,14 @@ See LICENSE.txt for usage.
 import threading
 import uuid
 from collections import deque
+from enum import Enum
 
 from dist_schemas import packet_scanner
+
+class ncm_state(Enum):
+    NEED_CONNECTION_INFO = 0
+    IDLE = 1
+    EXPECTING_RESPONSE = 2
 
 
 class ncm_task:
@@ -49,7 +55,8 @@ class network_call_manager:
         self._outbound_packet_queue = deque()
         self._parent_packet_queue = deque()
 
-        # Task/state-machine related variables        
+        # Task/state-machine related variables   
+        self._current_state = ncm_state.NEED_CONNECTION_INFO  
         self._outstanding_tasks = {}
         self._completed_tasks = {}
 
