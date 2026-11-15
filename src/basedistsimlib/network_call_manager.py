@@ -23,7 +23,7 @@ class ncm_task:
     def __init__(
         self,
         task_name_root: str,
-        task_state: str,
+        task_state: ncm_state,
     ):
         self._task_name_root = task_name_root
         self._uuid = uuid.uuid4()
@@ -37,6 +37,13 @@ class ncm_task:
     def handle_input(self, input_json):
         raise NotImplementedError
 
+class init_task(ncm_task):
+    
+    def __init__(self):
+        self._super(self, "initialize", ncm_state.NEED_CONNECTION_INFO)
+    
+    def handle_input(self, input_json):
+        raise NotImplementedError
 
 class network_call_manager:
     MAX_PACK_SIZE = 4096
@@ -55,8 +62,7 @@ class network_call_manager:
         self._outbound_packet_queue = deque()
         self._parent_packet_queue = deque()
 
-        # Task/state-machine related variables   
-        self._current_state = ncm_state.NEED_CONNECTION_INFO  
+        # Task/state-machine related variables  
         self._outstanding_tasks = {}
         self._completed_tasks = {}
 
@@ -79,8 +85,11 @@ class network_call_manager:
         raise NotImplementedError
 
     def start(self):
-        if not self._ready:
-            raise RuntimeError
+        # Add communication initialization as outstanding
+        # task upon start-up.
+        with self._task_manager_mutex:
+            
+        
         self._is_running = True
         self._msg_handler = threading.Thread(
             target=self._main_listen_loop(), daemon=True
@@ -98,7 +107,8 @@ class network_call_manager:
             self._inbound_packet_queue.append(data)
 
     def _process_queue(self):
-        raise NotImplementedError
+        with self._task_manager_mutex:
+            procced_packet = 
 
     def _main_listen_loop(self):
         prev_ret_data = b""
@@ -120,5 +130,5 @@ class network_call_manager:
                     # processing on the next cycle.
                     prev_ret_data = prev_ret_data[trun_point:]
                     self._enque_packet(self._packet_scanner.get_processed_packet())
-            elif self.get_queue_size() > 0:
+            if self.get_queue_size() > 0:
                 self._process_queue()
