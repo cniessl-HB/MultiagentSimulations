@@ -12,6 +12,7 @@ from collections import deque
 from enum import Enum
 
 from dist_schemas import packet_scanner
+from schema_dict import PEER_NETWORK_INFO
 
 class ncm_state(Enum):
     NEED_CONNECTION_INFO = 0
@@ -34,7 +35,7 @@ class ncm_task:
     def get_full_task_name(self):
         return self._full_task_name
 
-    def handle_input(self, input_json):
+    def handle_input(self, input_json) -> bool:
         raise NotImplementedError
 
 class init_task(ncm_task):
@@ -42,8 +43,10 @@ class init_task(ncm_task):
     def __init__(self):
         self._super(self, "initialize", ncm_state.NEED_CONNECTION_INFO)
     
-    def handle_input(self, input_json):
-        raise NotImplementedError
+    def handle_input(self, input_json) -> bool:
+        packet_type = input_json["packet_type"]
+        if packet_type != PEER_NETWORK_INFO:
+            raise NotImplementedError
 
 class network_call_manager:
     MAX_PACK_SIZE = 4096
@@ -64,7 +67,7 @@ class network_call_manager:
 
         # Task/state-machine related variables  
         self._outstanding_tasks = {}
-        self._completed_tasks = {}
+        self._flagged_tasks = {}
 
         # IO Socket variables
         self._io_socket = io_socket
@@ -88,7 +91,8 @@ class network_call_manager:
         # Add communication initialization as outstanding
         # task upon start-up.
         with self._task_manager_mutex:
-            
+            new_init_task = init_task()
+            self.outstanding_tasks["peer_connect"] = new_init_task
         
         self._is_running = True
         self._msg_handler = threading.Thread(
@@ -107,8 +111,19 @@ class network_call_manager:
             self._inbound_packet_queue.append(data)
 
     def _process_queue(self):
+        procced_packet = None
+        task_to_add_data = None
+        move_to_flagged = False
         with self._task_manager_mutex:
-            procced_packet = 
+            procced_packet = self._inbound_packet_queue
+        target_task_id = procced_packet["packet_id"]
+        if target_task_id in self._outstanding_tasks:
+            task_to_add_data = task_to_add_data[target_task]
+            move_to_flagged = task_to_add_data.handle_input(procced_packet)
+        if move_to_flagged:
+            with self._task_manager_mutex:
+                self._flagged_tasks[target_task_id] = task_to_add_data
+                self._outstanding_tasks[target_task_id] = None
 
     def _main_listen_loop(self):
         prev_ret_data = b""
