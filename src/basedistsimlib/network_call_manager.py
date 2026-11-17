@@ -115,7 +115,7 @@ class network_call_manager:
         task_to_add_data = None
         move_to_flagged = False
         with self._task_manager_mutex:
-            procced_packet = self._inbound_packet_queue
+            procced_packet = self._inbound_packet_queue.popleft()
         target_task_id = procced_packet["packet_id"]
         if target_task_id in self._outstanding_tasks:
             task_to_add_data = task_to_add_data[target_task]
