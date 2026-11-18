@@ -31,9 +31,13 @@ class ncm_task:
         self._full_task_name = self._task_name_root + "_" + str(self._uuid)
         self._task_state = task_state
         self._completion_notifier = threading.Event()
+        self._outbound_packet = None
 
     def get_full_task_name(self):
         return self._full_task_name
+
+    def get_outbound_packet(self):
+        return self._outbound_packet
 
     def handle_input(self, input_json) -> bool:
         raise NotImplementedError
@@ -46,7 +50,8 @@ class init_task(ncm_task):
     def handle_input(self, input_json) -> bool:
         packet_type = input_json["packet_type"]
         if packet_type != PEER_NETWORK_INFO:
-            raise NotImplementedError
+            # Return 
+            return False
 
 class network_call_manager:
     MAX_PACK_SIZE = 4096
