@@ -6,6 +6,7 @@ Copyright 2026 - Christopher T Niessl
 See LICENSE.txt for usage.
 """
 
+PACK_TYPE_ACK_PACKET = "ack_packet"
 ACK_PACKET = {
     "type": "object:",
     "properties": {
@@ -62,6 +63,7 @@ REREQUEST_MISSING_FRAGMENT = {
     "additionalProperties": False,
 }
 
+PACK_TYPE_GET_PEER_NETWORK_INFO = "get_peer_info"
 GET_PEER_NETWORK_INFO = {
     "type": "object:",
     "properties": {
@@ -73,6 +75,7 @@ GET_PEER_NETWORK_INFO = {
     "additionalProperties": False,
 }
 
+PACK_TYPE_PEER_NETWORK_INFO = "peer_info"
 PEER_NETWORK_INFO = {
     "type": "object:",
     "properties": {
@@ -134,12 +137,12 @@ READY_TO_REC_RESC = {
 
 def get_dist_schema_dict() -> dict:
     decode_dict = {
-        "ack_packet": ACK_PACKET,
+        PACK_TYPE_ACK_PACKET: ACK_PACKET,
         "get_resource": GET_RESC_AT_KEY,
         "pass_resource": PASS_RESC_TO_PEER,
         "request_missing_frag": REREQUEST_MISSING_FRAGMENT,
-        "get_peer_info": GET_PEER_NETWORK_INFO,
-        "peer_info": PEER_NETWORK_INFO,
+        PACK_TYPE_GET_PEER_NETWORK_INFO : GET_PEER_NETWORK_INFO,
+        PACK_TYPE_PEER_NETWORK_INFO: PEER_NETWORK_INFO,
         "find_next_key": FIND_NEXT_AVAILABLE_KEY,
         "the_next_key": PROVIDED_NEXT_AVAILABLE_KEY,
         "push_resource": PUSH_RESC_REQUEST,

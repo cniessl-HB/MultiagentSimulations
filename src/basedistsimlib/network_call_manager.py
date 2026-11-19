@@ -12,7 +12,7 @@ from collections import deque
 from enum import Enum
 
 from dist_schemas import packet_scanner
-from schema_dict import PEER_NETWORK_INFO
+from schema_dict import PEER_NETWORK_INFO, GET_PEER_NETWORK_INFO, PACK_TYPE_PEER_NETWORK_INFO
 
 class ncm_state(Enum):
     NEED_CONNECTION_INFO = 0
@@ -49,8 +49,9 @@ class init_task(ncm_task):
     
     def handle_input(self, input_json) -> bool:
         packet_type = input_json["packet_type"]
-        if packet_type != PEER_NETWORK_INFO:
-            # Return 
+        if packet_type != PACK_TYPE_PEER_NETWORK_INFO:
+            # Set outbound packet to request PEER_NETWORK_INFO
+            self._outbound_packet = GET_PEER_NETWORK_INFO
             return False
 
 class network_call_manager:
