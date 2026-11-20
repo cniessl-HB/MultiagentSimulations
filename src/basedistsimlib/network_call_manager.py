@@ -15,9 +15,13 @@ from dist_schemas import packet_scanner
 from schema_dict import PEER_NETWORK_INFO, GET_PEER_NETWORK_INFO, PACK_TYPE_PEER_NETWORK_INFO
 
 class ncm_state(Enum):
+    
     NEED_CONNECTION_INFO = 0
     IDLE = 1
     EXPECTING_RESPONSE = 2
+    
+    FAILED = 99
+    SUCCESS = 100
 
 
 class ncm_task:
@@ -52,7 +56,12 @@ class init_task(ncm_task):
         if packet_type != PACK_TYPE_PEER_NETWORK_INFO:
             # Set outbound packet to request PEER_NETWORK_INFO
             self._outbound_packet = GET_PEER_NETWORK_INFO
+            # TODO: Setup outbound packet
             return False
+        else:
+            # TODO: provide means to pass up peer info to ncm to distributed table
+            self._task_state = ncm_state.SUCCESS
+            return True
 
 class network_call_manager:
     MAX_PACK_SIZE = 4096
