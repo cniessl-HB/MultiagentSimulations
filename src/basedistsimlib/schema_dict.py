@@ -10,9 +10,9 @@ PACK_TYPE_ACK_PACKET = "ack_packet"
 ACK_PACKET = {
     "type": "object:",
     "properties": {
-        "packet_type": {"type": "string"},
-        "packet_id": {"type": "string"},
-        "acked_packet_id": {"type": "string"},
+        "packet_type": {"type": "string", "default": PACK_TYPE_ACK_PACKET},
+        "packet_id": {"type": "string", "default": ""},
+        "acked_packet_id": {"type": "string", "default": ""},
     },
     "required": ["packet_type", "packet_id", "acked_packet_id"],
     "additionalProperties": False,
