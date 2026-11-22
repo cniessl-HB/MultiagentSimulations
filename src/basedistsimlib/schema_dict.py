@@ -21,10 +21,10 @@ ACK_PACKET = {
 GET_RESC_AT_KEY = {
     "type": "object:",
     "properties": {
-        "packet_type": {"type": "string"},
-        "packet_id": {"type": "string"},
-        "resource_key": {"type": "string"},
-        "query_origin": {"type": "integer"},
+        "packet_type": {"type": "string", "default": PACK_GET_RESC_AT_KEY},
+        "packet_id": {"type": "string", "default": ""},
+        "resource_key": {"type": "string", "default":""},
+        "query_origin": {"type": "integer", "default": 0},
     },
     "required": ["packet_type", "packet_id", "resource_key", "query_origin"],
     "additionalProperties": False,
