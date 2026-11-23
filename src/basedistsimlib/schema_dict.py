@@ -33,12 +33,12 @@ GET_RESC_AT_KEY = {
 PASS_RESC_TO_PEER = {
     "type": "object:",
     "properties": {
-        "packet_type": {"type": "string"},
-        "packet_id": {"type": "string"},
-        "resource_key": {"type": "string"},
-        "fragment_num": {"type": "integer"},
-        "total_fragments": {"type": "integer"},
-        "fragment_data": {"type": "string"},
+        "packet_type": {"type": "string", "default": PACK_PASS_RESC_TO_PEER},
+        "packet_id": {"type": "string", "default": ""},
+        "resource_key": {"type": "string", "default": ""},
+        "fragment_num": {"type": "integer", "default": 0},
+        "total_fragments": {"type": "integer", "default": 1},
+        "fragment_data": {"type": "string", "default": ""},
     },
     "required": [
         "packet_type",
