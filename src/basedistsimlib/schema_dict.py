@@ -70,9 +70,9 @@ PACK_TYPE_GET_PEER_NETWORK_INFO = "get_peer_info"
 GET_PEER_NETWORK_INFO = {
     "type": "object:",
     "properties": {
-        "packet_type": {"type": "string"},
-        "packet_id": {"type": "string"},
-        "target_peer_id": {"type": "integer"},
+        "packet_type": {"type": "string", "default": PACK_TYPE_GET_PEER_NETWORK_INFO},
+        "packet_id": {"type": "string", "default": ""},
+        "target_peer_id": {"type": "integer", "default": -1},
     },
     "required": ["packet_type", "packet_id", "target_peer_id"],
     "additionalProperties": False,
@@ -90,7 +90,7 @@ PEER_NETWORK_INFO = {
     "required": ["packet_type", "packet_id", "target_peer_id", "network_address"],
     "additionalProperties": False,
 }
-
+PACK_FIND_NEXT_AVAILABLE_KEY = "find_next_key"
 FIND_NEXT_AVAILABLE_KEY = {
     "type": "object:",
     "properties": {
@@ -146,7 +146,7 @@ def get_dist_schema_dict() -> dict:
         PACK_REREQUEST_MISSING_FRAGMENT: REREQUEST_MISSING_FRAGMENT,
         PACK_TYPE_GET_PEER_NETWORK_INFO : GET_PEER_NETWORK_INFO,
         PACK_TYPE_PEER_NETWORK_INFO: PEER_NETWORK_INFO,
-        "find_next_key": FIND_NEXT_AVAILABLE_KEY,
+        PACK_FIND_NEXT_AVAILABLE_KEY: FIND_NEXT_AVAILABLE_KEY,
         "the_next_key": PROVIDED_NEXT_AVAILABLE_KEY,
         "push_resource": PUSH_RESC_REQUEST,
         "ready_to_receive": READY_TO_REC_RESC,
