@@ -18,6 +18,7 @@ ACK_PACKET = {
     "additionalProperties": False,
 }
 
+PACK_GET_RESC_AT_KEY = "get_resource"
 GET_RESC_AT_KEY = {
     "type": "object:",
     "properties": {
@@ -30,6 +31,7 @@ GET_RESC_AT_KEY = {
     "additionalProperties": False,
 }
 
+PACK_RESC_TO_PEER = "pass_resource"
 PASS_RESC_TO_PEER = {
     "type": "object:",
     "properties": {
@@ -51,13 +53,14 @@ PASS_RESC_TO_PEER = {
     "additionalProperties": False,
 }
 
+PACK_REREQUEST_MISSING_FRAGMENT = "request_missing_frag"
 REREQUEST_MISSING_FRAGMENT = {
     "type": "object:",
     "properties": {
-        "packet_type": {"type": "string"},
-        "packet_id": {"type": "string"},
-        "resource_key": {"type": "string"},
-        "fragment_num": {"type": "integer"},
+        "packet_type": {"type": "string", "default": PACK_REREQUEST_MISSING_FRAGMENT},
+        "packet_id": {"type": "string", "default": ""},
+        "resource_key": {"type": "string", "default": ""},
+        "fragment_num": {"type": "integer", "default": 0},
     },
     "required": ["packet_type", "packet_id", "resource_key", "fragment_num"],
     "additionalProperties": False,
@@ -138,9 +141,9 @@ READY_TO_REC_RESC = {
 def get_dist_schema_dict() -> dict:
     decode_dict = {
         PACK_TYPE_ACK_PACKET: ACK_PACKET,
-        "get_resource": GET_RESC_AT_KEY,
-        "pass_resource": PASS_RESC_TO_PEER,
-        "request_missing_frag": REREQUEST_MISSING_FRAGMENT,
+        PACK_GET_RESC_AT_KEY: GET_RESC_AT_KEY,
+        PACK_RESC_TO_PEER: PASS_RESC_TO_PEER,
+        PACK_REREQUEST_MISSING_FRAGMENT: REREQUEST_MISSING_FRAGMENT,
         PACK_TYPE_GET_PEER_NETWORK_INFO : GET_PEER_NETWORK_INFO,
         PACK_TYPE_PEER_NETWORK_INFO: PEER_NETWORK_INFO,
         "find_next_key": FIND_NEXT_AVAILABLE_KEY,
