@@ -94,9 +94,9 @@ PACK_FIND_NEXT_AVAILABLE_KEY = "find_next_key"
 FIND_NEXT_AVAILABLE_KEY = {
     "type": "object:",
     "properties": {
-        "packet_type": {"type": "string"},
-        "packet_id": {"type": "string"},
-        "max_key_hint": {"type": "int"},
+        "packet_type": {"type": "string", "default": PACK_FIND_NEXT_AVAILABLE_KEY},
+        "packet_id": {"type": "string", "default": ""},
+        "max_key_hint": {"type": "int", "default": -1},
     },
     "required": ["packet_type", "packet_id", "max_key_hint"],
     "additionalProperties": False,
