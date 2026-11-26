@@ -82,10 +82,10 @@ PACK_TYPE_PEER_NETWORK_INFO = "peer_info"
 PEER_NETWORK_INFO = {
     "type": "object:",
     "properties": {
-        "packet_type": {"type": "string"},
-        "packet_id": {"type": "string"},
-        "target_peer_id": {"type": "integer"},
-        "network_address": {"type": "string"},
+        "packet_type": {"type": "string", "default": PACK_TYPE_PEER_NETWORK_INFO},
+        "packet_id": {"type": "string", "default": ""},
+        "target_peer_id": {"type": "integer", "default": -1},
+        "network_address": {"type": "string", "defaukt": "0.0.0.0"},
     },
     "required": ["packet_type", "packet_id", "target_peer_id", "network_address"],
     "additionalProperties": False,
